@@ -33,7 +33,22 @@ export default function FeatureHighlight() {
     <section id="feature" className="bg-background">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 items-center">
-          <div className="space-y-4">
+          <div className="lg:order-2 flex items-center justify-center">
+            {featureSrc && (
+              <Card className="overflow-hidden shadow-lg rounded-xl">
+                <Image
+                  src={featureSrc}
+                  alt={defaultFeatureImage?.description || 'Feature highlight image'}
+                  width={800}
+                  height={600}
+                  className="w-full h-auto object-cover"
+                  data-ai-hint={defaultFeatureImage?.imageHint}
+                  key={featureSrc}
+                />
+              </Card>
+            )}
+          </div>
+          <div className="lg:order-1 space-y-4">
             <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Key Feature</div>
             <div className="flex items-center gap-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
@@ -60,21 +75,6 @@ export default function FeatureHighlight() {
                     Weather-Proof Fiber Lines
                 </li>
             </ul>
-          </div>
-          <div className="flex items-center justify-center">
-            {featureSrc && (
-              <Card className="overflow-hidden shadow-lg rounded-xl">
-                <Image
-                  src={featureSrc}
-                  alt={defaultFeatureImage?.description || 'Feature highlight image'}
-                  width={800}
-                  height={600}
-                  className="w-full h-auto object-cover"
-                  data-ai-hint={defaultFeatureImage?.imageHint}
-                  key={featureSrc}
-                />
-              </Card>
-            )}
           </div>
         </div>
       </div>

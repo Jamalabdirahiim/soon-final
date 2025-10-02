@@ -8,14 +8,12 @@ import Contact from "@/components/sections/contact";
 import Footer from "@/components/layout/footer";
 import FadeInWrapper from "@/components/fade-in-wrapper";
 import { content } from "@/lib/content";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 
 export default function Home() {
   const { navLinks, logoUrl } = content;
 
   return (
-    <div className="flex min-h-[100dvh] flex-col">
+    <div className="flex min-h-[100dvh] flex-col bg-background">
       <Header navLinks={navLinks} logoUrl={logoUrl} />
       <main className="flex-1">
         <Hero />

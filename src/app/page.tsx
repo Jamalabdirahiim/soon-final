@@ -1,3 +1,45 @@
+import Header from "@/components/layout/header";
+import Hero from "@/components/sections/hero";
+import Services from "@/components/sections/services";
+import FeatureHighlight from "@/components/sections/feature-highlight";
+import CoverageMap from "@/components/sections/coverage-map";
+import Pricing from "@/components/sections/pricing";
+import Faq from "@/components/sections/faq";
+import Contact from "@/components/sections/contact";
+import Footer from "@/components/layout/footer";
+import FadeInWrapper from "@/components/fade-in-wrapper";
+import { content } from "@/lib/content";
+
 export default function Home() {
-  return <></>;
+  const { navLinks, logoUrl } = content;
+
+  return (
+    <div className="flex min-h-[100dvh] flex-col">
+      <Header navLinks={navLinks} logoUrl={logoUrl} />
+      <main className="flex-1">
+        <FadeInWrapper>
+          <Hero />
+        </FadeInWrapper>
+        <FadeInWrapper>
+          <Services />
+        </FadeInWrapper>
+        <FadeInWrapper>
+          <FeatureHighlight />
+        </FadeInWrapper>
+        <FadeInWrapper>
+          <CoverageMap />
+        </FadeInWrapper>
+        <FadeInWrapper>
+          <Pricing />
+        </FadeInWrapper>
+        <FadeInWrapper>
+          <Faq />
+        </FadeInWrapper>
+        <FadeInWrapper>
+          <Contact />
+        </FadeInWrapper>
+      </main>
+      <Footer logoUrl={logoUrl} />
+    </div>
+  );
 }

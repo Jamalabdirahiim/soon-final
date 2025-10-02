@@ -1,0 +1,39 @@
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { placeholderImages } from "@/lib/placeholder-images.json";
+
+export default function Hero() {
+  const heroImage = placeholderImages.find(p => p.id === 'hero-background');
+
+  return (
+    <section id="home" className="relative w-full h-[60vh] min-h-[400px] flex items-center justify-center text-center p-0">
+      {heroImage && (
+        <Image
+          src={heroImage.imageUrl}
+          alt={heroImage.description}
+          fill
+          priority
+          className="object-cover z-0"
+          data-ai-hint={heroImage.imageHint}
+        />
+      )}
+      <div className="absolute inset-0 bg-black/50 z-10" />
+      <div className="relative z-20 container mx-auto px-4 md:px-6 text-white">
+        <div className="max-w-3xl mx-auto flex flex-col items-center">
+            <h1 className="font-headline text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+            The Future of Internet is SOON
+            </h1>
+            <p className="mt-6 max-w-xl text-lg text-gray-200">
+            Experience unparalleled speed and reliability with SOON's pure fiber-optic network. The digital age is here, and it's faster than ever.
+            </p>
+            <div className="mt-10">
+            <Button asChild size="lg">
+                <Link href="#pricing">View Plans</Link>
+            </Button>
+            </div>
+        </div>
+      </div>
+    </section>
+  );
+}

@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Briefcase, Home, Star } from "lucide-react";
+import { CheckCircle, Briefcase, Home } from "lucide-react";
 
 const pricingPlans = [
   {
@@ -15,7 +15,7 @@ const pricingPlans = [
     name: "Performance",
     speed: "15Mbps",
     price: "50",
-    isFeatured: true,
+    isFeatured: false,
     homeUse: "Ideal for HD streaming, online gaming, and a busy smart home.",
     businessUse: "Supports small teams, video calls, and regular cloud uploads.",
   },
@@ -45,19 +45,12 @@ export default function Pricing() {
           </div>
         </div>
 
-        <div className="mx-auto mt-12 grid max-w-sm gap-8 md:max-w-none md:grid-cols-3">
+        <div className="mx-auto mt-12 grid max-w-none gap-8 md:grid-cols-3">
           {pricingPlans.map((plan) => (
             <Card
               key={plan.name}
-              className={`flex flex-col rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-2 ${
-                plan.isFeatured ? 'border-primary border-2 ring-4 ring-primary/10' : 'border'
-              }`}
+              className="flex flex-col rounded-xl border shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
             >
-              {plan.isFeatured && (
-                <div className="bg-primary text-primary-foreground text-center py-1.5 px-4 text-sm font-semibold rounded-t-lg -mt-px flex items-center justify-center gap-2">
-                  <Star className="w-4 h-4" /> Most Popular
-                </div>
-              )}
               <CardHeader className="items-center text-center pt-8">
                 <CardTitle className="font-headline text-2xl">{plan.name}</CardTitle>
                 <div className="flex items-baseline justify-center">
@@ -93,7 +86,7 @@ export default function Pricing() {
                 </ul>
               </CardContent>
               <CardFooter className="p-6">
-                <Button className="w-full" size="lg" variant={plan.isFeatured ? 'default' : 'outline'}>
+                <Button className="w-full" size="lg" variant="outline">
                   Get Started
                 </Button>
               </CardFooter>

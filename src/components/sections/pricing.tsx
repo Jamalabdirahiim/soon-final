@@ -45,7 +45,7 @@ export default function Pricing() {
           </div>
         </div>
 
-        <div className="mx-auto mt-12 grid max-w-sm gap-8 lg:max-w-5xl lg:grid-cols-3">
+        <div className="mx-auto mt-12 grid max-w-sm gap-8 md:max-w-none md:grid-cols-3">
           {pricingPlans.map((plan) => (
             <Card
               key={plan.name}

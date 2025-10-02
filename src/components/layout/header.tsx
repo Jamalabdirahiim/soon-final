@@ -20,13 +20,32 @@ interface HeaderProps {
 export default function Header({ navLinks }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
+  const [logoSrc, setLogoSrc] = useState("/logo.png");
 
   useEffect(() => {
     const handleScroll = () => {
       setHasScrolled(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    
+    const storedLogo = localStorage.getItem('userLogo');
+    if (storedLogo) {
+      setLogoSrc(storedLogo);
+    }
+    
+    const handleLogoChange = () => {
+      const newLogo = localStorage.getItem('userLogo');
+      if (newLogo) {
+        setLogoSrc(newLogo);
+      }
+    };
+    
+    window.addEventListener('logoChanged', handleLogoChange);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('logoChanged', handleLogoChange);
+    }
   }, []);
 
 
@@ -42,7 +61,7 @@ export default function Header({ navLinks }: HeaderProps) {
       )}
     >
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
-        <SoonLogo className={cn(hasScrolled ? 'text-primary' : 'text-white')} />
+        <SoonLogo className={cn(hasScrolled ? 'text-primary' : 'text-white')} logoSrc={logoSrc} />
 
         <nav className="hidden items-center gap-6 md:flex">
           {navLinks.map((link) => (
@@ -75,7 +94,7 @@ export default function Header({ navLinks }: HeaderProps) {
           <SheetContent side="left" className="w-[300px] bg-background">
             <div className="flex h-full flex-col p-6">
               <div className="mb-8">
-                 <SoonLogo />
+                 <SoonLogo logoSrc={logoSrc} />
               </div>
               <nav className="flex flex-col gap-6">
                 {navLinks.map((link) => (

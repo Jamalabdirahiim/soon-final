@@ -1,5 +1,4 @@
 import Header from "@/components/layout/header";
-import Hero from "@/components/sections/hero";
 import HeroContent from "@/components/sections/hero-content";
 import Services from "@/components/sections/services";
 import FeatureHighlight from "@/components/sections/feature-highlight";
@@ -9,6 +8,7 @@ import Contact from "@/components/sections/contact";
 import Footer from "@/components/layout/footer";
 import FadeInWrapper from "@/components/fade-in-wrapper";
 import { content } from "@/lib/content";
+import LogoUploader from "@/components/logo-uploader";
 
 export default function Home() {
   const { navLinks } = content;
@@ -18,6 +18,7 @@ export default function Home() {
       <Header navLinks={navLinks} />
       <main className="flex-1">
         <HeroContent />
+        <LogoUploader />
         <FadeInWrapper>
           <Services />
         </FadeInWrapper>

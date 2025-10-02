@@ -93,5 +93,9 @@
     background: linear-gradient(90deg, #5C0E0E, #8E1717, #C32222);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    font-weight: bold;
+  }
+  .premium-red-bg {
+    background: linear-gradient(90deg, #5C0E0E, #8E1717, #C32222);
   }
 }

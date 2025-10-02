@@ -9,6 +9,8 @@ import Footer from "@/components/layout/footer";
 import FadeInWrapper from "@/components/fade-in-wrapper";
 import { content } from "@/lib/content";
 import LogoUploader from "@/components/logo-uploader";
+import { HeroImageUploader } from "@/components/hero-image-uploader";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Home() {
   const { navLinks } = content;
@@ -18,7 +20,19 @@ export default function Home() {
       <Header navLinks={navLinks} />
       <main className="flex-1">
         <HeroContent />
-        <LogoUploader />
+        <section className="bg-muted/40 py-8">
+            <div className="container mx-auto px-4 md:px-6">
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="text-xl">Site Customization</CardTitle>
+                    </CardHeader>
+                    <CardContent className="grid md:grid-cols-2 gap-8">
+                        <LogoUploader />
+                        <HeroImageUploader />
+                    </CardContent>
+                </Card>
+            </div>
+        </section>
         <FadeInWrapper>
           <Services />
         </FadeInWrapper>

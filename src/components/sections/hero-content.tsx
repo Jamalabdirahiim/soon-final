@@ -1,20 +1,44 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { placeholderImages } from "@/lib/placeholder-images.json";
+import { useEffect, useState } from "react";
 
 export default function HeroContent() {
-    const heroImage = placeholderImages.find(p => p.id === 'hero-background');
+    const defaultHeroImage = placeholderImages.find(p => p.id === 'hero-background');
+    const [heroSrc, setHeroSrc] = useState(defaultHeroImage?.imageUrl);
+
+    useEffect(() => {
+        const storedHero = localStorage.getItem('heroImage');
+        if (storedHero) {
+            setHeroSrc(storedHero);
+        }
+
+        const handleHeroChange = () => {
+            const newHero = localStorage.getItem('heroImage');
+            setHeroSrc(newHero || defaultHeroImage?.imageUrl);
+        };
+
+        window.addEventListener('heroImageChanged', handleHeroChange);
+
+        return () => {
+            window.removeEventListener('heroImageChanged', handleHeroChange);
+        };
+    }, [defaultHeroImage]);
+
   return (
     <section id="home" className="relative w-full h-[60vh] min-h-[400px] flex items-center justify-center text-center">
-      {heroImage && (
+      {heroSrc && (
         <Image
-          src={heroImage.imageUrl}
-          alt={heroImage.description}
+          src={heroSrc}
+          alt={defaultHeroImage?.description || 'Hero background image'}
           fill
           priority
           className="object-cover z-0"
-          data-ai-hint={heroImage.imageHint}
+          data-ai-hint={defaultHeroImage?.imageHint}
+          key={heroSrc}
         />
       )}
       <div className="absolute inset-0 bg-black/60 z-10" />

@@ -129,8 +129,8 @@ export default function LogoUploader() {
   }, [toast]);
 
   return (
-    <section className="bg-background py-8">
-      <div className="container mx-auto flex flex-col items-center justify-center gap-4 px-4 md:px-6">
+    <div className="space-y-4">
+        <h3 className="font-medium">Logo</h3>
         <div className="flex flex-col sm:flex-row items-center gap-4">
           <Button onClick={handleButtonClick} disabled={isUploading}>
             <Upload className="mr-2" />
@@ -144,19 +144,19 @@ export default function LogoUploader() {
               onChange={(e) => setImageUrl(e.target.value)}
               className="w-full sm:w-64"
             />
-             <Button onClick={handleUrlSave} variant="outline">
-              <Save className="mr-2" />
-              Save URL
+             <Button onClick={handleUrlSave} variant="outline" size="icon">
+              <Save />
+              <span className="sr-only">Save URL</span>
             </Button>
           </div>
         </div>
-        <div className="text-xs text-muted-foreground text-center flex items-center gap-2">
+        <div className="text-xs text-muted-foreground flex items-center gap-2">
             <ClipboardPaste className="w-4 h-4" />
             <span>
                 You can also copy an image and paste it anywhere on the page.
             </span>
         </div>
-        <p className="text-xs text-muted-foreground text-center">
+        <p className="text-xs text-muted-foreground">
           Recommended size: 200x56px. Max file size: 2MB.
         </p>
         <input
@@ -166,7 +166,6 @@ export default function LogoUploader() {
           className="hidden"
           accept="image/png, image/jpeg, image/svg+xml, image/webp"
         />
-      </div>
-    </section>
+    </div>
   );
 }

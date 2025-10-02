@@ -15,7 +15,6 @@ export default function Services() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
-            <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Our Services</div>
             <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-5xl">
               Built For Speed
             </h2>

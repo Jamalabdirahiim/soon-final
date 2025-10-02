@@ -8,9 +8,9 @@
     },
     {
       "id": "feature-highlight-image",
-      "description": "A high-quality image for the feature highlight section.",
-      "imageUrl": "https://images.unsplash.com/photo-1524758631624-e2822e304c36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bW9kZXJuJTIwb2ZmaWNlfGVufDB8fHx8MTc1OTMyNzM0OHww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "modern office"
+      "description": "A laptop for the feature highlight section.",
+      "imageUrl": "https://assets.website-files.com/6451a546a33379201018861c/6451a546a33379435b188665_Macbook%20Pro.png",
+      "imageHint": "laptop"
     }
   ]
 }

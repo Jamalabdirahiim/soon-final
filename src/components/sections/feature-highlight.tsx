@@ -1,80 +1,45 @@
-"use client";
-
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
-import { Zap, CheckCircle } from "lucide-react";
 import { placeholderImages } from "@/lib/placeholder-images.json";
-import { useState, useEffect } from "react";
+import { BluezoneIcon } from "../bluezone-icon";
 
 export default function FeatureHighlight() {
-  const defaultFeatureImage = placeholderImages.find(p => p.id === 'feature-highlight-image');
-  const [featureSrc, setFeatureSrc] = useState(defaultFeatureImage?.imageUrl);
-
-  useEffect(() => {
-    const storedImage = localStorage.getItem('featureImage');
-    if (storedImage) {
-      setFeatureSrc(storedImage);
-    }
-
-    const handleImageChange = () => {
-      const newImage = localStorage.getItem('featureImage');
-      setFeatureSrc(newImage || defaultFeatureImage?.imageUrl);
-    };
-
-    window.addEventListener('featureImageChanged', handleImageChange);
-
-    return () => {
-      window.removeEventListener('featureImageChanged', handleImageChange);
-    };
-  }, [defaultFeatureImage]);
-
+  const featureImage = placeholderImages.find(p => p.id === 'feature-highlight-image');
 
   return (
     <section id="feature" className="bg-background">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 items-center">
-          <div className="lg:order-2 flex items-center justify-center">
-            {featureSrc && (
-              <Card className="overflow-hidden shadow-lg rounded-xl">
-                <Image
-                  src={featureSrc}
-                  alt={defaultFeatureImage?.description || 'Feature highlight image'}
-                  width={800}
-                  height={600}
-                  className="w-full h-auto object-cover"
-                  data-ai-hint={defaultFeatureImage?.imageHint}
-                  key={featureSrc}
-                />
-              </Card>
-            )}
-          </div>
-          <div className="lg:order-1 space-y-4">
-            <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Key Feature</div>
-            <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-                <Zap className="h-6 w-6 text-primary" />
-              </div>
-              <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">
-                Always-On Connection
-              </h2>
-            </div>
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          <div className="space-y-6">
+            <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">SOON | FIBER TO THE HOME & BUSINESS</div>
+            <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">
+              BLUE ZONE
+            </h2>
             <p className="text-muted-foreground md:text-lg">
-              Our modern network is built to be stable and reliable. Say goodbye to buffering and dropped connections. Whether you're on a video call, streaming a movie, or gaming, SOON provides a smooth online experience.
+              Through our partnerships with local communities, our focus is on creating a network of total linkage whereas other providers have failed to deliver. We are an excellent rather than an average data architect emerging from Somalia.
             </p>
-            <ul className="grid gap-2 text-muted-foreground">
-                <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    99.9% Uptime
-                </li>
-                <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    Low-Lag for Gaming & Calls
-                </li>
-                <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />
-                    Weather-Proof Fiber Lines
-                </li>
-            </ul>
+          </div>
+
+          <div className="bg-[#1C2C5B] p-8 rounded-lg text-white h-full flex flex-col justify-between">
+            <div>
+              <h3 className="text-4xl font-bold">FIBER BLUE</h3>
+              <p className="mt-2 text-lg">INTERNETKA GURYAHA IYO GOOBAHA GANACSIGA</p>
+            </div>
+            <div className="flex items-center my-8">
+              <BluezoneIcon />
+            </div>
+            {featureImage && (
+              <div className="self-end -mb-8 -mr-8">
+                 <Image
+                    src={featureImage.imageUrl}
+                    alt={featureImage.description}
+                    width={400}
+                    height={300}
+                    className="object-contain"
+                    data-ai-hint={featureImage.imageHint}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

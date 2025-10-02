@@ -74,15 +74,15 @@ export function FeatureImageUploader() {
 
   return (
     <div className="space-y-4">
-        <h3 className="font-medium">Feature Image</h3>
+        <h3 className="font-medium">Bluezone Image</h3>
         <div className="flex flex-col sm:flex-row items-center gap-4">
           <Button onClick={handleButtonClick} disabled={isUploading}>
             <Upload className="mr-2" />
-            {isUploading ? "Uploading..." : "Upload Feature Image"}
+            {isUploading ? "Uploading..." : "Upload Bluezone Image"}
           </Button>
         </div>
         <p className="text-xs text-muted-foreground">
-          Recommended aspect ratio: 4:3. Max file size: 5MB.
+          Transparent laptop images work best. Max file size: 5MB.
         </p>
         <input
           type="file"

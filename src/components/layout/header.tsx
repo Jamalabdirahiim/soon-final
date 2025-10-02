@@ -23,7 +23,13 @@ export default function Header({ navLinks }: HeaderProps) {
 
   useEffect(() => {
     const handleScroll = () => {
-      setHasScrolled(window.scrollY > 50);
+      const heroSection = document.getElementById('home');
+      if (heroSection) {
+        // We add the header height to the scroll position to make sure the header is past the hero section
+        setHasScrolled(window.scrollY > heroSection.offsetHeight - 80);
+      } else {
+        setHasScrolled(window.scrollY > 50);
+      }
     };
     window.addEventListener("scroll", handleScroll);
 

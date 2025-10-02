@@ -2,7 +2,6 @@ import Header from "@/components/layout/header";
 import Hero from "@/components/sections/hero";
 import Services from "@/components/sections/services";
 import FeatureHighlight from "@/components/sections/feature-highlight";
-import CoverageMap from "@/components/sections/coverage-map";
 import Pricing from "@/components/sections/pricing";
 import Faq from "@/components/sections/faq";
 import Contact from "@/components/sections/contact";
@@ -25,9 +24,6 @@ export default function Home() {
         </FadeInWrapper>
         <FadeInWrapper>
           <FeatureHighlight />
-        </FadeInWrapper>
-        <FadeInWrapper>
-          <CoverageMap />
         </FadeInWrapper>
         <FadeInWrapper>
           <Pricing />

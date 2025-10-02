@@ -2,7 +2,6 @@
 {
   "navLinks": [
     { "label": "Services", "href": "#services" },
-    { "label": "Coverage", "href": "#coverage" },
     { "label": "Pricing", "href": "#pricing" },
     { "label": "FAQ", "href": "#faq" },
     { "label": "Contact", "href": "#contact" }

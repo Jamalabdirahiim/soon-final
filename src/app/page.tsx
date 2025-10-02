@@ -1,5 +1,6 @@
 import Header from "@/components/layout/header";
 import Hero from "@/components/sections/hero";
+import HeroContent from "@/components/sections/hero-content";
 import Services from "@/components/sections/services";
 import FeatureHighlight from "@/components/sections/feature-highlight";
 import Pricing from "@/components/sections/pricing";
@@ -17,6 +18,7 @@ export default function Home() {
       <Header navLinks={navLinks} logoUrl={logoUrl} />
       <main className="flex-1">
         <Hero />
+        <HeroContent />
         <FadeInWrapper>
           <Services />
         </FadeInWrapper>

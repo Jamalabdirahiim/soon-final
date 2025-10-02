@@ -1,6 +1,4 @@
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { placeholderImages } from "@/lib/placeholder-images.json";
 
 export default function Hero() {
@@ -19,21 +17,6 @@ export default function Hero() {
         />
       )}
       <div className="absolute inset-0 bg-black/60 z-10" />
-      <div className="relative z-20 container mx-auto px-4 md:px-6 text-white">
-        <div className="max-w-3xl mx-auto flex flex-col items-center">
-            <h1 className="font-headline text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-            The Future of Internet is SOON
-            </h1>
-            <p className="mt-6 max-w-xl text-lg text-gray-200">
-            Get the fastest and most reliable internet with SOON's pure fiber-optic network. The future is here, and it's faster than ever.
-            </p>
-            <div className="mt-10">
-            <Button asChild size="lg" className="transition-transform hover:scale-105">
-                <Link href="#pricing">View Plans</Link>
-            </Button>
-            </div>
-        </div>
-      </div>
     </section>
   );
 }

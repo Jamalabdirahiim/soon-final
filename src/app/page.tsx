@@ -16,9 +16,7 @@ export default function Home() {
     <div className="flex min-h-[100dvh] flex-col">
       <Header navLinks={navLinks} logoUrl={logoUrl} />
       <main className="flex-1">
-        <FadeInWrapper>
-          <Hero />
-        </FadeInWrapper>
+        <Hero />
         <FadeInWrapper>
           <Services />
         </FadeInWrapper>

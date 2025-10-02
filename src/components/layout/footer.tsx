@@ -12,7 +12,7 @@ export default function Footer({ logoUrl }: { logoUrl?: string }) {
         <div className="col-span-1 md:col-span-1">
           <SoonLogo logoUrl={logoUrl} />
           <p className="mt-4 text-sm text-muted-foreground">
-            Connecting Somalia to the world with high-speed fiber internet.
+            Connecting Somalia with high-speed fiber internet.
           </p>
         </div>
 

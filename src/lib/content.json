@@ -8,46 +8,46 @@
   ],
   "services": [
     {
-      "icon": "FiberOpticIcon",
-      "title": "Blazing-Fast Fiber",
-      "description": "Experience the internet like never before with our pure fiber-optic network, delivering symmetrical speeds for upload and download."
+      "icon": "Wifi",
+      "title": "Fast Fiber",
+      "description": "Enjoy a super-fast internet connection with our pure fiber-optic network, perfect for streaming, gaming, and working."
     },
     {
-      "icon": "RouterIcon",
-      "title": "Advanced Wi-Fi",
-      "description": "Our next-gen routers provide powerful, wall-to-wall Wi-Fi coverage, ensuring a stable connection on all your devices."
+      "icon": "Router",
+      "title": "Better Wi-Fi",
+      "description": "Our powerful routers give you strong Wi-Fi in every corner of your home or office, so all your devices stay connected."
     },
     {
-      "icon": "ServerIcon",
-      "title": "Business Solutions",
-      "description": "Dedicated bandwidth, static IPs, and enterprise-grade solutions to power your business's growth and operations."
+      "icon": "Server",
+      "title": "Business Plans",
+      "description": "Get dedicated internet for your company, with reliable service and features to help your business grow."
     },
     {
-      "icon": "SupportIcon",
-      "title": "24/7 Priority Support",
-      "description": "Get expert help whenever you need it. Our local support team is always on standby to ensure you stay connected."
+      "icon": "LifeBuoy",
+      "title": "24/7 Support",
+      "description": "Our friendly support team is always here to help. If you have a problem, we'll get you back online quickly."
     }
   ],
   "faq": [
     {
-      "question": "What is fiber optic internet?",
-      "answer": "Fiber optic internet uses thin strands of glass (fiber) to transmit data as pulses of light. This technology allows for significantly faster and more reliable internet speeds compared to traditional cable or DSL."
+      "question": "What is fiber internet?",
+      "answer": "Fiber internet uses light to send data through tiny glass wires. It's much faster and more reliable than old internet connections like cable or DSL."
     },
     {
       "question": "How long does installation take?",
-      "answer": "Standard installation typically takes between 2-4 hours. Our technician will install the necessary equipment and ensure your connection is running optimally before leaving."
+      "answer": "A standard installation usually takes 2-4 hours. Our technician will set everything up and make sure it works perfectly before they leave."
     },
     {
       "question": "Can I use my own router?",
-      "answer": "Yes, you can use your own router. However, for the best performance and to ensure compatibility with our network, we recommend using the high-performance router provided by SOON."
+      "answer": "Yes, you can. However, we recommend using the router we provide to get the best speed and performance from our network."
     },
     {
-      "question": "Is there a data cap on your plans?",
-      "answer": "No. All of our residential and business plans come with unlimited data, so you can stream, work, and play without worrying about overage fees."
+      "question": "Do you have data limits?",
+      "answer": "No. All our plans have unlimited data. You can stream, work, and play as much as you want without extra fees."
     },
     {
-      "question": "How do I check if SOON is available at my address?",
-      "answer": "You can use the 'Check Availability' tool in our Coverage section or contact our sales team directly. We are constantly expanding our network and may be coming to your area soon!"
+      "question": "How do I know if I can get SOON internet?",
+      "answer": "Check your address on our website or give us a call. We're always expanding, so we might be in your area soon!"
     }
   ],
   "contact": {

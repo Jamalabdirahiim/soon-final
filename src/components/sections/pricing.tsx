@@ -1,43 +1,43 @@
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CalendarDays, Gauge, Home } from "lucide-react";
+import { Calendar, GaugeCircle, Building2 } from "lucide-react";
 
 const pricingPlans = [
   {
     speed: "8Mbps",
     price: "30",
     isFeatured: false,
-    description: "Perfect for browsing, email, and social media.",
+    description: "Good for browsing, email, and social media.",
   },
   {
     speed: "15Mbps",
     price: "50",
     isFeatured: true,
-    description: "Ideal for HD streaming, online gaming, and multiple users.",
+    description: "Great for HD streaming, gaming, and multiple users.",
   },
   {
     speed: "25Mbps",
     price: "80",
     isFeatured: false,
-    description: "Best for 4K streaming, large downloads, and smart homes.",
+    description: "Best for 4K streaming, large files, and smart homes.",
   },
 ];
 
 const valueProps = [
   {
-    icon: CalendarDays,
-    title: "Valid 30 Days",
+    icon: Calendar,
+    title: "30-Day Plans",
     description: "All plans are billed monthly with no long-term contracts."
   },
   {
-    icon: Gauge,
+    icon: GaugeCircle,
     title: "High Speed",
-    description: "Symmetrical upload and download speeds for ultimate performance."
+    description: "Get the same super-fast speed for uploads and downloads."
   },
   {
-    icon: Home,
+    icon: Building2,
     title: "Home & Business",
-    description: "Reliable solutions for both residential and commercial needs."
+    description: "Reliable internet for both your home and your business."
   },
 ]
 
@@ -49,17 +49,17 @@ export default function Pricing() {
           <div className="space-y-2">
             <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Pricing</div>
             <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-5xl">
-              Simple, Transparent Plans
+              Simple, Clear Plans
             </h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Choose the speed that fits your life. No hidden fees, no surprises.
+              Choose the speed you need. No hidden fees, no surprises.
             </p>
           </div>
         </div>
 
         <div className="mx-auto mt-12 grid max-w-sm gap-8 md:max-w-4xl md:grid-cols-3">
           {pricingPlans.map((plan) => (
-            <Card key={plan.speed} className={`flex flex-col ${plan.isFeatured ? 'border-primary border-2 shadow-lg' : ''}`}>
+            <Card key={plan.speed} className={`flex flex-col rounded-xl transition-all duration-300 hover:shadow-lg hover:-translate-y-2 ${plan.isFeatured ? 'border-primary border-2 shadow-lg' : ''}`}>
               {plan.isFeatured && (
                 <div className="bg-primary text-primary-foreground text-center py-1.5 text-sm font-semibold rounded-t-lg -mt-px">
                   Most Popular

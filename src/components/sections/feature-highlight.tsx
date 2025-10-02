@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
-import { Zap } from "lucide-react";
+import { Zap, CheckCircle } from "lucide-react";
 import { placeholderImages } from "@/lib/placeholder-images.json";
 
 export default function FeatureHighlight() {
@@ -17,30 +17,30 @@ export default function FeatureHighlight() {
                 <Zap className="h-6 w-6 text-primary" />
               </div>
               <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">
-                Uninterrupted Connectivity
+                Always-On Connection
               </h2>
             </div>
             <p className="text-muted-foreground md:text-lg">
-              Our state-of-the-art network infrastructure is built for resilience and stability. Say goodbye to buffering, lag, and dropped connections. Whether you're in a critical video conference, streaming 4K content, or gaming online, SOON delivers a consistently smooth and reliable experience, 24/7.
+              Our modern network is built to be stable and reliable. Say goodbye to buffering and dropped connections. Whether you're on a video call, streaming a movie, or gaming, SOON provides a smooth online experience.
             </p>
             <ul className="grid gap-2 text-muted-foreground">
                 <li className="flex items-center gap-2">
-                    <CheckCircleIcon className="w-4 h-4 text-primary" />
-                    99.9% Uptime Guarantee
+                    <CheckCircle className="w-4 h-4 text-primary" />
+                    99.9% Uptime
                 </li>
                 <li className="flex items-center gap-2">
-                    <CheckCircleIcon className="w-4 h-4 text-primary" />
-                    Low Latency for Gaming & Calls
+                    <CheckCircle className="w-4 h-4 text-primary" />
+                    Low-Lag for Gaming & Calls
                 </li>
                 <li className="flex items-center gap-2">
-                    <CheckCircleIcon className="w-4 h-4 text-primary" />
-                    Weather-Resistant Fiber Lines
+                    <CheckCircle className="w-4 h-4 text-primary" />
+                    Weather-Proof Fiber Lines
                 </li>
             </ul>
           </div>
           <div className="flex items-center justify-center">
             {featureImage && (
-              <Card className="overflow-hidden shadow-lg">
+              <Card className="overflow-hidden shadow-lg rounded-xl">
                 <Image
                   src={featureImage.imageUrl}
                   alt={featureImage.description}
@@ -55,25 +55,5 @@ export default function FeatureHighlight() {
         </div>
       </div>
     </section>
-  );
-}
-
-function CheckCircleIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-      <polyline points="22 4 12 14.01 9 11.01" />
-    </svg>
   );
 }

@@ -7,7 +7,7 @@ type NavLink = {
 };
 
 type Service = {
-  icon: 'FiberOpticIcon' | 'RouterIcon' | 'ServerIcon' | 'SupportIcon';
+  icon: 'Wifi' | 'Router' | 'Server' | 'LifeBuoy';
   title: string;
   description: string;
 };

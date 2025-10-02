@@ -42,7 +42,7 @@ export default function Contact() {
     if (result.success) {
       toast({
         title: "Message Sent!",
-        description: "Thank you for contacting us. We'll be in touch soon.",
+        description: "Thanks for reaching out. We'll get back to you soon.",
       });
       form.reset();
     } else {
@@ -64,7 +64,7 @@ export default function Contact() {
               Get in Touch
             </h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              We're here to help with any questions you may have. Reach out and let us know how we can assist you.
+              Have a question? We'd love to hear from you. Send us a message and we'll get back to you.
             </p>
           </div>
         </div>
@@ -77,7 +77,7 @@ export default function Contact() {
               </div>
               <div>
                 <h3 className="text-xl font-bold">Phone</h3>
-                <p className="text-muted-foreground">Speak directly with our team.</p>
+                <p className="text-muted-foreground">Talk to our team directly.</p>
                 <a href={`tel:${content.contact.phone}`} className="font-medium text-primary hover:underline">
                   {content.contact.phone}
                 </a>
@@ -101,7 +101,7 @@ export default function Contact() {
               </div>
               <div>
                 <h3 className="text-xl font-bold">Office</h3>
-                <p className="text-muted-foreground">Visit us at our headquarters.</p>
+                <p className="text-muted-foreground">Visit our main office.</p>
                 <p className="font-medium">{content.contact.address}</p>
               </div>
             </div>
@@ -142,13 +142,13 @@ export default function Contact() {
                     <FormItem>
                       <FormLabel>Message</FormLabel>
                       <FormControl>
-                        <Textarea placeholder="How can we help you?" {...field} rows={5} />
+                        <Textarea placeholder="How can we help?" {...field} rows={5} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                <Button type="submit" disabled={form.formState.isSubmitting}>
+                <Button type="submit" disabled={form.formState.isSubmitting} className="transition-transform hover:scale-105">
                   {form.formState.isSubmitting ? "Sending..." : "Send Message"}
                 </Button>
               </form>

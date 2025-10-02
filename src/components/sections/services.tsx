@@ -1,15 +1,12 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { content } from "@/lib/content";
-import { FiberOpticIcon } from "../icons/fiber-optic-icon";
-import { RouterIcon } from "../icons/router-icon";
-import { ServerIcon } from "../icons/server-icon";
-import { SupportIcon } from "../icons/support-icon";
+import { Wifi, Router, Server, LifeBuoy } from "lucide-react";
 
-const iconMap = {
-  FiberOpticIcon,
-  RouterIcon,
-  ServerIcon,
-  SupportIcon,
+const iconMap: { [key: string]: React.ElementType } = {
+  Wifi,
+  Router,
+  Server,
+  LifeBuoy,
 };
 
 export default function Services() {
@@ -20,10 +17,10 @@ export default function Services() {
           <div className="space-y-2">
             <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Our Services</div>
             <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-5xl">
-              Engineered for Excellence
+              Built For Speed
             </h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              We provide a complete connectivity solution, from the backbone to your screen, ensuring a seamless and powerful online experience.
+              We provide a complete internet solution for your home or business, from our network right to your screen.
             </p>
           </div>
         </div>

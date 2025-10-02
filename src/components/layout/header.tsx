@@ -15,10 +15,9 @@ type NavLink = {
 
 interface HeaderProps {
   navLinks: NavLink[];
-  logoUrl?: string;
 }
 
-export default function Header({ navLinks, logoUrl }: HeaderProps) {
+export default function Header({ navLinks }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
 
@@ -43,7 +42,7 @@ export default function Header({ navLinks, logoUrl }: HeaderProps) {
       )}
     >
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
-        <SoonLogo logoUrl={logoUrl} className={cn(hasScrolled ? 'text-primary' : 'text-white')} />
+        <SoonLogo className={cn(hasScrolled ? 'text-primary' : 'text-white')} />
 
         <nav className="hidden items-center gap-6 md:flex">
           {navLinks.map((link) => (
@@ -76,7 +75,7 @@ export default function Header({ navLinks, logoUrl }: HeaderProps) {
           <SheetContent side="left" className="w-[300px] bg-background">
             <div className="flex h-full flex-col p-6">
               <div className="mb-8">
-                 <SoonLogo logoUrl={logoUrl} />
+                 <SoonLogo />
               </div>
               <nav className="flex flex-col gap-6">
                 {navLinks.map((link) => (

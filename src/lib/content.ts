@@ -1,5 +1,4 @@
 import contentData from './content.json';
-import { placeholderImages } from './placeholder-images.json';
 
 type NavLink = {
   label: string;
@@ -18,7 +17,6 @@ type FaqItem = {
 };
 
 type Content = {
-  logoUrl?: string;
   navLinks: NavLink[];
   services: Service[];
   faq: FaqItem[];
@@ -29,11 +27,8 @@ type Content = {
   };
 };
 
-const logoImage = placeholderImages.find(img => img.id === 'logo-image');
-
 // We are providing a structured and typed content object
-// by combining data from content.json and placeholder-images.json.
+// by combining data from content.json.
 export const content: Content = {
   ...contentData,
-  logoUrl: logoImage?.imageUrl,
 };

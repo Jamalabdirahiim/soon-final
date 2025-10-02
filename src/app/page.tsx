@@ -11,13 +11,12 @@ import FadeInWrapper from "@/components/fade-in-wrapper";
 import { content } from "@/lib/content";
 
 export default function Home() {
-  const { navLinks, logoUrl } = content;
+  const { navLinks } = content;
 
   return (
     <div className="flex min-h-[100dvh] flex-col bg-background">
-      <Header navLinks={navLinks} logoUrl={logoUrl} />
+      <Header navLinks={navLinks} />
       <main className="flex-1">
-        <Hero />
         <HeroContent />
         <FadeInWrapper>
           <Services />
@@ -35,7 +34,7 @@ export default function Home() {
           <Contact />
         </FadeInWrapper>
       </main>
-      <Footer logoUrl={logoUrl} />
+      <Footer />
     </div>
   );
 }

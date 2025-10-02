@@ -2,7 +2,7 @@ import Link from "next/link";
 import { SoonLogo } from "@/components/soon-logo";
 import { content } from "@/lib/content";
 
-export default function Footer({ logoUrl }: { logoUrl?: string }) {
+export default function Footer() {
   const { navLinks, contact } = content;
   const currentYear = new Date().getFullYear();
 
@@ -10,7 +10,7 @@ export default function Footer({ logoUrl }: { logoUrl?: string }) {
     <footer className="bg-secondary text-foreground">
       <div className="container mx-auto grid grid-cols-1 gap-12 px-4 py-12 md:grid-cols-4 md:px-6">
         <div className="col-span-1 md:col-span-1">
-          <SoonLogo logoUrl={logoUrl} />
+          <SoonLogo />
           <p className="mt-4 text-sm text-muted-foreground">
             Connecting Somalia with high-speed fiber internet.
           </p>

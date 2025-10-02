@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SoonLogo } from "@/components/soon-logo";
@@ -19,16 +19,7 @@ interface HeaderProps {
 }
 
 export default function Header({ navLinks, logoUrl }: HeaderProps) {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const handleLinkClick = () => {
     setIsMobileMenuOpen(false);
@@ -37,10 +28,7 @@ export default function Header({ navLinks, logoUrl }: HeaderProps) {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled
-          ? "bg-background/80 backdrop-blur-sm"
-          : "bg-transparent"
+        "sticky top-0 z-50 bg-background/80 backdrop-blur-sm"
       )}
     >
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">

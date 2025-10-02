@@ -54,7 +54,7 @@ export default function Header({ navLinks }: HeaderProps) {
               href={link.href}
               className={cn(
                 "text-sm font-medium transition-colors hover:text-primary",
-                hasScrolled ? "text-foreground/80" : "text-primary-foreground/80 hover:text-primary-foreground"
+                hasScrolled ? "text-foreground/80" : "text-primary-foreground/80 hover:text-primary-foreground drop-shadow-sm"
               )}
             >
               {link.label}

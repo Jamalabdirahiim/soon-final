@@ -1,5 +1,3 @@
-// This component is being split. The image will be in hero-image.tsx and text in hero-text.tsx
-// This file will be renamed to hero-image.tsx.
 "use client";
 
 import Image from "next/image";
@@ -29,7 +27,7 @@ export default function HeroImage() {
     }, [defaultHeroImage]);
 
   return (
-    <section id="home" className="relative w-full h-[60vh] min-h-[400px] flex items-center justify-center text-center">
+    <section id="home" className="relative w-full h-[60vh] min-h-[400px] flex items-center justify-center text-center pt-20">
       {heroSrc && (
         <Image
           src={heroSrc}

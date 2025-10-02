@@ -1,5 +1,6 @@
 import Header from "@/components/layout/header";
-import HeroContent from "@/components/sections/hero-content";
+import HeroImage from "@/components/sections/hero-image";
+import HeroText from "@/components/sections/hero-text";
 import Services from "@/components/sections/services";
 import FeatureHighlight from "@/components/sections/feature-highlight";
 import Pricing from "@/components/sections/pricing";
@@ -19,8 +20,9 @@ export default function Home() {
   return (
     <div className="flex min-h-[100dvh] flex-col bg-background">
       <Header navLinks={navLinks} />
-      <main className="flex-1 pt-20">
-        <HeroContent />
+      <main className="flex-1">
+        <HeroImage />
+        <HeroText />
         <section className="bg-muted/40 py-8">
             <div className="container mx-auto px-4 md:px-6">
                 <Card>

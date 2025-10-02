@@ -21,7 +21,7 @@ export default function Home() {
         <Hero />
         <section className="bg-background text-center py-12 md:py-24">
             <div className="container">
-                <h1 className="font-headline text-4xl font-bold tracking-tight text-primary sm:text-5xl md:text-6xl lg:text-7xl">
+                <h1 className="font-headline text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl premium-red-text">
                 The Future of Internet is SOON
                 </h1>
                 <p className="mt-6 max-w-xl mx-auto text-lg text-muted-foreground">

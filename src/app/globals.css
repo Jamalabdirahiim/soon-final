@@ -87,3 +87,11 @@
     @apply w-full py-12 md:py-24 lg:py-32;
   }
 }
+
+@layer utilities {
+  .premium-red-text {
+    background: linear-gradient(90deg, #5C0E0E, #8E1717, #C32222);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}

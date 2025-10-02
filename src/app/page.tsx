@@ -11,6 +11,7 @@ import { content } from "@/lib/content";
 import LogoUploader from "@/components/logo-uploader";
 import { HeroImageUploader } from "@/components/hero-image-uploader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { FeatureImageUploader } from "@/components/feature-image-uploader";
 
 export default function Home() {
   const { navLinks } = content;
@@ -26,9 +27,10 @@ export default function Home() {
                     <CardHeader>
                         <CardTitle className="text-xl">Site Customization</CardTitle>
                     </CardHeader>
-                    <CardContent className="grid md:grid-cols-2 gap-8">
+                    <CardContent className="grid md:grid-cols-3 gap-8">
                         <LogoUploader />
                         <HeroImageUploader />
+                        <FeatureImageUploader />
                     </CardContent>
                 </Card>
             </div>

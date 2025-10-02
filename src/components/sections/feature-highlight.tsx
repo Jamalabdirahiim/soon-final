@@ -1,10 +1,33 @@
+"use client";
+
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { Zap, CheckCircle } from "lucide-react";
 import { placeholderImages } from "@/lib/placeholder-images.json";
+import { useState, useEffect } from "react";
 
 export default function FeatureHighlight() {
-  const featureImage = placeholderImages.find(p => p.id === 'feature-highlight-image');
+  const defaultFeatureImage = placeholderImages.find(p => p.id === 'feature-highlight-image');
+  const [featureSrc, setFeatureSrc] = useState(defaultFeatureImage?.imageUrl);
+
+  useEffect(() => {
+    const storedImage = localStorage.getItem('featureImage');
+    if (storedImage) {
+      setFeatureSrc(storedImage);
+    }
+
+    const handleImageChange = () => {
+      const newImage = localStorage.getItem('featureImage');
+      setFeatureSrc(newImage || defaultFeatureImage?.imageUrl);
+    };
+
+    window.addEventListener('featureImageChanged', handleImageChange);
+
+    return () => {
+      window.removeEventListener('featureImageChanged', handleImageChange);
+    };
+  }, [defaultFeatureImage]);
+
 
   return (
     <section id="feature" className="bg-background">
@@ -39,15 +62,16 @@ export default function FeatureHighlight() {
             </ul>
           </div>
           <div className="flex items-center justify-center">
-            {featureImage && (
+            {featureSrc && (
               <Card className="overflow-hidden shadow-lg rounded-xl">
                 <Image
-                  src={featureImage.imageUrl}
-                  alt={featureImage.description}
+                  src={featureSrc}
+                  alt={defaultFeatureImage?.description || 'Feature highlight image'}
                   width={800}
                   height={600}
                   className="w-full h-auto object-cover"
-                  data-ai-hint={featureImage.imageHint}
+                  data-ai-hint={defaultFeatureImage?.imageHint}
+                  key={featureSrc}
                 />
               </Card>
             )}

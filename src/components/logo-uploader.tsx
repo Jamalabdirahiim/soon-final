@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, Save } from 'lucide-react';
+import { Upload, Save, ClipboardPaste } from 'lucide-react';
 import { Input } from './ui/input';
 
 export default function LogoUploader() {
@@ -96,6 +96,38 @@ export default function LogoUploader() {
     setImageUrl('');
   };
 
+  useEffect(() => {
+    const handlePaste = async (event: ClipboardEvent) => {
+      const items = event.clipboardData?.items;
+      if (!items) return;
+
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image') !== -1) {
+          const file = items[i].getAsFile();
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const result = e.target?.result as string;
+              saveLogo(result);
+              toast({
+                title: "Logo pasted!",
+                description: "The logo from your clipboard has been applied.",
+              });
+            };
+            reader.readAsDataURL(file);
+          }
+          event.preventDefault(); // Prevent pasting into text fields
+          return;
+        }
+      }
+    };
+
+    window.addEventListener('paste', handlePaste);
+    return () => {
+      window.removeEventListener('paste', handlePaste);
+    };
+  }, [toast]);
+
   return (
     <section className="bg-background py-8">
       <div className="container mx-auto flex flex-col items-center justify-center gap-4 px-4 md:px-6">
@@ -117,6 +149,12 @@ export default function LogoUploader() {
               Save URL
             </Button>
           </div>
+        </div>
+        <div className="text-xs text-muted-foreground text-center flex items-center gap-2">
+            <ClipboardPaste className="w-4 h-4" />
+            <span>
+                You can also copy an image and paste it anywhere on the page.
+            </span>
         </div>
         <p className="text-xs text-muted-foreground text-center">
           Recommended size: 200x56px. Max file size: 2MB.

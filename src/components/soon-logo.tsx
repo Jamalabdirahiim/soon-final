@@ -36,6 +36,7 @@ export function SoonLogo({ className }: { className?: string }) {
       height={28}
       priority
       className="h-7 w-auto"
+      style={{ filter: 'grayscale(1) brightness(2)' }}
       key={logoSrc} // Add key to force re-render on src change
       data-ai-hint="minimalist logo"
     />

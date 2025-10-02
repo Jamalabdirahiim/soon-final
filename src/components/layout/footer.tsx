@@ -1,40 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { SoonLogo } from "@/components/soon-logo";
 import { content } from "@/lib/content";
 
 export default function Footer() {
   const { navLinks, contact } = content;
   const currentYear = new Date().getFullYear();
-  const [logoSrc, setLogoSrc] = useState("/logo.png");
-
-  useEffect(() => {
-    const storedLogo = localStorage.getItem('userLogo');
-    if (storedLogo) {
-      setLogoSrc(storedLogo);
-    }
-
-    const handleLogoChange = () => {
-      const newLogo = localStorage.getItem('userLogo');
-      if (newLogo) {
-        setLogoSrc(newLogo);
-      }
-    };
-
-    window.addEventListener('logoChanged', handleLogoChange);
-
-    return () => {
-      window.removeEventListener('logoChanged', handleLogoChange);
-    }
-  }, []);
 
   return (
     <footer className="premium-red-bg text-primary-foreground">
       <div className="container mx-auto grid grid-cols-1 gap-12 px-4 py-12 md:grid-cols-4 md:px-6">
         <div className="col-span-1 md:col-span-1">
-          <SoonLogo logoSrc={logoSrc} />
+          <SoonLogo />
           <p className="mt-4 text-sm text-primary-foreground/80">
             Connecting Somalia with high-speed fiber internet.
           </p>

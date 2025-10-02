@@ -1,11 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { cn } from '@/lib/utils';
 
-export function SoonLogo({ className, logoSrc = "/logo.png" }: { className?: string, logoSrc?: string }) {
+export function SoonLogo({ className }: { className?: string }) {
   const content = (
     <Image 
-      src={logoSrc}
+      src="/logo.png"
       alt="SOON Logo" 
       width={100} 
       height={28}
@@ -16,7 +15,7 @@ export function SoonLogo({ className, logoSrc = "/logo.png" }: { className?: str
   );
 
   return (
-    <Link href="/" aria-label="Back to homepage">
+    <Link href="/" aria-label="Back to homepage" className={className}>
       {content}
     </Link>
   );

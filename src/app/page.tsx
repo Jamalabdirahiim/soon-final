@@ -8,7 +8,6 @@ import Contact from "@/components/sections/contact";
 import Footer from "@/components/layout/footer";
 import FadeInWrapper from "@/components/fade-in-wrapper";
 import { content } from "@/lib/content";
-import LogoUploader from "@/components/logo-uploader";
 
 export default function Home() {
   const { navLinks } = content;
@@ -18,7 +17,6 @@ export default function Home() {
       <Header navLinks={navLinks} />
       <main className="flex-1">
         <HeroContent />
-        <LogoUploader />
         <FadeInWrapper>
           <Services />
         </FadeInWrapper>

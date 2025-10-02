@@ -9,13 +9,11 @@ export function SoonLogo({ className, hasScrolled }: { className?: string; hasSc
   const [logoSrc, setLogoSrc] = useState('/logo.png');
 
   useEffect(() => {
-    // Check for a user-uploaded logo in local storage on mount
     const userLogo = localStorage.getItem('userLogo');
     if (userLogo) {
       setLogoSrc(userLogo);
     }
 
-    // Listen for the logoChanged event to update in real-time
     const handleLogoChange = () => {
       const newUserLogo = localStorage.getItem('userLogo');
       setLogoSrc(newUserLogo || '/logo.png');
@@ -23,22 +21,26 @@ export function SoonLogo({ className, hasScrolled }: { className?: string; hasSc
 
     window.addEventListener('logoChanged', handleLogoChange);
 
-    // Clean up the event listener
     return () => {
       window.removeEventListener('logoChanged', handleLogoChange);
     };
   }, []);
 
   return (
-    <Link href="/" aria-label="Back to homepage" className={cn("transition-all duration-300", !hasScrolled && "drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]", className)}>
+    <Link href="/" aria-label="Back to homepage" className={cn("transition-all duration-300", className)}>
       <Image 
         src={logoSrc}
         alt="SOON Logo" 
         width={200} 
         height={56}
         priority
-        className="h-14 w-auto"
-        key={logoSrc} // Add key to force re-render on src change
+        className={cn(
+            "h-14 w-auto transition-all duration-300",
+            !hasScrolled 
+                ? "brightness-0 invert-[1] drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]"
+                : ""
+        )}
+        key={logoSrc}
         data-ai-hint="minimalist logo"
       />
     </Link>

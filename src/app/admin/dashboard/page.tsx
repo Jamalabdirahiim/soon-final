@@ -18,11 +18,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar";
-import {
   Table,
   TableBody,
   TableCell,
@@ -152,7 +147,7 @@ export default function DashboardPage() {
                   axisLine={false}
                   tickFormatter={(value) => `$${value}`}
                 />
-                <Bar dataKey="total" fill="#A32124" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="total" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-export function SoonLogo({ className }: { className?: string }) {
+export function SoonLogo({ className, hasScrolled }: { className?: string; hasScrolled?: boolean }) {
   const [logoSrc, setLogoSrc] = useState('/logo.png');
 
   useEffect(() => {
@@ -32,11 +32,11 @@ export function SoonLogo({ className }: { className?: string }) {
     <Image 
       src={logoSrc}
       alt="SOON Logo" 
-      width={150} 
-      height={42}
+      width={200} 
+      height={56}
       priority
-      className="h-10 w-auto"
-      style={{ filter: 'grayscale(1) brightness(100)' }}
+      className="h-14 w-auto"
+      style={{ filter: hasScrolled ? 'none' : 'grayscale(1) brightness(100)' }}
       key={logoSrc} // Add key to force re-render on src change
       data-ai-hint="minimalist logo"
     />

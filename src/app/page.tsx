@@ -19,7 +19,7 @@ export default function Home() {
   return (
     <div className="flex min-h-[100dvh] flex-col bg-background">
       <Header navLinks={navLinks} />
-      <main className="flex-1">
+      <main className="flex-1 pt-20">
         <HeroContent />
         <section className="bg-muted/40 py-8">
             <div className="container mx-auto px-4 md:px-6">

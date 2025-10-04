@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -8,17 +9,9 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SoonLogo } from "@/components/soon-logo";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { content } from "@/lib/content";
 
-type NavLink = {
-  label: string;
-  href: string;
-};
-
-interface HeaderProps {
-  navLinks: NavLink[];
-}
-
-export default function Header({ navLinks }: HeaderProps) {
+export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   const isMobile = useIsMobile();
@@ -61,7 +54,7 @@ export default function Header({ navLinks }: HeaderProps) {
         </div>
 
         <nav className="hidden items-center gap-6 md:flex">
-          {navLinks.map((link) => (
+          {content.navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -98,7 +91,7 @@ export default function Header({ navLinks }: HeaderProps) {
                     <SoonLogo hasScrolled={true} />
                 </div>
                 <nav className="flex flex-col gap-6">
-                    {navLinks.map((link) => (
+                    {content.navLinks.map((link) => (
                     <Link
                         key={link.href}
                         href={link.href}

@@ -4,6 +4,7 @@
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import React from "react";
 import { useFirestore, useDoc } from "@/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { Button } from "@/components/ui/button";
@@ -25,7 +26,6 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { Loader2 } from "lucide-react";
 
 const heroSchema = z.object({
@@ -268,5 +268,3 @@ export default function ContentPage() {
     </Form>
   );
 }
-
-    

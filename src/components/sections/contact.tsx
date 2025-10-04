@@ -18,14 +18,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { Phone, Mail, MapPin } from "lucide-react";
 import { submitContactForm } from "@/app/actions";
-
-interface ContactProps {
-  content?: {
-    phone: string;
-    email: string;
-    address: string;
-  };
-}
+import { content } from "@/lib/content";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -33,7 +26,7 @@ const formSchema = z.object({
   message: z.string().min(10, "Message must be at least 10 characters."),
 });
 
-export default function Contact({ content }: ContactProps) {
+export default function Contact() {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -77,7 +70,6 @@ export default function Contact({ content }: ContactProps) {
           </div>
         </div>
 
-        {content && (
         <div className="mx-auto mt-12 grid max-w-5xl gap-12 lg:grid-cols-2">
           <div className="space-y-8">
             <div className="flex items-start gap-4">
@@ -87,8 +79,8 @@ export default function Contact({ content }: ContactProps) {
               <div>
                 <h3 className="text-xl font-bold">Phone</h3>
                 <p className="text-muted-foreground">Talk to our team directly.</p>
-                <a href={`tel:${content.phone}`} className="font-medium text-primary hover:underline">
-                  {content.phone}
+                <a href={`tel:${content.contact.phone}`} className="font-medium text-primary hover:underline">
+                  {content.contact.phone}
                 </a>
               </div>
             </div>
@@ -99,8 +91,8 @@ export default function Contact({ content }: ContactProps) {
               <div>
                 <h3 className="text-xl font-bold">Email</h3>
                 <p className="text-muted-foreground">Send us your questions.</p>
-                <a href={`mailto:${content.email}`} className="font-medium text-primary hover:underline">
-                  {content.email}
+                <a href={`mailto:${content.contact.email}`} className="font-medium text-primary hover:underline">
+                  {content.contact.email}
                 </a>
               </div>
             </div>
@@ -111,7 +103,7 @@ export default function Contact({ content }: ContactProps) {
               <div>
                 <h3 className="text-xl font-bold">Office</h3>
                 <p className="text-muted-foreground">Visit our main office.</p>
-                <p className="font-medium">{content.address}</p>
+                <p className="font-medium">{content.contact.address}</p>
               </div>
             </div>
           </div>
@@ -164,10 +156,7 @@ export default function Contact({ content }: ContactProps) {
             </Form>
           </div>
         </div>
-        )}
       </div>
     </section>
   );
 }
-
-    

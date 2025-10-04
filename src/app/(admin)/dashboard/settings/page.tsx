@@ -4,6 +4,7 @@
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import React from "react";
 import { useFirestore, useDoc } from "@/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { Button } from "@/components/ui/button";
@@ -25,7 +26,6 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Loader2, Trash } from "lucide-react";
-import React from "react";
 
 const navLinkSchema = z.object({
   label: z.string().min(1, "Link label is required"),
@@ -215,5 +215,3 @@ export default function SettingsPage() {
     </Form>
   );
 }
-
-    

@@ -6,6 +6,10 @@
     { "label": "FAQ", "href": "#faq" },
     { "label": "Contact", "href": "#contact" }
   ],
+  "hero": {
+    "headline": "The Future of Connectivity. Delivered.",
+    "subheadline": "Get the fastest and most reliable internet for your home and business, with speeds that will change the way you connect."
+  },
   "services": [
     {
       "icon": "Wifi",
@@ -26,6 +30,32 @@
       "icon": "LifeBuoy",
       "title": "24/7 Support",
       "description": "Our friendly support team is always here to help. If you have a problem, we'll get you back online quickly."
+    }
+  ],
+  "pricingPlans": [
+    {
+      "name": "Essential",
+      "speed": "8Mbps",
+      "price": "30",
+      "isFeatured": false,
+      "homeUse": "Great for browsing, email, and social media on a few devices.",
+      "businessUse": "Perfect for solo entrepreneurs and low-traffic guest Wi-Fi."
+    },
+    {
+      "name": "Performance",
+      "speed": "15Mbps",
+      "price": "50",
+      "isFeatured": true,
+      "homeUse": "Ideal for HD streaming, online gaming, and a busy smart home.",
+      "businessUse": "Supports small teams, video calls, and regular cloud uploads."
+    },
+    {
+      "name": "Power",
+      "speed": "25Mbps",
+      "price": "80",
+      "isFeatured": false,
+      "homeUse": "Flawless 4K streaming, competitive gaming, and many users.",
+      "businessUse": "Best for growing teams, frequent large file transfers, and VoIP."
     }
   ],
   "faq": [

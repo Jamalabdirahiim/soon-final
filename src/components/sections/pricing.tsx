@@ -4,20 +4,9 @@
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, Briefcase, Home } from "lucide-react";
+import { content } from "@/lib/content";
 
-interface PricingPlan {
-  name: string;
-  speed: string;
-  price: string;
-  homeUse: string;
-  businessUse: string;
-}
-
-interface PricingProps {
-  content: PricingPlan[];
-}
-
-export default function Pricing({ content }: PricingProps) {
+export default function Pricing() {
   return (
     <section id="pricing" className="bg-background">
       <div className="container mx-auto px-4 md:px-6">
@@ -34,7 +23,7 @@ export default function Pricing({ content }: PricingProps) {
         </div>
 
         <div className="mx-auto mt-12 grid max-w-lg gap-8 md:max-w-none md:grid-cols-3">
-          {content.map((plan) => (
+          {content.pricingPlans.map((plan) => (
             <Card
               key={plan.name}
               className="flex flex-col rounded-xl border shadow-lg"
@@ -85,5 +74,3 @@ export default function Pricing({ content }: PricingProps) {
     </section>
   );
 }
-
-    

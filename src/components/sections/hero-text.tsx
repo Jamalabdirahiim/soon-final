@@ -3,17 +3,10 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { content } from "@/lib/content";
 
-interface HeroTextProps {
-  content?: {
-    headline: string;
-    subheadline: string;
-  };
-}
-
-export default function HeroText({ content }: HeroTextProps) {
-  const headline = content?.headline || "The Future of Connectivity. Delivered.";
-  const subheadline = content?.subheadline || "Get the fastest and most reliable internet with SOON's pure fiber-optic network. The future is here, and it's faster than ever.";
+export default function HeroText() {
+  const { headline, subheadline } = content.hero;
 
   return (
     <section className="py-12 md:py-24 lg:py-32 bg-background">
@@ -33,5 +26,3 @@ export default function HeroText({ content }: HeroTextProps) {
     </section>
   );
 }
-
-    

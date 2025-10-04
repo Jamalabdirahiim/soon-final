@@ -1,7 +1,4 @@
 
-// This file is now deprecated as content is fetched from Firestore.
-// It is kept for reference but is no longer used by the application.
-
 import contentData from './content.json';
 
 type NavLink = {
@@ -31,18 +28,18 @@ type PricingPlan = {
 
 type Content = {
   navLinks: NavLink[];
+  hero: {
+    headline: string;
+    subheadline: string;
+  };
   services: Service[];
+  pricingPlans: PricingPlan[];
   faq: FaqItem[];
   contact: {
     phone: string;
     email: string;
     address: string;
   };
-  pricingPlans: PricingPlan[];
-  hero: {
-    headline: string;
-    subheadline: string;
-  }
 };
 
 // We are providing a structured and typed content object
@@ -51,5 +48,3 @@ type Content = {
 export const content: Content = {
   ...contentData,
 };
-
-    

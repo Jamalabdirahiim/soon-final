@@ -4,13 +4,9 @@
 import Link from "next/link";
 import React from "react";
 import { SoonLogo } from "@/components/soon-logo";
+import { content } from "@/lib/content";
 
-interface FooterProps {
-  navLinks?: { label: string; href: string }[];
-  contact?: { address: string; email: string; phone: string };
-}
-
-export default function Footer({ navLinks = [], contact }: FooterProps) {
+export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -26,7 +22,7 @@ export default function Footer({ navLinks = [], contact }: FooterProps) {
         <div className="col-span-1">
           <h3 className="font-headline text-lg font-bold text-white">Quick Links</h3>
           <ul className="mt-4 space-y-2">
-            {navLinks.map((link) => (
+            {content.navLinks.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
@@ -39,16 +35,14 @@ export default function Footer({ navLinks = [], contact }: FooterProps) {
           </ul>
         </div>
 
-        {contact && (
-          <div className="col-span-1">
-            <h3 className="font-headline text-lg font-bold text-white">Contact Us</h3>
-            <ul className="mt-4 space-y-2 text-sm text-primary-foreground/80">
-              <li>{contact.address}</li>
-              <li>Email: {contact.email}</li>
-              <li>Phone: {contact.phone}</li>
-            </ul>
-          </div>
-        )}
+        <div className="col-span-1">
+          <h3 className="font-headline text-lg font-bold text-white">Contact Us</h3>
+          <ul className="mt-4 space-y-2 text-sm text-primary-foreground/80">
+            <li>{content.contact.address}</li>
+            <li>Email: {content.contact.email}</li>
+            <li>Phone: {content.contact.phone}</li>
+          </ul>
+        </div>
         
         <div className="col-span-1">
             <h3 className="font-headline text-lg font-bold text-white">Legal</h3>
@@ -76,5 +70,3 @@ export default function Footer({ navLinks = [], contact }: FooterProps) {
     </footer>
   );
 }
-
-    

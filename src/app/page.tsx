@@ -12,6 +12,7 @@ import Contact from "@/components/sections/contact";
 import Footer from "@/components/layout/footer";
 import FadeInWrapper from "@/components/fade-in-wrapper";
 import { content } from "@/lib/content";
+import { UniversalLogoUploader } from "@/components/universal-logo-uploader";
 
 export default function Home() {
 
@@ -21,6 +22,9 @@ export default function Home() {
       <main className="flex-1">
         <HeroImage />
         <HeroText content={content.hero} />
+        <section className="py-12 md:py-16 lg:py-20 bg-background">
+          <UniversalLogoUploader />
+        </section>
         <FadeInWrapper>
           <Services content={content.services} />
         </FadeInWrapper>

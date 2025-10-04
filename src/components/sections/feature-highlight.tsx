@@ -44,7 +44,7 @@ export default function FeatureHighlight() {
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div className="space-y-8">
             <div>
-                <h2 className="font-headline text-4xl font-bold tracking-tighter">
+                <h2 className="font-headline text-4xl font-bold tracking-tighter premium-red-text">
                     Investing In Brighter Future
                 </h2>
                 <p className="mt-4 text-muted-foreground md:text-lg">

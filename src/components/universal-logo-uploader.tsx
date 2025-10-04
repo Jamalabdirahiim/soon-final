@@ -13,7 +13,7 @@ import { Upload, Link as LinkIcon, Loader2 } from 'lucide-react';
 export function UniversalLogoUploader() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
-  const [isUploading, setIsUploading] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [pastedUrl, setPastedUrl] = useState('');
   const firestore = useFirestore();
   const storage = useStorage();
@@ -25,7 +25,6 @@ export function UniversalLogoUploader() {
     }
     try {
       const settingsDocRef = doc(firestore, 'site-settings', 'config');
-      // Update both desktop and mobile logo URLs
       await setDoc(settingsDocRef, { logoUrl: logoUrl, mobileLogoUrl: logoUrl }, { merge: true });
       toast({
         title: "Logo updated successfully!",
@@ -54,7 +53,7 @@ export function UniversalLogoUploader() {
       return;
     }
 
-    setIsUploading(true);
+    setIsProcessing(true);
     try {
       const uniqueLogoRef = storageRef(storage, `logos/universal-logo-${Date.now()}-${file.name}`);
       const snapshot = await uploadBytes(uniqueLogoRef, file);
@@ -64,7 +63,7 @@ export function UniversalLogoUploader() {
       console.error("Error uploading file:", error);
       toast({ variant: "destructive", title: "Upload failed", description: "Could not upload the selected file. Please try again." });
     } finally {
-      setIsUploading(false);
+      setIsProcessing(false);
       if (event.target) event.target.value = '';
     }
   };
@@ -74,7 +73,6 @@ export function UniversalLogoUploader() {
         toast({ variant: "destructive", title: "No URL", description: "Please paste a URL to an image." });
         return;
     }
-    // Basic URL validation
     try {
         new URL(pastedUrl);
     } catch (_) {
@@ -82,30 +80,29 @@ export function UniversalLogoUploader() {
         return;
     }
 
-    setIsUploading(true);
+    setIsProcessing(true);
     await saveLogoUrl(pastedUrl);
-    setIsUploading(false);
+    setIsProcessing(false);
     setPastedUrl('');
   };
-
 
   return (
     <Card className="w-full max-w-lg mx-auto">
       <CardHeader>
         <CardTitle>Update Your Logo</CardTitle>
-        <CardDescription>Upload a new logo or paste an image URL. This will update the logo across your entire site.</CardDescription>
+        <CardDescription>Upload a new logo or paste an image URL. This will update the logo across your entire site for both desktop and mobile.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-2">
             <h3 className="text-sm font-medium">Upload from your device</h3>
             <Button 
                 onClick={() => fileInputRef.current?.click()} 
-                disabled={isUploading}
+                disabled={isProcessing}
                 className="w-full"
                 variant="outline"
             >
                 <Upload className="mr-2" />
-                {isUploading ? "Processing..." : "Choose an Image to Upload"}
+                {isProcessing ? "Processing..." : "Choose an Image to Upload"}
             </Button>
             <p className="text-xs text-muted-foreground pt-1">
                 Recommended size: 200x56px. Max 2MB.
@@ -118,6 +115,7 @@ export function UniversalLogoUploader() {
                 accept="image/png, image/jpeg, image/svg+xml, image/webp"
             />
         </div>
+        
         <div className="relative">
             <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
@@ -126,6 +124,7 @@ export function UniversalLogoUploader() {
                 <span className="bg-card px-2 text-muted-foreground">Or</span>
             </div>
         </div>
+
         <div className="space-y-2">
             <h3 className="text-sm font-medium">Paste image URL</h3>
             <div className="flex gap-2">
@@ -134,14 +133,15 @@ export function UniversalLogoUploader() {
                     placeholder="https://example.com/logo.png"
                     value={pastedUrl}
                     onChange={(e) => setPastedUrl(e.target.value)}
-                    disabled={isUploading}
+                    disabled={isProcessing}
                 />
-                <Button onClick={handlePasteUrl} disabled={isUploading} aria-label="Submit URL">
+                <Button onClick={handlePasteUrl} disabled={isProcessing} aria-label="Submit URL">
                     <LinkIcon />
                 </Button>
             </div>
         </div>
-        {isUploading && (
+
+        {isProcessing && (
              <div className="flex items-center justify-center text-sm text-muted-foreground">
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 <span>Updating logo... please wait.</span>

@@ -77,7 +77,7 @@ export default function FeatureHighlight() {
             <div className="absolute inset-0 premium-red-bg rounded-lg -skew-y-3 z-0"></div>
             <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 items-center text-white p-8">
                 <div className="space-y-4">
-                    <h3 className="text-3xl font-bold premium-purple-blue-text">SOO GASHO<br/>FIBER-KA<br/>BLUECOM</h3>
+                    <h3 className="text-3xl font-bold">SOO GASHO<br/>FIBER-KA<br/>BLUECOM</h3>
                     <div className="space-y-2">
                         <BluezoneIconSmall text="INTERNET-KA GURYAHA" />
                         <BluezoneIconSmall text="INTERNET-KA GANACSIGA" />

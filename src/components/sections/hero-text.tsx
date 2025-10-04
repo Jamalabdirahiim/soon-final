@@ -14,7 +14,7 @@ export default function HeroText() {
           Get the fastest and most reliable internet with SOON's pure fiber-optic network. The future is here, and it's faster than ever.
         </p>
         <div className="mt-10">
-          <Button asChild size="lg" className="transition-transform hover:scale-105">
+          <Button asChild size="lg" className="premium-red-bg text-primary-foreground hover:brightness-110 transition-transform hover:scale-105">
             <Link href="#pricing">View Plans</Link>
           </Button>
         </div>

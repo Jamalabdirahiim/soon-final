@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -29,17 +30,31 @@ export default function AdminLoginPage() {
     formData.append("email", values.email);
     formData.append("password", values.password);
 
-    const result = await login(formData);
+    try {
+      const result = await login(formData);
 
-    if (result.success) {
-      toast({ title: "Login Successful", description: "Redirecting to dashboard..." });
-      window.location.href = "/admin/dashboard";
-    } else {
-      toast({
-        variant: "destructive",
-        title: "Login Failed",
-        description: result.error || "Invalid credentials. Please try again.",
-      });
+      if (result && !result.success) {
+        toast({
+          variant: "destructive",
+          title: "Login Failed",
+          description: result.error || "Invalid credentials. Please try again.",
+        });
+      }
+      // If login is successful, the server action will redirect automatically.
+      // No need for client-side redirection here.
+    } catch (error) {
+       // The redirect() function throws an error to signal the navigation, 
+       // so we catch it here to prevent it from bubbling up.
+       // We only show a toast for actual login failures.
+       if ((error as any)?.digest?.startsWith('NEXT_REDIRECT')) {
+         console.log('Redirecting...');
+       } else {
+         toast({
+            variant: "destructive",
+            title: "Login Failed",
+            description: "An unexpected error occurred. Please try again.",
+         });
+       }
     }
   };
 

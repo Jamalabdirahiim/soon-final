@@ -1,10 +1,32 @@
+"use client";
+
 import Image from "next/image";
 import { placeholderImages } from "@/lib/placeholder-images.json";
-import { BluezoneIcon } from "../bluezone-icon";
 import { Server, Zap } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function FeatureHighlight() {
-  const featureImage = placeholderImages.find(p => p.id === 'feature-highlight-image');
+  const defaultFeatureImage = placeholderImages.find(p => p.id === 'feature-highlight-image');
+  const [featureImageSrc, setFeatureImageSrc] = useState(defaultFeatureImage?.imageUrl);
+
+  useEffect(() => {
+    const storedImage = localStorage.getItem('featureImage');
+    if (storedImage) {
+      setFeatureImageSrc(storedImage);
+    }
+
+    const handleImageChange = () => {
+      const newImage = localStorage.getItem('featureImage');
+      setFeatureImageSrc(newImage || defaultFeatureImage?.imageUrl);
+    };
+
+    window.addEventListener('featureImageChanged', handleImageChange);
+
+    return () => {
+      window.removeEventListener('featureImageChanged', handleImageChange);
+    };
+  }, [defaultFeatureImage]);
+
 
   return (
     <section id="feature" className="bg-background">
@@ -62,15 +84,16 @@ export default function FeatureHighlight() {
                     </div>
                 </div>
                 
-                {featureImage && (
+                {featureImageSrc && (
                 <div className="flex justify-center -mb-8">
                     <Image
-                        src="https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwb3J0cmFpdCUyMG9mJTIwYSUyMG1hbCUyMHdpdGglMjBnbGFzc2VzfGVufDB8fHx8MTc2MDQxMTcyNXww&ixlib=rb-4.1.0&q=80&w=1080"
-                        alt={featureImage.description}
+                        src={featureImageSrc}
+                        alt={defaultFeatureImage?.description || 'Feature image'}
                         width={400}
                         height={400}
                         className="object-contain"
                         data-ai-hint="man glasses"
+                        key={featureImageSrc}
                     />
                 </div>
                 )}

@@ -1,35 +1,23 @@
+
+"use client";
+
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, Briefcase, Home } from "lucide-react";
 
-const pricingPlans = [
-  {
-    name: "Essential",
-    speed: "8Mbps",
-    price: "30",
-    isFeatured: false,
-    homeUse: "Great for browsing, email, and social media on a few devices.",
-    businessUse: "Perfect for solo entrepreneurs and low-traffic guest Wi-Fi.",
-  },
-  {
-    name: "Performance",
-    speed: "15Mbps",
-    price: "50",
-    isFeatured: false,
-    homeUse: "Ideal for HD streaming, online gaming, and a busy smart home.",
-    businessUse: "Supports small teams, video calls, and regular cloud uploads.",
-  },
-  {
-    name: "Power",
-    speed: "25Mbps",
-    price: "80",
-    isFeatured: false,
-    homeUse: "Flawless 4K streaming, competitive gaming, and many users.",
-    businessUse: "Best for growing teams, frequent large file transfers, and VoIP.",
-  },
-];
+interface PricingPlan {
+  name: string;
+  speed: string;
+  price: string;
+  homeUse: string;
+  businessUse: string;
+}
 
-export default function Pricing() {
+interface PricingProps {
+  content: PricingPlan[];
+}
+
+export default function Pricing({ content }: PricingProps) {
   return (
     <section id="pricing" className="bg-background">
       <div className="container mx-auto px-4 md:px-6">
@@ -46,7 +34,7 @@ export default function Pricing() {
         </div>
 
         <div className="mx-auto mt-12 grid max-w-lg gap-8 md:max-w-none md:grid-cols-3">
-          {pricingPlans.map((plan) => (
+          {content.map((plan) => (
             <Card
               key={plan.name}
               className="flex flex-col rounded-xl border shadow-lg"
@@ -97,3 +85,5 @@ export default function Pricing() {
     </section>
   );
 }
+
+    

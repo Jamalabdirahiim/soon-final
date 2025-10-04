@@ -1,3 +1,4 @@
+
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -21,6 +22,7 @@ import {
   Settings,
   LogOut,
   User,
+  DollarSign,
 } from "lucide-react";
 import { SoonLogo } from "@/components/soon-logo";
 import { Button } from "@/components/ui/button";
@@ -38,6 +40,7 @@ import { logout } from "../actions";
 const sidebarNav = [
   { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
   { label: "Content", href: "/admin/dashboard/content", icon: FileText },
+  { label: "Pricing", href: "/admin/dashboard/pricing", icon: DollarSign },
   { label: "Media", href: "/admin/dashboard/media", icon: ImageIcon },
   { label: "Analytics", href: "/admin/dashboard/analytics", icon: BarChart2 },
   { label: "Settings", href: "/admin/dashboard/settings", icon: Settings },
@@ -122,3 +125,5 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     </SidebarProvider>
   );
 }
+
+    

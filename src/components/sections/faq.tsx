@@ -1,12 +1,23 @@
+
+"use client";
+
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion"
-import { content } from "@/lib/content";
+} from "@/components/ui/accordion";
 
-export default function Faq() {
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface FaqProps {
+  content: FaqItem[];
+}
+
+export default function Faq({ content }: FaqProps) {
   return (
     <section id="faq" className="bg-secondary">
       <div className="container mx-auto px-4 md:px-6">
@@ -24,7 +35,7 @@ export default function Faq() {
 
         <div className="mx-auto mt-12 max-w-3xl">
           <Accordion type="single" collapsible className="w-full">
-            {content.faq.map((item, index) => (
+            {content.map((item, index) => (
               <AccordionItem key={index} value={`item-${index}`}>
                 <AccordionTrigger className="text-lg font-semibold text-left">{item.question}</AccordionTrigger>
                 <AccordionContent className="text-base text-muted-foreground">
@@ -38,3 +49,5 @@ export default function Faq() {
     </section>
   );
 }
+
+    

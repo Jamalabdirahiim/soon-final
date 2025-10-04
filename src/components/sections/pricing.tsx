@@ -86,7 +86,7 @@ export default function Pricing() {
                 </ul>
               </CardContent>
               <CardFooter className="p-6">
-                <Button className="w-full" size="lg">
+                <Button className="w-full premium-red-bg text-primary-foreground hover:brightness-110" size="lg">
                   Get Started
                 </Button>
               </CardFooter>

@@ -5,29 +5,38 @@ import { placeholderImages } from "@/lib/placeholder-images.json";
 import { Server, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { BluezoneIconSmall } from "../bluezone-icon";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function FeatureHighlight() {
   const defaultFeatureImage = placeholderImages.find(p => p.id === 'feature-highlight-image');
   const [featureImageSrc, setFeatureImageSrc] = useState(defaultFeatureImage?.imageUrl);
+  const [mobileFeatureImageSrc, setMobileFeatureImageSrc] = useState('');
+  const isMobile = useIsMobile();
 
   useEffect(() => {
-    const storedImage = localStorage.getItem('featureImage');
-    if (storedImage) {
-      setFeatureImageSrc(storedImage);
-    }
-
     const handleImageChange = () => {
       const newImage = localStorage.getItem('featureImage');
       setFeatureImageSrc(newImage || defaultFeatureImage?.imageUrl);
     };
 
+    const handleMobileImageChange = () => {
+      const newMobileImage = localStorage.getItem('mobileFeatureImage');
+      setMobileFeatureImageSrc(newMobileImage || '');
+    };
+
+    handleImageChange();
+    handleMobileImageChange();
+
     window.addEventListener('featureImageChanged', handleImageChange);
+    window.addEventListener('mobileFeatureImageChanged', handleMobileImageChange);
 
     return () => {
       window.removeEventListener('featureImageChanged', handleImageChange);
+      window.removeEventListener('mobileFeatureImageChanged', handleMobileImageChange);
     };
   }, [defaultFeatureImage]);
 
+  const finalSrc = isMobile && mobileFeatureImageSrc ? mobileFeatureImageSrc : featureImageSrc;
 
   return (
     <section id="feature" className="bg-background">
@@ -75,16 +84,16 @@ export default function FeatureHighlight() {
                     </div>
                 </div>
                 
-                {featureImageSrc && (
-                <div className="flex justify-center items-end -mb-8 md:mb-0">
+                {finalSrc && (
+                <div className="flex justify-center items-end md:justify-end -mb-8 md:mb-0">
                     <Image
-                        src={featureImageSrc}
+                        src={finalSrc}
                         alt={defaultFeatureImage?.description || 'Feature image'}
                         width={400}
                         height={400}
                         className="object-contain max-w-full h-auto"
                         data-ai-hint="man glasses"
-                        key={featureImageSrc}
+                        key={finalSrc}
                     />
                 </div>
                 )}

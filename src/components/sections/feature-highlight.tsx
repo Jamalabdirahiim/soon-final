@@ -4,7 +4,6 @@ import Image from "next/image";
 import { placeholderImages } from "@/lib/placeholder-images.json";
 import { Server, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
 import { BluezoneIconSmall } from "../bluezone-icon";
 
 export default function FeatureHighlight() {

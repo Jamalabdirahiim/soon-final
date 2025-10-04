@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { placeholderImages } from "@/lib/placeholder-images.json";
 import { BluezoneIcon } from "../bluezone-icon";
+import { Server, Zap } from "lucide-react";
 
 export default function FeatureHighlight() {
   const featureImage = placeholderImages.find(p => p.id === 'feature-highlight-image');
@@ -9,36 +10,67 @@ export default function FeatureHighlight() {
     <section id="feature" className="bg-background">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          <div className="space-y-6">
-            <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">SOON | FIBER TO THE HOME & BUSINESS</div>
-            <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">
-              BLUE ZONE
-            </h2>
-            <p className="text-muted-foreground md:text-lg">
-              Through our partnerships with local communities, our focus is on creating a network of total linkage whereas other providers have failed to deliver. We are an excellent rather than an average data architect emerging from Somalia.
-            </p>
-          </div>
-
-          <div className="bg-[#1C2C5B] p-8 rounded-lg text-white h-full flex flex-col justify-center">
-            <div className="grid md:grid-cols-2 gap-8 items-center">
-                <div className="space-y-6">
+          <div className="space-y-8">
+            <div>
+                <h2 className="font-headline text-4xl font-bold tracking-tighter">
+                    Investing In Brighter Future
+                </h2>
+                <p className="mt-4 text-muted-foreground md:text-lg">
+                    We're investing in our people, our communities, our networks, and a sustainable future. Our focus is on creating a better more connected future for Somalia.
+                </p>
+            </div>
+            <div className="space-y-8">
+                <div className="flex gap-4">
+                    <Server className="w-8 h-8 text-primary shrink-0" />
                     <div>
-                        <h3 className="text-4xl font-bold">FIBER BLUE</h3>
-                        <p className="mt-2 text-lg">INTERNETKA GURYAHA IYO GOOBAHA GANACSIGA</p>
-                    </div>
-                    <div className="flex items-center">
-                        <BluezoneIcon />
+                        <h3 className="font-bold text-lg">Full Network Visibility</h3>
+                        <p className="text-muted-foreground mt-1">
+                            Credibly syndicate enterprise total linkage whereas cost effective of the art data without multifunctional.
+                        </p>
                     </div>
                 </div>
+                <div className="flex gap-4">
+                    <Zap className="w-8 h-8 text-primary shrink-0" />
+                    <div>
+                        <h3 className="font-bold text-lg">Resilient Connectivity</h3>
+                        <p className="text-muted-foreground mt-1">
+                            Synergistically communicate excellent rather than enterprise-wide value quickly architect emerging interfaces.
+                        </p>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="absolute inset-0 bg-[#1C2C5B] rounded-lg -skew-y-3 z-0"></div>
+            <div className="relative z-10 grid md:grid-cols-2 gap-8 items-center text-white p-8">
+                <div className="space-y-4">
+                    <h3 className="text-3xl font-bold">SOO GASHO<br/>FIBER-KA<br/>BLUECOM</h3>
+                    <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                            <div className="bg-[#00AEEF] p-1 rounded-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+                            </div>
+                            <span className="font-semibold">INTERNET-KA GURYAHA</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                             <div className="bg-[#00AEEF] p-1 rounded-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+                            </div>
+                            <span className="font-semibold">INTERNET-KA GANACSIGA</span>
+                        </div>
+                    </div>
+                </div>
+                
                 {featureImage && (
-                <div className="flex justify-center">
+                <div className="flex justify-center -mb-8">
                     <Image
-                        src={featureImage.imageUrl}
+                        src="https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwb3J0cmFpdCUyMG9mJTIwYSUyMG1hbCUyMHdpdGglMjBnbGFzc2VzfGVufDB8fHx8MTc2MDQxMTcyNXww&ixlib=rb-4.1.0&q=80&w=1080"
                         alt={featureImage.description}
                         width={400}
-                        height={300}
+                        height={400}
                         className="object-contain"
-                        data-ai-hint={featureImage.imageHint}
+                        data-ai-hint="man glasses"
                     />
                 </div>
                 )}

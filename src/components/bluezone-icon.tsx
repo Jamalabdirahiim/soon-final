@@ -23,3 +23,26 @@ export function BluezoneIcon() {
     </div>
   );
 }
+
+export function BluezoneIconSmall({ text }: { text: string }) {
+  return (
+    <div className="flex items-center gap-2">
+      <div className="bg-[#00AEEF] p-1 rounded-md">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="white"
+          strokeWidth="3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M20 6 9 17l-5-5" />
+        </svg>
+      </div>
+      <span className="font-semibold">{text}</span>
+    </div>
+  )
+}

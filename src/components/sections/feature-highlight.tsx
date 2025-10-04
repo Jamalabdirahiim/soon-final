@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Card } from "@/components/ui/card";
 import { placeholderImages } from "@/lib/placeholder-images.json";
 import { BluezoneIcon } from "../bluezone-icon";
 
@@ -20,26 +19,30 @@ export default function FeatureHighlight() {
             </p>
           </div>
 
-          <div className="bg-[#1C2C5B] p-8 rounded-lg text-white h-full flex flex-col justify-between">
-            <div>
-              <h3 className="text-4xl font-bold">FIBER BLUE</h3>
-              <p className="mt-2 text-lg">INTERNETKA GURYAHA IYO GOOBAHA GANACSIGA</p>
+          <div className="bg-[#1C2C5B] p-8 rounded-lg text-white h-full flex flex-col justify-center">
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+                <div className="space-y-6">
+                    <div>
+                        <h3 className="text-4xl font-bold">FIBER BLUE</h3>
+                        <p className="mt-2 text-lg">INTERNETKA GURYAHA IYO GOOBAHA GANACSIGA</p>
+                    </div>
+                    <div className="flex items-center">
+                        <BluezoneIcon />
+                    </div>
+                </div>
+                {featureImage && (
+                <div className="flex justify-center">
+                    <Image
+                        src={featureImage.imageUrl}
+                        alt={featureImage.description}
+                        width={400}
+                        height={300}
+                        className="object-contain"
+                        data-ai-hint={featureImage.imageHint}
+                    />
+                </div>
+                )}
             </div>
-            <div className="flex items-center my-8">
-              <BluezoneIcon />
-            </div>
-            {featureImage && (
-              <div className="self-end -mb-8 -mr-8">
-                 <Image
-                    src={featureImage.imageUrl}
-                    alt={featureImage.description}
-                    width={400}
-                    height={300}
-                    className="object-contain"
-                    data-ai-hint={featureImage.imageHint}
-                />
-              </div>
-            )}
           </div>
         </div>
       </div>

@@ -5,6 +5,7 @@ import { placeholderImages } from "@/lib/placeholder-images.json";
 import { Server, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { BluezoneIconSmall } from "../bluezone-icon";
 
 export default function FeatureHighlight() {
   const defaultFeatureImage = placeholderImages.find(p => p.id === 'feature-highlight-image');
@@ -65,23 +66,13 @@ export default function FeatureHighlight() {
           </div>
 
           <div className="relative">
-            <div className="absolute inset-0 bg-[#1C2C5B] rounded-lg -skew-y-3 z-0"></div>
+            <div className="absolute inset-0 premium-red-bg rounded-lg -skew-y-3 z-0"></div>
             <div className="relative z-10 grid md:grid-cols-2 gap-8 items-center text-white p-8">
                 <div className="space-y-4">
                     <h3 className={cn("text-3xl font-bold", "premium-red-text")}>SOO GASHO<br/>FIBER-KA<br/>BLUECOM</h3>
                     <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                            <div className="bg-[#00AEEF] p-1 rounded-md">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
-                            </div>
-                            <span className="font-semibold">INTERNET-KA GURYAHA</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                             <div className="bg-[#00AEEF] p-1 rounded-md">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
-                            </div>
-                            <span className="font-semibold">INTERNET-KA GANACSIGA</span>
-                        </div>
+                        <BluezoneIconSmall text="INTERNET-KA GURYAHA" />
+                        <BluezoneIconSmall text="INTERNET-KA GANACSIGA" />
                     </div>
                 </div>
                 

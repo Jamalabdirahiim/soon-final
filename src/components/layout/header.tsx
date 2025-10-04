@@ -74,38 +74,40 @@ export default function Header({ navLinks }: HeaderProps) {
           </Button>
         </div>
 
-        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-          <SheetTrigger asChild className="md:hidden">
-            <Button variant="ghost" size="icon" className={cn("text-white hover:text-white hover:bg-white/10", hasScrolled && "text-foreground hover:bg-accent hover:text-accent-foreground")}>
-              <Menu className="h-6 w-6" />
-              <span className="sr-only">Open navigation menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="w-[300px] bg-background">
-            <div className="flex h-full flex-col p-6">
-              <div className="mb-8">
-                 <SoonLogo />
-              </div>
-              <nav className="flex flex-col gap-6">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="text-lg font-medium text-foreground/80 transition-colors hover:text-primary"
-                    onClick={handleLinkClick}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </nav>
-              <div className="mt-auto">
-                <Button asChild className="w-full">
-                  <Link href="/admin" onClick={handleLinkClick}>Admin</Link>
+        <div className="md:hidden">
+            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+            <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className={cn("text-white hover:text-white hover:bg-white/10", hasScrolled && "text-foreground hover:bg-accent hover:text-accent-foreground")}>
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Open navigation menu</span>
                 </Button>
-              </div>
-            </div>
-          </SheetContent>
-        </Sheet>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-[300px] bg-background">
+                <div className="flex h-full flex-col p-6">
+                <div className="mb-8">
+                    <SoonLogo />
+                </div>
+                <nav className="flex flex-col gap-6">
+                    {navLinks.map((link) => (
+                    <Link
+                        key={link.href}
+                        href={link.href}
+                        className="text-lg font-medium text-foreground/80 transition-colors hover:text-primary"
+                        onClick={handleLinkClick}
+                    >
+                        {link.label}
+                    </Link>
+                    ))}
+                </nav>
+                <div className="mt-auto">
+                    <Button asChild className="w-full">
+                    <Link href="/admin" onClick={handleLinkClick}>Admin</Link>
+                    </Button>
+                </div>
+                </div>
+            </SheetContent>
+            </Sheet>
+        </div>
       </div>
     </header>
   );

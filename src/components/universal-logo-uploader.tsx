@@ -1,29 +1,37 @@
 
 "use client";
 
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { Button } from './ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, Loader2, ClipboardPaste, Library } from 'lucide-react';
-import { useFirestore } from '@/firebase';
-import { useStorage } from '@/firebase/storage/use-storage';
-import { doc, setDoc } from 'firebase/firestore';
-import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { Upload, Loader2, ClipboardPaste } from 'lucide-react';
+import { useFirestore, useStorage } from '@/firebase';
+import { doc, setDoc, type Firestore } from 'firebase/firestore';
+import { ref as storageRef, uploadBytes, getDownloadURL, type Storage } from 'firebase/storage';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { cn } from '@/lib/utils';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
-import { MediaLibrary } from '@/app/admin/dashboard/media/media-library';
 
 export default function UniversalLogoUploader() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [isLibraryOpen, setIsLibraryOpen] = useState(false);
-  const firestore = useFirestore();
-  const { app: storage } = useStorage('logos');
+  
+  // Get hooks at the top level
+  const firestoreInstance = useFirestore();
+  const storageInstance = useStorage();
+
+  const [firestore, setFirestore] = useState<Firestore | null>(null);
+  const [storage, setStorage] = useState<Storage | null>(null);
+
+  useEffect(() => {
+    setFirestore(firestoreInstance);
+    setStorage(storageInstance);
+  }, [firestoreInstance, storageInstance]);
+
 
   const isWorking = isProcessing || isUploading;
+  const isFirebaseReady = !!firestore && !!storage;
 
   const saveLogoUrl = async (logoUrl: string) => {
     if (!firestore) {
@@ -98,17 +106,18 @@ export default function UniversalLogoUploader() {
     } finally {
       setIsUploading(false);
     }
-  }, [storage, toast]);
+  }, [storage, toast, firestore]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       processAndUploadFile(file);
     }
-    event.target.value = ''; // Reset input
+    if (event.target) event.target.value = ''; // Reset input
   };
 
   const handlePaste = useCallback((event: React.ClipboardEvent<HTMLDivElement>) => {
+    if (!isFirebaseReady) return;
     const items = event.clipboardData.items;
     for (let i = 0; i < items.length; i++) {
       if (items[i].type.indexOf('image') !== -1) {
@@ -121,7 +130,7 @@ export default function UniversalLogoUploader() {
         }
       }
     }
-  }, [processAndUploadFile]);
+  }, [processAndUploadFile, isFirebaseReady]);
 
   return (
     <section id="logo-uploader" className="bg-secondary py-12">
@@ -134,7 +143,7 @@ export default function UniversalLogoUploader() {
                     <div className="flex flex-col sm:flex-row gap-4">
                         <Button 
                             onClick={() => fileInputRef.current?.click()} 
-                            disabled={isWorking}
+                            disabled={isWorking || !isFirebaseReady}
                             className="flex-1"
                         >
                             {isWorking ? (
@@ -144,24 +153,15 @@ export default function UniversalLogoUploader() {
                             )}
                             Upload from device
                         </Button>
-
-                        <Button
-                            onClick={() => setIsLibraryOpen(true)}
-                            disabled={isWorking}
-                            className="flex-1"
-                            variant="outline"
-                        >
-                            <Library className="mr-2" />
-                            Select from Library
-                        </Button>
                     </div>
                     <div 
                         onPaste={handlePaste}
                         className={cn(
-                            "flex-1 p-4 border-2 border-dashed rounded-md flex flex-col items-center justify-center text-center cursor-pointer hover:border-primary transition-colors",
+                            "flex-1 p-4 border-2 border-dashed rounded-md flex flex-col items-center justify-center text-center transition-colors",
+                            isFirebaseReady ? "cursor-pointer hover:border-primary" : "cursor-not-allowed opacity-50",
                             isWorking && "cursor-not-allowed opacity-50"
                         )}
-                        tabIndex={isWorking ? -1 : 0}
+                        tabIndex={isWorking || !isFirebaseReady ? -1 : 0}
                         role="button"
                         aria-label="Paste image area"
                     >
@@ -172,6 +172,7 @@ export default function UniversalLogoUploader() {
                      <div className="h-6 text-center">
                         {isProcessing && <p className="text-sm text-muted-foreground animate-pulse">Processing image...</p>}
                         {isUploading && <p className="text-sm text-muted-foreground animate-pulse">Uploading logo...</p>}
+                        {!isFirebaseReady && !isWorking && <p className="text-sm text-yellow-600">Initializing Firebase...</p>}
                     </div>
                     <input
                         type="file"
@@ -179,22 +180,10 @@ export default function UniversalLogoUploader() {
                         onChange={handleFileChange}
                         className="hidden"
                         accept="image/png, image/jpeg, image/webp, image/gif, image/bmp"
-                        disabled={isWorking}
+                        disabled={isWorking || !isFirebaseReady}
                     />
                 </CardContent>
             </Card>
-
-            <Dialog open={isLibraryOpen} onOpenChange={setIsLibraryOpen}>
-                <DialogContent className="max-w-4xl">
-                    <DialogHeader>
-                        <DialogTitle>Select Logo from Media Library</DialogTitle>
-                    </DialogHeader>
-                    <MediaLibrary onSelect={(url) => {
-                        saveLogoUrl(url);
-                        setIsLibraryOpen(false);
-                    }} />
-                </DialogContent>
-            </Dialog>
         </div>
     </section>
   );

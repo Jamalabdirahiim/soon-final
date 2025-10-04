@@ -17,7 +17,7 @@ export function UniversalLogoUploader() {
   const firestore = useFirestore();
   const storage = useStorage();
 
-  const saveLogoUrl = async (logoUrl: string) => {
+  const saveLogoUrl = useCallback(async (logoUrl: string) => {
     if (!firestore) {
       toast({ variant: "destructive", title: "Error", description: "Firestore is not available." });
       return;
@@ -37,7 +37,7 @@ export function UniversalLogoUploader() {
         description: "There was an error saving the logo URL to the database.",
       });
     }
-  };
+  }, [firestore, toast]);
   
   const processAndUploadFile = useCallback(async (file: File) => {
     if (!storage) {
@@ -45,10 +45,6 @@ export function UniversalLogoUploader() {
         return;
     }
 
-    if (file.size > 2 * 1024 * 1024) { // 2MB limit
-      toast({ variant: "destructive", title: "File too large", description: "Please select an image smaller than 2MB." });
-      return;
-    }
     if (!file.type.startsWith('image/')) {
       toast({ variant: "destructive", title: "Invalid file type", description: "Please select an image file." });
       return;
@@ -56,13 +52,53 @@ export function UniversalLogoUploader() {
 
     setIsProcessing(true);
     try {
-      const uniqueLogoRef = storageRef(storage, `logos/universal-logo-${Date.now()}-${file.name}`);
-      const snapshot = await uploadBytes(uniqueLogoRef, file);
+      // Create a blob from the file
+      const blob = await new Promise<Blob>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const MAX_WIDTH = 400; // Max width for logo
+            const scaleSize = MAX_WIDTH / img.width;
+            canvas.width = MAX_WIDTH;
+            canvas.height = img.height * scaleSize;
+
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return reject(new Error('Could not get canvas context'));
+            
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            
+            canvas.toBlob((blob) => {
+              if (blob) {
+                resolve(blob);
+              } else {
+                reject(new Error('Canvas to Blob conversion failed'));
+              }
+            }, 'image/webp', 0.8); // Convert to WebP for efficiency
+          };
+          img.onerror = reject;
+          img.src = e.target?.result as string;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+      
+      const optimizedFile = new File([blob], file.name.replace(/(\.[\w\d_-]+)$/i, '.webp'), { type: 'image/webp' });
+
+      if (optimizedFile.size > 2 * 1024 * 1024) { // 2MB limit
+        toast({ variant: "destructive", title: "File too large", description: "Image is still too large after optimization. Please use a smaller file." });
+        setIsProcessing(false);
+        return;
+      }
+      
+      const uniqueLogoRef = storageRef(storage, `logos/universal-logo-${Date.now()}-${optimizedFile.name}`);
+      const snapshot = await uploadBytes(uniqueLogoRef, optimizedFile);
       const downloadURL = await getDownloadURL(snapshot.ref);
       await saveLogoUrl(downloadURL);
     } catch (error) {
-      console.error("Error uploading file:", error);
-      toast({ variant: "destructive", title: "Upload failed", description: "Could not upload the selected file. Please try again." });
+      console.error("Error processing or uploading file:", error);
+      toast({ variant: "destructive", title: "Processing failed", description: "Could not process or upload the selected file. Please try again." });
     } finally {
       setIsProcessing(false);
     }
@@ -83,9 +119,8 @@ export function UniversalLogoUploader() {
         if (items[i].type.indexOf('image') !== -1) {
             const file = items[i].getAsFile();
             if (file) {
-                await processAndUploadFile(file);
-                // Prevent the browser from also pasting the image into the contenteditable div
                 event.preventDefault(); 
+                await processAndUploadFile(file);
                 return;
             }
         }
@@ -152,7 +187,7 @@ export function UniversalLogoUploader() {
         {isProcessing && (
              <div className="flex items-center justify-center text-sm text-muted-foreground">
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                <span>Updating logo... please wait.</span>
+                <span>Optimizing and updating logo... please wait.</span>
             </div>
         )}
       </CardContent>

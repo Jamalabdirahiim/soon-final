@@ -1,13 +1,10 @@
 
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import {
   SidebarProvider,
   Sidebar,
   SidebarHeader,
   SidebarContent,
-  SidebarFooter,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
@@ -20,7 +17,6 @@ import {
   Image as ImageIcon,
   BarChart2,
   Settings,
-  LogOut,
   User,
   DollarSign,
 } from "lucide-react";
@@ -35,23 +31,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { logout } from "../actions";
 
 const sidebarNav = [
-  { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-  { label: "Content", href: "/admin/dashboard/content", icon: FileText },
-  { label: "Pricing", href: "/admin/dashboard/pricing", icon: DollarSign },
-  { label: "Media", href: "/admin/dashboard/media", icon: ImageIcon },
-  { label: "Analytics", href: "/admin/dashboard/analytics", icon: BarChart2 },
-  { label: "Settings", href: "/admin/dashboard/settings", icon: Settings },
+  { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
+  { label: "Content", href: "/admin/content", icon: FileText },
+  { label: "Pricing", href: "/admin/pricing", icon: DollarSign },
+  { label: "Media", href: "/admin/media", icon: ImageIcon },
+  { label: "Analytics", href: "/admin/analytics", icon: BarChart2 },
+  { label: "Settings", href: "/admin/settings", icon: Settings },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const cookie = cookies().get("soon-session");
-  if (!cookie) {
-    redirect("/admin");
-  }
-
   return (
     <SidebarProvider>
       <Sidebar collapsible="icon" className="border-sidebar-border">
@@ -72,14 +62,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             ))}
           </SidebarMenu>
         </SidebarContent>
-        <SidebarFooter>
-            <form action={logout}>
-                <SidebarMenuButton type="submit" tooltip="Logout">
-                    <LogOut />
-                    <span>Logout</span>
-                </SidebarMenuButton>
-            </form>
-        </SidebarFooter>
       </Sidebar>
       <SidebarInset>
         <header className="flex h-16 items-center justify-between border-b bg-background px-6">
@@ -108,15 +90,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <User className="mr-2 h-4 w-4" />
                 <span>Profile</span>
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
-               <form action={logout} className="w-full">
-                  <button type="submit" className="w-full">
-                    <DropdownMenuItem>
-                      <LogOut className="mr-2 h-4 w-4" />
-                      <span>Log out</span>
-                    </DropdownMenuItem>
-                  </button>
-                </form>
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
@@ -125,5 +98,3 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     </SidebarProvider>
   );
 }
-
-    

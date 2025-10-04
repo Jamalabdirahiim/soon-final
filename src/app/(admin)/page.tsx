@@ -1,112 +1,172 @@
 
-"use client";
-
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { useToast } from "@/hooks/use-toast";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { SoonLogo } from "@/components/soon-logo";
-import { login } from "./actions";
+import {
+  Activity,
+  ArrowUpRight,
+  CreditCard,
+  DollarSign,
+  Users,
+} from "lucide-react";
+import Link from "next/link";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { DashboardChart } from "./dashboard/dashboard-chart";
 
-const formSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(1, "Password is required"),
-});
-
-export default function AdminLoginPage() {
-  const { toast } = useToast();
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: { email: "admin@soon.so", password: "password" },
-  });
-
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const formData = new FormData();
-    formData.append("email", values.email);
-    formData.append("password", values.password);
-
-    try {
-      const result = await login(formData);
-
-      if (result && !result.success) {
-        toast({
-          variant: "destructive",
-          title: "Login Failed",
-          description: result.error || "Invalid credentials. Please try again.",
-        });
-      }
-      // If login is successful, the server action will redirect automatically.
-      // No need for client-side redirection here.
-    } catch (error) {
-       // The redirect() function throws an error to signal the navigation, 
-       // so we catch it here to prevent it from bubbling up.
-       // We only show a toast for actual login failures.
-       if ((error as any)?.digest?.startsWith('NEXT_REDIRECT')) {
-         console.log('Redirecting...');
-       } else {
-         toast({
-            variant: "destructive",
-            title: "Login Failed",
-            description: "An unexpected error occurred. Please try again.",
-         });
-       }
-    }
-  };
-
+export default function DashboardPage() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-muted/40 p-4">
-      <Card className="w-full max-w-sm">
-        <CardHeader className="text-center">
-          <div className="mx-auto mb-4">
-            <SoonLogo />
-          </div>
-          <CardTitle className="font-headline text-2xl">Admin Login</CardTitle>
-          <CardDescription>Enter your credentials to access the dashboard</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input type="email" placeholder="admin@soon.so" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? "Signing In..." : "Sign In"}
-              </Button>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
-      <p className="mt-4 text-xs text-muted-foreground">
-        Demo credentials: admin@soon.so / password
-      </p>
+    <div className="flex flex-col gap-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Total Revenue
+            </CardTitle>
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">$45,231.89</div>
+            <p className="text-xs text-muted-foreground">
+              +20.1% from last month
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Subscriptions
+            </CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">+2350</div>
+            <p className="text-xs text-muted-foreground">
+              +180.1% from last month
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Sales</CardTitle>
+            <CreditCard className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">+12,234</div>
+            <p className="text-xs text-muted-foreground">
+              +19% from last month
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Active Now
+            </CardTitle>
+            <Activity className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">+573</div>
+            <p className="text-xs text-muted-foreground">
+              +201 since last hour
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+      <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
+        <Card className="xl:col-span-2">
+          <CardHeader>
+            <CardTitle>Overview</CardTitle>
+          </CardHeader>
+          <CardContent className="pl-2">
+            <DashboardChart />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center">
+            <div className="grid gap-2">
+              <CardTitle>Recent Sales</CardTitle>
+              <CardDescription>
+                You made 265 sales this month.
+              </CardDescription>
+            </div>
+            <Button asChild size="sm" className="ml-auto gap-1">
+              <Link href="#">
+                View All
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            </Button>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Customer</TableHead>
+                  <TableHead className="text-right">Amount</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell>
+                    <div className="font-medium">Liam Johnson</div>
+                    <div className="text-sm text-muted-foreground">
+                      liam@example.com
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">$250.00</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <div className="font-medium">Olivia Smith</div>
+                    <div className="text-sm text-muted-foreground">
+                      olivia@example.com
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">$150.00</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <div className="font-medium">Noah Williams</div>
+                    <div className="text-sm text-muted-foreground">
+                      noah@example.com
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">$350.00</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <div className="font-medium">Emma Brown</div>
+                    <div className="text-sm text-muted-foreground">
+                      emma@example.com
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">$450.00</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <div className="font-medium">Liam Johnson</div>
+                    <div className="text-sm text-muted-foreground">
+                      liam@example.com
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">$550.00</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

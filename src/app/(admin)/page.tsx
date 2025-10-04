@@ -3,7 +3,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -18,12 +17,11 @@ const formSchema = z.object({
 });
 
 export default function AdminLoginPage() {
-  const router = useRouter();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { email: "", password: "" },
+    defaultValues: { email: "admin@soon.so", password: "password" },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -35,8 +33,7 @@ export default function AdminLoginPage() {
 
     if (result.success) {
       toast({ title: "Login Successful", description: "Redirecting to dashboard..." });
-      router.push("/admin/dashboard");
-      router.refresh();
+      window.location.href = "/admin/dashboard";
     } else {
       toast({
         variant: "destructive",

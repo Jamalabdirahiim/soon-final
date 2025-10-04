@@ -45,17 +45,19 @@ export default function Header({ navLinks }: HeaderProps) {
   const handleLinkClick = () => {
     setIsMobileMenuOpen(false);
   };
+  
+  const isScrolledOrMobile = hasScrolled || isMobile;
 
   return (
     <header
       className={cn(
         "fixed top-0 z-50 w-full transition-all duration-300",
-        hasScrolled || isMobile ? "bg-background/80 backdrop-blur-sm shadow-md" : "bg-transparent"
+        isScrolledOrMobile ? "bg-background/80 backdrop-blur-sm shadow-md" : "bg-transparent"
       )}
     >
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         <div className="flex items-center">
-            <SoonLogo hasScrolled={hasScrolled || isMobile} />
+            <SoonLogo hasScrolled={isScrolledOrMobile} />
         </div>
 
         <nav className="hidden items-center gap-6 md:flex">
@@ -65,7 +67,7 @@ export default function Header({ navLinks }: HeaderProps) {
               href={link.href}
               className={cn(
                 "text-sm font-medium transition-colors hover:text-primary",
-                hasScrolled ? "text-foreground/80" : "text-primary-foreground/80 hover:text-primary-foreground drop-shadow-sm"
+                isScrolledOrMobile ? "text-foreground/80" : "text-primary-foreground/80 hover:text-primary-foreground drop-shadow-sm"
               )}
             >
               {link.label}
@@ -74,7 +76,7 @@ export default function Header({ navLinks }: HeaderProps) {
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
-          <Button asChild variant={hasScrolled ? 'outline' : 'outline-white'}>
+          <Button asChild variant={isScrolledOrMobile ? 'outline' : 'outline-white'}>
             <Link href="/admin">Admin</Link>
           </Button>
         </div>
@@ -84,7 +86,7 @@ export default function Header({ navLinks }: HeaderProps) {
             <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className={cn(
                   "text-foreground hover:bg-accent hover:text-accent-foreground", 
-                  !hasScrolled && !isMobile && "text-white hover:text-white hover:bg-white/10"
+                  !isScrolledOrMobile && "text-white hover:text-white hover:bg-white/10"
                 )}>
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Open navigation menu</span>

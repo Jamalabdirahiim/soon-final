@@ -34,18 +34,20 @@ export function SoonLogo({ className, hasScrolled }: { className?: string; hasSc
   }, []);
 
   const finalSrc = isMobile && mobileLogoSrc ? mobileLogoSrc : logoSrc;
+  const isScrolledOrMobile = hasScrolled || isMobile;
 
   return (
     <Link href="/" aria-label="Back to homepage" className={cn("transition-all duration-300", className)}>
       <Image 
         src={finalSrc}
         alt="SOON Logo" 
-        width={200} 
-        height={56}
+        width={isMobile && mobileLogoSrc ? 150 : 200}
+        height={isMobile && mobileLogoSrc ? 42 : 56}
         priority
         className={cn(
-            "h-14 w-auto transition-all duration-300",
-            !hasScrolled && !isMobile
+            "h-auto transition-all duration-300",
+            isMobile && mobileLogoSrc ? "w-[150px]" : "h-14 w-auto",
+            !isScrolledOrMobile
                 ? "brightness-0 invert-[1] drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]"
                 : "",
              isMobile && "brightness-100 invert-0"

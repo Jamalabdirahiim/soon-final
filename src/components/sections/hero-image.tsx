@@ -2,38 +2,23 @@
 
 import Image from "next/image";
 import { placeholderImages } from "@/lib/placeholder-images.json";
-import { useEffect, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useDoc } from "@/firebase";
+import { doc } from "firebase/firestore";
+import { useFirestore } from "@/firebase";
 
 export default function HeroImage() {
     const defaultHeroImage = placeholderImages.find(p => p.id === 'hero-background');
-    const [heroSrc, setHeroSrc] = useState(defaultHeroImage?.imageUrl);
-    const [mobileHeroSrc, setMobileHeroSrc] = useState('');
     const isMobile = useIsMobile();
+    const firestore = useFirestore();
 
-    useEffect(() => {
-        const handleHeroChange = () => {
-            const newHero = localStorage.getItem('heroImage');
-            setHeroSrc(newHero || defaultHeroImage?.imageUrl);
-        };
+    const { data: settings } = useDoc(
+        firestore ? doc(firestore, 'site-settings', 'config') : null
+    );
 
-        const handleMobileHeroChange = () => {
-            const newMobileHero = localStorage.getItem('mobileHeroImage');
-            setMobileHeroSrc(newMobileHero || '');
-        };
-
-        handleHeroChange();
-        handleMobileHeroChange();
-
-        window.addEventListener('heroImageChanged', handleHeroChange);
-        window.addEventListener('mobileHeroImageChanged', handleMobileHeroChange);
-
-        return () => {
-            window.removeEventListener('heroImageChanged', handleHeroChange);
-            window.removeEventListener('mobileHeroImageChanged', handleMobileHeroChange);
-        };
-    }, [defaultHeroImage]);
-
+    const heroSrc = settings?.heroImageUrl || defaultHeroImage?.imageUrl;
+    const mobileHeroSrc = settings?.mobileHeroImageUrl || '';
+    
     const finalSrc = isMobile && mobileHeroSrc ? mobileHeroSrc : heroSrc;
 
   return (

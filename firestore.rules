@@ -3,9 +3,24 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Deny all reads and writes by default
-    match /{document=**} {
-      allow read, write: if false;
+    // Helper function to check for admin credentials.
+    // NOTE: This is a placeholder. In a real application, you would implement a
+    // more secure role-based access control system, for example by checking
+    // custom claims on the user's auth token.
+    function isAdmin() {
+      return request.auth != null;
+    }
+
+    match /users/{userId} {
+      allow read, write: if request.auth.uid == userId;
+    }
+
+    match /site-settings/config {
+      // Allow public read access so the website can fetch image URLs.
+      allow get;
+      
+      // Allow write access only for authenticated admins.
+      allow write: if isAdmin();
     }
   }
 }

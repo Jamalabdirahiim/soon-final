@@ -4,37 +4,53 @@ import React, { useRef, useState } from 'react';
 import { Button } from './ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Upload } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { useFirestore, useStorage } from '@/firebase';
+import { doc, setDoc } from 'firebase/firestore';
+import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+
 
 export function HeroImageUploader() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const [isUploading, setIsUploading] = useState(false);
+  const firestore = useFirestore();
+  const storage = useStorage();
+
 
   const handleButtonClick = () => {
     fileInputRef.current?.click();
   };
 
-  const saveHeroImage = (imageData: string) => {
+  const saveHeroImage = async (imageDataUrl: string) => {
+    if (!firestore) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Firestore is not available.",
+      });
+      return;
+    }
     try {
-      localStorage.setItem('heroImage', imageData);
-      window.dispatchEvent(new Event('heroImageChanged'));
+      const settingsDocRef = doc(firestore, 'site-settings', 'config');
+      await setDoc(settingsDocRef, { heroImageUrl: imageDataUrl }, { merge: true });
+      
       toast({
         title: "Hero image updated!",
         description: "Your new hero image has been applied.",
       });
     } catch (error) {
+       console.error("Error saving image URL to Firestore:", error);
        toast({
         variant: "destructive",
         title: "Could not save image",
-        description: "Your browser's storage might be full. Please try again.",
+        description: "There was an error saving the image URL.",
       });
     }
   }
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
+    if (file && storage) {
       if (file.size > 5 * 1024 * 1024) { // 5MB limit for hero images
         toast({
           variant: "destructive",
@@ -54,31 +70,33 @@ export function HeroImageUploader() {
       }
       
       setIsUploading(true);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const result = e.target?.result as string;
-        saveHeroImage(result);
-        setIsUploading(false);
-      };
-      reader.onerror = () => {
-        toast({
+      try {
+        const imageRef = storageRef(storage, `images/heroImage-${Date.now()}-${file.name}`);
+        const snapshot = await uploadBytes(imageRef, file);
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        await saveHeroImage(downloadURL);
+      } catch (error) {
+         console.error("Error uploading file:", error);
+         toast({
             variant: "destructive",
-            title: "Error reading file",
-            description: "Could not read the selected file. Please try again.",
-          });
-          setIsUploading(false);
+            title: "Error uploading file",
+            description: "Could not upload the selected file. Please try again.",
+        });
+      } finally {
+        setIsUploading(false);
       }
-      reader.readAsDataURL(file);
     }
     // Reset file input to allow uploading the same file again
-    event.target.value = '';
+    if (event.target) {
+        event.target.value = '';
+    }
   };
 
   return (
     <div className="space-y-4">
         <h3 className="font-medium">Hero Image</h3>
         <div className="flex flex-col sm:flex-row items-center gap-4">
-          <Button onClick={handleButtonClick} disabled={isUploading}>
+          <Button onClick={handleButtonClick} disabled={isUploading || !firestore || !storage}>
             <Upload className="mr-2" />
             {isUploading ? "Uploading..." : "Upload Hero Image"}
           </Button>

@@ -3,38 +3,23 @@
 import Image from "next/image";
 import { placeholderImages } from "@/lib/placeholder-images.json";
 import { Server, Zap } from "lucide-react";
-import { useEffect, useState } from "react";
-import { BluezoneIconSmall } from "../bluezone-icon";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useDoc } from "@/firebase";
+import { doc } from "firebase/firestore";
+import { useFirestore } from "@/firebase";
+import { BluezoneIconSmall } from "@/components/bluezone-icon";
 
 export default function FeatureHighlight() {
   const defaultFeatureImage = placeholderImages.find(p => p.id === 'feature-highlight-image');
-  const [featureImageSrc, setFeatureImageSrc] = useState(defaultFeatureImage?.imageUrl);
-  const [mobileFeatureImageSrc, setMobileFeatureImageSrc] = useState('');
   const isMobile = useIsMobile();
+  const firestore = useFirestore();
 
-  useEffect(() => {
-    const handleImageChange = () => {
-      const newImage = localStorage.getItem('featureImage');
-      setFeatureImageSrc(newImage || defaultFeatureImage?.imageUrl);
-    };
+  const { data: settings } = useDoc(
+    firestore ? doc(firestore, 'site-settings', 'config') : null
+  );
 
-    const handleMobileImageChange = () => {
-      const newMobileImage = localStorage.getItem('mobileFeatureImage');
-      setMobileFeatureImageSrc(newMobileImage || '');
-    };
-
-    handleImageChange();
-    handleMobileImageChange();
-
-    window.addEventListener('featureImageChanged', handleImageChange);
-    window.addEventListener('mobileFeatureImageChanged', handleMobileImageChange);
-
-    return () => {
-      window.removeEventListener('featureImageChanged', handleImageChange);
-      window.removeEventListener('mobileFeatureImageChanged', handleMobileImageChange);
-    };
-  }, [defaultFeatureImage]);
+  const featureImageSrc = settings?.featureImageUrl || defaultFeatureImage?.imageUrl;
+  const mobileFeatureImageSrc = settings?.mobileFeatureImageUrl || '';
 
   const finalSrc = isMobile && mobileFeatureImageSrc ? mobileFeatureImageSrc : featureImageSrc;
 

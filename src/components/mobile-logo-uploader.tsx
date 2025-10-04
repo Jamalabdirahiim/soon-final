@@ -4,36 +4,50 @@ import React, { useRef, useState } from 'react';
 import { Button } from './ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Upload } from 'lucide-react';
+import { useFirestore, useStorage } from '@/firebase';
+import { doc, setDoc } from 'firebase/firestore';
+import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export function MobileLogoUploader() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const [isUploading, setIsUploading] = useState(false);
+  const firestore = useFirestore();
+  const storage = useStorage();
 
   const handleButtonClick = () => {
     fileInputRef.current?.click();
   };
 
-  const saveLogo = (logoData: string) => {
+  const saveLogo = async (logoUrl: string) => {
+    if (!firestore) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Firestore is not available.",
+      });
+      return;
+    }
     try {
-      localStorage.setItem('mobileLogo', logoData);
-      window.dispatchEvent(new Event('mobileLogoChanged'));
+      const settingsDocRef = doc(firestore, 'site-settings', 'config');
+      await setDoc(settingsDocRef, { mobileLogoUrl: logoUrl }, { merge: true });
       toast({
         title: "Mobile logo updated!",
         description: "Your new mobile logo has been applied.",
       });
     } catch (error) {
-       toast({
+      console.error("Error saving mobile logo URL to Firestore:", error);
+      toast({
         variant: "destructive",
         title: "Could not save logo",
-        description: "Your browser's storage might be full. Please try again.",
+        description: "There was an error saving the mobile logo URL.",
       });
     }
   }
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
+    if (file && storage) {
       if (file.size > 1 * 1024 * 1024) { // 1MB limit
         toast({
           variant: "destructive",
@@ -53,30 +67,32 @@ export function MobileLogoUploader() {
       }
       
       setIsUploading(true);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const result = e.target?.result as string;
-        saveLogo(result);
-        setIsUploading(false);
-      };
-      reader.onerror = () => {
+      try {
+        const logoRef = storageRef(storage, `logos/mobileLogo-${Date.now()}-${file.name}`);
+        const snapshot = await uploadBytes(logoRef, file);
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        await saveLogo(downloadURL);
+      } catch (error) {
+        console.error("Error uploading file:", error);
         toast({
             variant: "destructive",
             title: "Error reading file",
             description: "Could not read the selected file. Please try again.",
           });
-          setIsUploading(false);
+      } finally {
+        setIsUploading(false);
       }
-      reader.readAsDataURL(file);
     }
-    event.target.value = '';
+    if (event.target) {
+        event.target.value = '';
+    }
   };
 
   return (
     <div className="space-y-4">
         <h3 className="font-medium">Mobile Logo</h3>
         <div className="flex flex-col sm:flex-row items-center gap-4">
-          <Button onClick={handleButtonClick} disabled={isUploading} variant="outline">
+          <Button onClick={handleButtonClick} disabled={isUploading || !firestore || !storage} variant="outline">
             <Upload className="mr-2" />
             {isUploading ? "Uploading..." : "Upload Mobile Logo"}
           </Button>

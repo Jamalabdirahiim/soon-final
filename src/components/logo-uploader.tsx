@@ -1,41 +1,53 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button } from './ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, Save, ClipboardPaste } from 'lucide-react';
-import { Input } from './ui/input';
+import { Upload } from 'lucide-react';
+import { useFirestore, useStorage } from '@/firebase';
+import { doc, setDoc } from 'firebase/firestore';
+import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export default function LogoUploader() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const [isUploading, setIsUploading] = useState(false);
-  const [imageUrl, setImageUrl] = useState('');
+  const firestore = useFirestore();
+  const storage = useStorage();
 
   const handleButtonClick = () => {
     fileInputRef.current?.click();
   };
 
-  const saveLogo = (logoData: string) => {
+  const saveLogo = async (logoUrl: string) => {
+    if (!firestore) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Firestore is not available.",
+      });
+      return;
+    }
     try {
-      localStorage.setItem('userLogo', logoData);
-      window.dispatchEvent(new Event('logoChanged'));
+      const settingsDocRef = doc(firestore, 'site-settings', 'config');
+      await setDoc(settingsDocRef, { logoUrl }, { merge: true });
       toast({
         title: "Logo updated!",
         description: "Your new logo has been applied.",
       });
     } catch (error) {
-       toast({
+      console.error("Error saving logo URL to Firestore:", error);
+      toast({
         variant: "destructive",
         title: "Could not save logo",
-        description: "Your browser's storage might be full. Please try again.",
+        description: "There was an error saving the logo URL.",
       });
     }
-  }
+  };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
+    if (file && storage) {
       if (file.size > 2 * 1024 * 1024) { // 2MB limit
         toast({
           variant: "destructive",
@@ -53,119 +65,48 @@ export default function LogoUploader() {
         });
         return;
       }
-      
+
       setIsUploading(true);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const result = e.target?.result as string;
-        saveLogo(result);
+      try {
+        const logoRef = storageRef(storage, `logos/logo-${Date.now()}-${file.name}`);
+        const snapshot = await uploadBytes(logoRef, file);
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        await saveLogo(downloadURL);
+      } catch (error) {
+        console.error("Error uploading file:", error);
+        toast({
+          variant: "destructive",
+          title: "Error uploading file",
+          description: "Could not upload the selected file. Please try again.",
+        });
+      } finally {
         setIsUploading(false);
-      };
-      reader.onerror = () => {
-        toast({
-            variant: "destructive",
-            title: "Error reading file",
-            description: "Could not read the selected file. Please try again.",
-          });
-          setIsUploading(false);
       }
-      reader.readAsDataURL(file);
     }
-    event.target.value = '';
+    if (event.target) {
+      event.target.value = '';
+    }
   };
-
-  const handleUrlSave = () => {
-    if (!imageUrl) {
-      toast({
-        variant: 'destructive',
-        title: 'Invalid URL',
-        description: 'Please enter a valid image URL.',
-      });
-      return;
-    }
-    // A simple check for image extensions.
-    if (!/\.(jpg|jpeg|png|webp|svg)$/i.test(imageUrl)) {
-        toast({
-        variant: 'destructive',
-        title: 'Invalid Image URL',
-        description: 'URL must end with a valid image extension (jpg, png, webp, svg).',
-      });
-      return;
-    }
-    saveLogo(imageUrl);
-    setImageUrl('');
-  };
-
-  useEffect(() => {
-    const handlePaste = async (event: ClipboardEvent) => {
-      const items = event.clipboardData?.items;
-      if (!items) return;
-
-      for (let i = 0; i < items.length; i++) {
-        if (items[i].type.indexOf('image') !== -1) {
-          const file = items[i].getAsFile();
-          if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-              const result = e.target?.result as string;
-              saveLogo(result);
-              toast({
-                title: "Logo pasted!",
-                description: "The logo from your clipboard has been applied.",
-              });
-            };
-            reader.readAsDataURL(file);
-          }
-          event.preventDefault(); // Prevent pasting into text fields
-          return;
-        }
-      }
-    };
-
-    window.addEventListener('paste', handlePaste);
-    return () => {
-      window.removeEventListener('paste', handlePaste);
-    };
-  }, [toast]);
 
   return (
     <div className="space-y-4">
-        <h3 className="font-medium">Logo</h3>
-        <div className="flex flex-col sm:flex-row items-center gap-4">
-          <Button onClick={handleButtonClick} disabled={isUploading}>
-            <Upload className="mr-2" />
-            {isUploading ? "Uploading..." : "Upload Logo"}
-          </Button>
-          <div className="flex items-center gap-2">
-            <Input 
-              type="text" 
-              placeholder="Or paste image URL"
-              value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
-              className="w-full sm:w-64"
-            />
-             <Button onClick={handleUrlSave} variant="outline" size="icon">
-              <Save />
-              <span className="sr-only">Save URL</span>
-            </Button>
-          </div>
-        </div>
-        <div className="text-xs text-muted-foreground flex items-center gap-2">
-            <ClipboardPaste className="w-4 h-4" />
-            <span>
-                You can also copy an image and paste it anywhere on the page.
-            </span>
-        </div>
-        <p className="text-xs text-muted-foreground">
-          Recommended size: 200x56px. Max file size: 2MB.
-        </p>
-        <input
-          type="file"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-          className="hidden"
-          accept="image/png, image/jpeg, image/svg+xml, image/webp"
-        />
+      <h3 className="font-medium">Logo</h3>
+      <div className="flex flex-col sm:flex-row items-center gap-4">
+        <Button onClick={handleButtonClick} disabled={isUploading || !firestore || !storage}>
+          <Upload className="mr-2" />
+          {isUploading ? "Uploading..." : "Upload Logo"}
+        </Button>
+      </div>
+      <p className="text-xs text-muted-foreground">
+        Recommended size: 200x56px. Max file size: 2MB.
+      </p>
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        className="hidden"
+        accept="image/png, image/jpeg, image/svg+xml, image/webp"
+      />
     </div>
   );
 }

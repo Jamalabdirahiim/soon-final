@@ -1,9 +1,10 @@
 import { initializeApp, getApps, type FirebaseApp } from 'firebase/app';
 import { getAuth, type Auth } from 'firebase/auth';
 import { getFirestore, type Firestore } from 'firebase/firestore';
+import { getStorage, type Storage } from 'firebase/storage';
 import { firebaseConfig } from './config';
 
-import { FirebaseProvider, useFirebaseApp, useAuth, useFirestore } from './provider';
+import { FirebaseProvider, useFirebaseApp, useAuth, useFirestore, useStorage } from './provider';
 import { FirebaseClientProvider } from './client-provider';
 import { useCollection, useMemoFirebase } from './firestore/use-collection';
 import { useDoc } from './firestore/use-doc';
@@ -13,14 +14,16 @@ import { useUser } from './auth/use-user';
 let firebaseApp: FirebaseApp;
 let auth: Auth;
 let firestore: Firestore;
+let storage: Storage;
 
 function initializeFirebase() {
   if (getApps().length === 0) {
     firebaseApp = initializeApp(firebaseConfig);
     auth = getAuth(firebaseApp);
     firestore = getFirestore(firebaseApp);
+    storage = getStorage(firebaseApp);
   }
-  return { firebaseApp, auth, firestore };
+  return { firebaseApp, auth, firestore, storage };
 }
 
 export {
@@ -33,5 +36,6 @@ export {
   useFirebaseApp,
   useAuth,
   useFirestore,
+  useStorage,
   useMemoFirebase,
 };

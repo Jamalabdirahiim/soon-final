@@ -2,36 +2,22 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@/lib/utils';
+import { useDoc } from '@/firebase';
+import { doc } from 'firebase/firestore';
+import { useFirestore } from '@/firebase';
 
 export function SoonLogo({ className, hasScrolled }: { className?: string; hasScrolled?: boolean }) {
-  const [logoSrc, setLogoSrc] = useState('/logo.png');
-  const [mobileLogoSrc, setMobileLogoSrc] = useState('');
   const isMobile = useIsMobile();
+  const firestore = useFirestore();
 
-  useEffect(() => {
-    const handleLogoChange = () => {
-      const userLogo = localStorage.getItem('userLogo');
-      setLogoSrc(userLogo || '/logo.png');
-    };
-    const handleMobileLogoChange = () => {
-      const userMobileLogo = localStorage.getItem('mobileLogo');
-      setMobileLogoSrc(userMobileLogo || '');
-    };
+  const { data: settings } = useDoc(
+    firestore ? doc(firestore, 'site-settings', 'config') : null
+  );
 
-    handleLogoChange();
-    handleMobileLogoChange();
-
-    window.addEventListener('logoChanged', handleLogoChange);
-    window.addEventListener('mobileLogoChanged', handleMobileLogoChange);
-
-    return () => {
-      window.removeEventListener('logoChanged', handleLogoChange);
-      window.removeEventListener('mobileLogoChanged', handleMobileLogoChange);
-    };
-  }, []);
+  const logoSrc = settings?.logoUrl || '/logo.png';
+  const mobileLogoSrc = settings?.mobileLogoUrl || '';
 
   const finalSrc = isMobile && mobileLogoSrc ? mobileLogoSrc : logoSrc;
   const isScrolledOrMobile = hasScrolled || isMobile;

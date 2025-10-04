@@ -76,7 +76,7 @@ export default function FeatureHighlight() {
                 </div>
                 
                 {featureImageSrc && (
-                <div className="flex justify-center items-end -mb-8">
+                <div className="flex justify-center items-end -mb-8 md:mb-0">
                     <Image
                         src={featureImageSrc}
                         alt={defaultFeatureImage?.description || 'Feature image'}

@@ -25,7 +25,6 @@ export default function Header({ navLinks }: HeaderProps) {
     const handleScroll = () => {
       const heroSection = document.getElementById('home');
       if (heroSection) {
-        // We add the header height to the scroll position to make sure the header is past the hero section
         setHasScrolled(window.scrollY > heroSection.offsetHeight - 80);
       } else {
         setHasScrolled(window.scrollY > 50);
@@ -51,7 +50,9 @@ export default function Header({ navLinks }: HeaderProps) {
       )}
     >
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
-        <SoonLogo hasScrolled={hasScrolled} />
+        <div className="flex items-center">
+            <SoonLogo hasScrolled={hasScrolled} />
+        </div>
 
         <nav className="hidden items-center gap-6 md:flex">
           {navLinks.map((link) => (
@@ -74,7 +75,7 @@ export default function Header({ navLinks }: HeaderProps) {
           </Button>
         </div>
 
-        <div className="md:hidden">
+        <div className="flex items-center md:hidden">
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className={cn("text-white hover:text-white hover:bg-white/10", hasScrolled && "text-foreground hover:bg-accent hover:text-accent-foreground")}>

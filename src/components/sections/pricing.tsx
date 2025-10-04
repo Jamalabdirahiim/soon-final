@@ -49,7 +49,7 @@ export default function Pricing() {
           {pricingPlans.map((plan) => (
             <Card
               key={plan.name}
-              className="flex flex-col rounded-xl border shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
+              className="flex flex-col rounded-xl border shadow-lg"
             >
               <CardHeader className="items-center text-center pt-8">
                 <CardTitle className="font-headline text-2xl">{plan.name}</CardTitle>
@@ -86,7 +86,7 @@ export default function Pricing() {
                 </ul>
               </CardContent>
               <CardFooter className="p-6">
-                <Button className="w-full" size="lg" variant="outline">
+                <Button className="w-full" size="lg">
                   Get Started
                 </Button>
               </CardFooter>

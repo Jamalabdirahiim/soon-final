@@ -36,7 +36,7 @@ const sidebarNav = [
   { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
   { label: "Content", href: "/admin/dashboard/content", icon: FileText },
   { label: "Pricing", href: "/admin/dashboard/pricing", icon: DollarSign },
-  { label: "Media", href: "/admin/dashboard/media", icon: ImageIcon },
+  { label: "Media", href: "/admin/dashboard/content", icon: ImageIcon },
   { label: "Analytics", href: "/admin/dashboard/analytics", icon: BarChart2 },
   { label: "Settings", href: "/admin/dashboard/settings", icon: Settings },
 ];

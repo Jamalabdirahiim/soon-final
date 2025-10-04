@@ -4,15 +4,18 @@
 import React, { useRef, useState } from 'react';
 import { Button } from './ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Upload } from 'lucide-react';
+import { Upload, Library } from 'lucide-react';
 import { useFirestore, useStorage } from '@/firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
+import { MediaLibrary } from '@/app/admin/dashboard/media/media-library';
 
 export function FeatureImageUploader() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const [isUploading, setIsUploading] = useState(false);
+  const [isLibraryOpen, setIsLibraryOpen] = useState(false);
   const firestore = useFirestore();
   const storage = useStorage();
 
@@ -97,6 +100,10 @@ export function FeatureImageUploader() {
             <Upload className="mr-2" />
             {isUploading ? "Uploading..." : "Upload Bluezone Image"}
           </Button>
+          <Button onClick={() => setIsLibraryOpen(true)} disabled={isUploading || !firestore || !storage} variant="outline">
+            <Library className="mr-2" />
+            Select from Library
+          </Button>
         </div>
         <p className="text-xs text-muted-foreground">
           Transparent laptop images work best. Max file size: 5MB.
@@ -108,6 +115,17 @@ export function FeatureImageUploader() {
           className="hidden"
           accept="image/png, image/jpeg, image/webp"
         />
+        <Dialog open={isLibraryOpen} onOpenChange={setIsLibraryOpen}>
+            <DialogContent className="max-w-4xl">
+                <DialogHeader>
+                    <DialogTitle>Select Feature Image from Media Library</DialogTitle>
+                </DialogHeader>
+                <MediaLibrary onSelect={(url) => {
+                    saveFeatureImage(url);
+                    setIsLibraryOpen(false);
+                }} />
+            </DialogContent>
+        </Dialog>
     </div>
   );
 }

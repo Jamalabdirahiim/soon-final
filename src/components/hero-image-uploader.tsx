@@ -4,18 +4,21 @@
 import React, { useRef, useState } from 'react';
 import { Button } from './ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Upload } from 'lucide-react';
-import { useFirestore, useStorage } from '@/firebase';
+import { Upload, Library } from 'lucide-react';
+import { useFirestore } from '@/firebase';
+import { useStorage } from '@/firebase/storage/use-storage';
 import { doc, setDoc } from 'firebase/firestore';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
-
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
+import { MediaLibrary } from '@/app/admin/dashboard/media/media-library';
 
 export function HeroImageUploader() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const [isUploading, setIsUploading] = useState(false);
+  const [isLibraryOpen, setIsLibraryOpen] = useState(false);
   const firestore = useFirestore();
-  const storage = useStorage();
+  const { app: storage } = useStorage('images');
 
 
   const handleButtonClick = () => {
@@ -101,6 +104,10 @@ export function HeroImageUploader() {
             <Upload className="mr-2" />
             {isUploading ? "Uploading..." : "Upload Hero Image"}
           </Button>
+          <Button onClick={() => setIsLibraryOpen(true)} disabled={isUploading || !firestore || !storage} variant="outline">
+            <Library className="mr-2" />
+            Select from Library
+          </Button>
         </div>
         <p className="text-xs text-muted-foreground">
           Recommended aspect ratio: 16:9. Max file size: 5MB.
@@ -112,6 +119,17 @@ export function HeroImageUploader() {
           className="hidden"
           accept="image/png, image/jpeg, image/webp"
         />
+        <Dialog open={isLibraryOpen} onOpenChange={setIsLibraryOpen}>
+            <DialogContent className="max-w-4xl">
+                <DialogHeader>
+                    <DialogTitle>Select Hero Image from Media Library</DialogTitle>
+                </DialogHeader>
+                <MediaLibrary onSelect={(url) => {
+                    saveHeroImage(url);
+                    setIsLibraryOpen(false);
+                }} />
+            </DialogContent>
+        </Dialog>
     </div>
   );
 }

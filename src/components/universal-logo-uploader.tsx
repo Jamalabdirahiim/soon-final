@@ -4,20 +4,24 @@
 import React, { useRef, useState, useCallback } from 'react';
 import { Button } from './ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, Loader2, ClipboardPaste } from 'lucide-react';
-import { useFirestore, useStorage } from '@/firebase';
+import { Upload, Loader2, ClipboardPaste, Library } from 'lucide-react';
+import { useFirestore } from '@/firebase';
+import { useStorage } from '@/firebase/storage/use-storage';
 import { doc, setDoc } from 'firebase/firestore';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { cn } from '@/lib/utils';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
+import { MediaLibrary } from '@/app/admin/dashboard/media/media-library';
 
 export default function UniversalLogoUploader() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [isLibraryOpen, setIsLibraryOpen] = useState(false);
   const firestore = useFirestore();
-  const storage = useStorage();
+  const { app: storage } = useStorage('logos');
 
   const isWorking = isProcessing || isUploading;
 
@@ -141,20 +145,29 @@ export default function UniversalLogoUploader() {
                             Upload from device
                         </Button>
 
-                        <div 
-                            onPaste={handlePaste}
-                            className={cn(
-                                "flex-1 p-4 border-2 border-dashed rounded-md flex flex-col items-center justify-center text-center cursor-pointer hover:border-primary transition-colors",
-                                isWorking && "cursor-not-allowed opacity-50"
-                            )}
-                            tabIndex={isWorking ? -1 : 0}
-                            role="button"
-                            aria-label="Paste image area"
+                        <Button
+                            onClick={() => setIsLibraryOpen(true)}
+                            disabled={isWorking}
+                            className="flex-1"
+                            variant="outline"
                         >
-                            <ClipboardPaste className="h-6 w-6 text-muted-foreground mb-2" />
-                            <p className="text-sm font-medium">Paste image directly</p>
-                            <p className="text-xs text-muted-foreground">(Ctrl+V or Cmd+V)</p>
-                        </div>
+                            <Library className="mr-2" />
+                            Select from Library
+                        </Button>
+                    </div>
+                    <div 
+                        onPaste={handlePaste}
+                        className={cn(
+                            "flex-1 p-4 border-2 border-dashed rounded-md flex flex-col items-center justify-center text-center cursor-pointer hover:border-primary transition-colors",
+                            isWorking && "cursor-not-allowed opacity-50"
+                        )}
+                        tabIndex={isWorking ? -1 : 0}
+                        role="button"
+                        aria-label="Paste image area"
+                    >
+                        <ClipboardPaste className="h-6 w-6 text-muted-foreground mb-2" />
+                        <p className="text-sm font-medium">Paste image directly</p>
+                        <p className="text-xs text-muted-foreground">(Ctrl+V or Cmd+V)</p>
                     </div>
                      <div className="h-6 text-center">
                         {isProcessing && <p className="text-sm text-muted-foreground animate-pulse">Processing image...</p>}
@@ -170,6 +183,18 @@ export default function UniversalLogoUploader() {
                     />
                 </CardContent>
             </Card>
+
+            <Dialog open={isLibraryOpen} onOpenChange={setIsLibraryOpen}>
+                <DialogContent className="max-w-4xl">
+                    <DialogHeader>
+                        <DialogTitle>Select Logo from Media Library</DialogTitle>
+                    </DialogHeader>
+                    <MediaLibrary onSelect={(url) => {
+                        saveLogoUrl(url);
+                        setIsLibraryOpen(false);
+                    }} />
+                </DialogContent>
+            </Dialog>
         </div>
     </section>
   );

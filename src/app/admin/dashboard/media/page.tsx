@@ -16,15 +16,15 @@ export default function MediaPage() {
                 <CardDescription>Upload your own assets to customize the look and feel of your site.</CardDescription>
             </CardHeader>
             <CardContent className="grid md:grid-cols-3 gap-8">
-                <div className="space-y-6">
+                <div className="space-y-8">
                     <LogoUploader />
                     <MobileLogoUploader />
                 </div>
-                <div className="space-y-6">
+                <div className="space-y-8">
                     <HeroImageUploader />
                     <MobileHeroImageUploader />
                 </div>
-                <div className="space-y-6">
+                <div className="space-y-8">
                     <FeatureImageUploader />
                     <MobileFeatureImageUploader />
                 </div>

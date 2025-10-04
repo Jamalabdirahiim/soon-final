@@ -5,7 +5,7 @@ import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import { useStorage } from '@/firebase/storage/use-storage';
 import { Button } from '@/components/ui/button';
-import { Upload, Loader2, CheckCircle, Trash2, AlertTriangle } from 'lucide-react';
+import { Upload, Loader2, CheckCircle, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import {
   AlertDialog,
@@ -16,7 +16,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 
 export function MediaLibrary({ onSelect }: { onSelect: (url: string) => void; }) {
@@ -86,9 +85,9 @@ export function MediaLibrary({ onSelect }: { onSelect: (url: string) => void; })
   return (
     <div className="flex flex-col h-[70vh]">
         <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">Media Library</h2>
+            <h2 className="text-xl font-semibold sr-only">Media Library</h2>
             <Button onClick={() => fileInputRef.current?.click()} disabled={isUploading}>
-                {isUploading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Upload className="mr-2" />}
+                {isUploading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Upload className="mr-2 h-4 w-4" />}
                 {isUploading ? 'Uploading...' : 'Upload New Media'}
             </Button>
             <input

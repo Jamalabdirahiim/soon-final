@@ -5,7 +5,8 @@ import React, { useRef, useState } from 'react';
 import { Button } from './ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Upload, Library } from 'lucide-react';
-import { useFirestore, useStorage } from '@/firebase';
+import { useFirestore } from '@/firebase';
+import { useStorage } from '@/firebase/storage/use-storage';
 import { doc, setDoc } from 'firebase/firestore';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
@@ -17,7 +18,7 @@ export function FeatureImageUploader() {
   const [isUploading, setIsUploading] = useState(false);
   const [isLibraryOpen, setIsLibraryOpen] = useState(false);
   const firestore = useFirestore();
-  const storage = useStorage();
+  const { app: storage } = useStorage('images');
 
   const handleButtonClick = () => {
     fileInputRef.current?.click();

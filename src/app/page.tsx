@@ -12,36 +12,32 @@ import Contact from "@/components/sections/contact";
 import Footer from "@/components/layout/footer";
 import FadeInWrapper from "@/components/fade-in-wrapper";
 import { content } from "@/lib/content";
-import { UniversalLogoUploader } from "@/components/universal-logo-uploader";
 
 export default function Home() {
 
   return (
     <div className="flex min-h-[100dvh] flex-col bg-background">
-      <Header navLinks={content.navLinks} />
+      <Header />
       <main className="flex-1">
         <HeroImage />
-        <HeroText content={content.hero} />
-        <section className="py-12 md:py-16 lg:py-20 bg-background">
-          <UniversalLogoUploader />
-        </section>
+        <HeroText />
         <FadeInWrapper>
-          <Services content={content.services} />
+          <Services />
         </FadeInWrapper>
         <FadeInWrapper>
           <FeatureHighlight />
         </FadeInWrapper>
         <FadeInWrapper>
-          <Pricing content={content.pricingPlans} />
+          <Pricing />
         </FadeInWrapper>
         <FadeInWrapper>
-          <Faq content={content.faq} />
+          <Faq />
         </FadeInWrapper>
         <FadeInWrapper>
-          <Contact content={content.contact} />
+          <Contact />
         </FadeInWrapper>
       </main>
-      <Footer navLinks={content.navLinks} contact={content.contact} />
+      <Footer />
     </div>
   );
 }

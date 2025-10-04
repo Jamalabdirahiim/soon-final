@@ -1,20 +1,19 @@
+
 "use client";
 
-import React, { useRef, useState }from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import { useFirestore, useStorage } from '@/firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from './ui/button';
-import { Input } from './ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
-import { Upload, Link as LinkIcon, Loader2 } from 'lucide-react';
+import { Upload, Clipboard, Loader2 } from 'lucide-react';
 
 export function UniversalLogoUploader() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
-  const [pastedUrl, setPastedUrl] = useState('');
   const firestore = useFirestore();
   const storage = useStorage();
 
@@ -39,10 +38,12 @@ export function UniversalLogoUploader() {
       });
     }
   };
-
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file || !storage) return;
+  
+  const processAndUploadFile = useCallback(async (file: File) => {
+    if (!storage) {
+        toast({ variant: "destructive", title: "Error", description: "Storage is not available." });
+        return;
+    }
 
     if (file.size > 2 * 1024 * 1024) { // 2MB limit
       toast({ variant: "destructive", title: "File too large", description: "Please select an image smaller than 2MB." });
@@ -64,33 +65,43 @@ export function UniversalLogoUploader() {
       toast({ variant: "destructive", title: "Upload failed", description: "Could not upload the selected file. Please try again." });
     } finally {
       setIsProcessing(false);
-      if (event.target) event.target.value = '';
     }
+  }, [storage, toast, saveLogoUrl]);
+
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      await processAndUploadFile(file);
+    }
+    if (event.target) event.target.value = '';
   };
 
-  const handlePasteUrl = async () => {
-    if (!pastedUrl) {
-        toast({ variant: "destructive", title: "No URL", description: "Please paste a URL to an image." });
-        return;
+  const handlePaste = useCallback(async (event: React.ClipboardEvent<HTMLDivElement>) => {
+    const items = event.clipboardData.items;
+    for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image') !== -1) {
+            const file = items[i].getAsFile();
+            if (file) {
+                await processAndUploadFile(file);
+                // Prevent the browser from also pasting the image into the contenteditable div
+                event.preventDefault(); 
+                return;
+            }
+        }
     }
-    try {
-        new URL(pastedUrl);
-    } catch (_) {
-        toast({ variant: "destructive", title: "Invalid URL", description: "The URL you pasted is not valid." });
-        return;
-    }
-
-    setIsProcessing(true);
-    await saveLogoUrl(pastedUrl);
-    setIsProcessing(false);
-    setPastedUrl('');
-  };
+     toast({
+        variant: 'destructive',
+        title: 'Paste Error',
+        description: 'No image found on the clipboard. Please copy an image first.',
+      });
+  }, [processAndUploadFile, toast]);
 
   return (
     <Card className="w-full max-w-lg mx-auto">
       <CardHeader>
         <CardTitle>Update Your Logo</CardTitle>
-        <CardDescription>Upload a new logo or paste an image URL. This will update the logo across your entire site for both desktop and mobile.</CardDescription>
+        <CardDescription>Upload a new logo or paste an image directly. This will update the logo across your entire site for both desktop and mobile.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-2">
@@ -126,18 +137,15 @@ export function UniversalLogoUploader() {
         </div>
 
         <div className="space-y-2">
-            <h3 className="text-sm font-medium">Paste image URL</h3>
-            <div className="flex gap-2">
-                <Input
-                    type="url"
-                    placeholder="https://example.com/logo.png"
-                    value={pastedUrl}
-                    onChange={(e) => setPastedUrl(e.target.value)}
-                    disabled={isProcessing}
-                />
-                <Button onClick={handlePasteUrl} disabled={isProcessing} aria-label="Submit URL">
-                    <LinkIcon />
-                </Button>
+            <h3 className="text-sm font-medium">Paste image directly</h3>
+            <div 
+                onPaste={handlePaste}
+                className="flex items-center justify-center flex-col w-full min-h-[100px] rounded-md border border-input bg-background px-3 py-2 text-sm text-muted-foreground ring-offset-background focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
+                tabIndex={0} // Make it focusable
+            >
+                <Clipboard className="h-8 w-8 mb-2"/>
+                <p>Click here and paste your image</p>
+                <p className="text-xs">(Ctrl+V or Cmd+V)</p>
             </div>
         </div>
 

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useCallback, ChangeEvent } from 'react';
@@ -7,7 +8,7 @@ import { Progress } from '@/components/ui/progress';
 import { useFirestore, useStorage } from '@/firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { doc, setDoc } from 'firebase/firestore';
-import { toast } from 'sonner';
+import { toast } from '@/components/ui/use-toast';
 
 const UniversalLogoUploader = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -40,7 +41,14 @@ const UniversalLogoUploader = () => {
   };
 
   const handleUpload = async (fileToUpload: File) => {
-    if (!fileToUpload) return;
+    if (!fileToUpload || !storage || !db) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Firebase is not ready. Please try again later.",
+      });
+      return
+    };
 
     setUploading(true);
     setUploadProgress(0);
@@ -56,7 +64,11 @@ const UniversalLogoUploader = () => {
       },
       (error) => {
         console.error('Upload failed:', error);
-        toast.error('Upload failed. Please try again.');
+        toast({
+            variant: "destructive",
+            title: "Upload failed",
+            description: "Please try again.",
+        });
         setUploading(false);
       },
       async () => {
@@ -64,18 +76,26 @@ const UniversalLogoUploader = () => {
         await saveLogoUrlToFirestore(downloadURL);
         setUploading(false);
         setFile(null);
-        toast.success('Logo uploaded successfully!');
+        toast({
+            title: "Success!",
+            description: "Logo uploaded successfully!",
+        });
       }
     );
   };
 
   const saveLogoUrlToFirestore = async (url: string) => {
+    if (!db) return;
     try {
       const settingsRef = doc(db, 'site-settings', 'logo');
       await setDoc(settingsRef, { url });
     } catch (error) {
       console.error('Error saving logo URL to Firestore:', error);
-      toast.error('Failed to save logo URL.');
+      toast({
+        variant: "destructive",
+        title: "Database Error",
+        description: "Failed to save logo URL.",
+      });
     }
   };
 

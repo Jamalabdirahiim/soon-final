@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from 'next/image';
@@ -13,11 +14,15 @@ export function SoonLogo({ className, hasScrolled }: { className?: string; hasSc
   const firestore = useFirestore();
 
   const { data: settings } = useDoc(
+    firestore ? doc(firestore, 'site-settings', 'logo') : null
+  );
+  
+  const { data: mobileSettings } = useDoc(
     firestore ? doc(firestore, 'site-settings', 'config') : null
   );
 
-  const logoSrc = settings?.logoUrl || '/logo.png';
-  const mobileLogoSrc = settings?.mobileLogoUrl || '';
+  const logoSrc = settings?.url || '/logo.png';
+  const mobileLogoSrc = mobileSettings?.mobileLogoUrl || '';
 
   const finalSrc = isMobile && mobileLogoSrc ? mobileLogoSrc : logoSrc;
   const isScrolledOrMobile = hasScrolled || isMobile;

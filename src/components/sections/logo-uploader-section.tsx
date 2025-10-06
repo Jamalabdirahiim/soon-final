@@ -1,7 +1,6 @@
-
 'use client';
 
-import { useState, useCallback, ChangeEvent } from 'react';
+import { useState, useCallback, ChangeEvent, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -20,84 +19,84 @@ export default function LogoUploaderSection() {
   const storage = useStorage();
   const db = useFirestore();
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (acceptedFiles.length === 0) {
+  const handleUpload = useCallback(async (fileToUpload: File) => {
+    if (!fileToUpload || !storage || !db) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Component is not ready. Please try again later.',
+      });
       return;
     }
-    const fileToUpload = acceptedFiles[0];
-    setFile(fileToUpload);
 
-    const handleUpload = async (fileToUpload: File) => {
-        if (!fileToUpload || !storage || !db) {
+    setUploading(true);
+    setUploadProgress(0);
+
+    const storageRef = ref(storage, `logos/${Date.now()}-${fileToUpload.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, fileToUpload);
+
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setUploadProgress(progress);
+      },
+      (error) => {
+        console.error('Upload failed:', error);
+        toast({
+          variant: 'destructive',
+          title: 'Upload failed',
+          description: 'Please try again.',
+        });
+        setUploading(false);
+        setFile(null);
+      },
+      async () => {
+        try {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          const settingsRef = doc(db, 'site-settings', 'logo');
+          await setDoc(settingsRef, { url: downloadURL });
           toast({
-            variant: "destructive",
-            title: "Error",
-            description: "Firebase is not ready. Please try again later.",
+            title: 'Success!',
+            description: 'Logo uploaded successfully!',
           });
-          return;
+        } catch (error) {
+          console.error('Error saving logo URL to Firestore:', error);
+          toast({
+            variant: 'destructive',
+            title: 'Database Error',
+            description: 'Failed to save logo URL.',
+          });
+        } finally {
+          setUploading(false);
+          setFile(null);
         }
-    
-        setUploading(true);
-        setUploadProgress(0);
-    
-        const storageRef = ref(storage, `logos/${fileToUpload.name}`);
-        const uploadTask = uploadBytesResumable(storageRef, fileToUpload);
-    
-        uploadTask.on(
-          'state_changed',
-          (snapshot) => {
-            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            setUploadProgress(progress);
-          },
-          (error) => {
-            console.error('Upload failed:', error);
-            toast({
-                variant: "destructive",
-                title: "Upload failed",
-                description: "Please try again.",
-            });
-            setUploading(false);
-          },
-          async () => {
-            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-            
-            if (db) {
-                try {
-                  const settingsRef = doc(db, 'site-settings', 'logo');
-                  await setDoc(settingsRef, { url: downloadURL });
-                  toast({
-                    title: "Success!",
-                    description: "Logo uploaded successfully!",
-                  });
-                } catch (error) {
-                  console.error('Error saving logo URL to Firestore:', error);
-                  toast({
-                    variant: "destructive",
-                    title: "Database Error",
-                    description: "Failed to save logo URL.",
-                  });
-                }
-            }
-            
-            setUploading(false);
-            setFile(null);
-          }
-        );
-      };
-
-    handleUpload(fileToUpload);
+      }
+    );
   }, [db, storage, toast]);
+
+  useEffect(() => {
+    if (file) {
+      handleUpload(file);
+    }
+  }, [file, handleUpload]);
+
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    if (acceptedFiles.length > 0) {
+      setFile(acceptedFiles[0]);
+    }
+  }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: { 'image/*': [] },
     multiple: false,
+    disabled: uploading,
   });
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      const selectedFile = e.target.files[0];
-      onDrop([selectedFile]);
+      setFile(e.target.files[0]);
     }
   };
 
@@ -114,7 +113,7 @@ export default function LogoUploaderSection() {
               {...getRootProps()}
               className={`p-10 border-2 border-dashed rounded-lg text-center cursor-pointer transition-colors ${
                 isDragActive ? 'border-primary bg-primary/10' : 'border-gray-300'
-              }`}
+              } ${uploading ? 'cursor-not-allowed opacity-50' : ''}`}
             >
               <input {...getInputProps()} />
               {
@@ -124,7 +123,7 @@ export default function LogoUploaderSection() {
               }
             </div>
             <div className="mt-6 text-center">
-              <Button onClick={() => document.getElementById('logo-file-input')?.click()} variant="outline">
+              <Button onClick={() => document.getElementById('logo-file-input')?.click()} variant="outline" disabled={uploading}>
                 Select from Device
               </Button>
               <input
@@ -133,6 +132,7 @@ export default function LogoUploaderSection() {
                 className="hidden"
                 onChange={handleFileChange}
                 accept="image/*"
+                disabled={uploading}
               />
             </div>
             {file && !uploading && (

@@ -61,7 +61,6 @@ export default function LogoUploaderSection() {
           async () => {
             const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
             
-            // Save to site-settings/logo
             if (db) {
                 try {
                   const settingsRef = doc(db, 'site-settings', 'logo');

@@ -21,13 +21,73 @@ export default function LogoUploaderSection() {
   const db = useFirestore();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (acceptedFiles.length > 0) {
-      const selectedFile = acceptedFiles[0];
-      setFile(selectedFile);
-      handleUpload(selectedFile);
+    if (acceptedFiles.length === 0) {
+      return;
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [db, storage]);
+    const fileToUpload = acceptedFiles[0];
+    setFile(fileToUpload);
+
+    const handleUpload = async (fileToUpload: File) => {
+        if (!fileToUpload || !storage || !db) {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Firebase is not ready. Please try again later.",
+          });
+          return;
+        }
+    
+        setUploading(true);
+        setUploadProgress(0);
+    
+        const storageRef = ref(storage, `logos/${fileToUpload.name}`);
+        const uploadTask = uploadBytesResumable(storageRef, fileToUpload);
+    
+        uploadTask.on(
+          'state_changed',
+          (snapshot) => {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            setUploadProgress(progress);
+          },
+          (error) => {
+            console.error('Upload failed:', error);
+            toast({
+                variant: "destructive",
+                title: "Upload failed",
+                description: "Please try again.",
+            });
+            setUploading(false);
+          },
+          async () => {
+            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+            
+            // Save to site-settings/logo
+            if (db) {
+                try {
+                  const settingsRef = doc(db, 'site-settings', 'logo');
+                  await setDoc(settingsRef, { url: downloadURL });
+                  toast({
+                    title: "Success!",
+                    description: "Logo uploaded successfully!",
+                  });
+                } catch (error) {
+                  console.error('Error saving logo URL to Firestore:', error);
+                  toast({
+                    variant: "destructive",
+                    title: "Database Error",
+                    description: "Failed to save logo URL.",
+                  });
+                }
+            }
+            
+            setUploading(false);
+            setFile(null);
+          }
+        );
+      };
+
+    handleUpload(fileToUpload);
+  }, [db, storage, toast]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -38,67 +98,7 @@ export default function LogoUploaderSection() {
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const selectedFile = e.target.files[0];
-      setFile(selectedFile);
-      handleUpload(selectedFile);
-    }
-  };
-
-  const handleUpload = async (fileToUpload: File) => {
-    if (!fileToUpload || !storage || !db) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Firebase is not ready. Please try again later.",
-      });
-      return;
-    }
-
-    setUploading(true);
-    setUploadProgress(0);
-
-    const storageRef = ref(storage, `logos/${fileToUpload.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, fileToUpload);
-
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setUploadProgress(progress);
-      },
-      (error) => {
-        console.error('Upload failed:', error);
-        toast({
-            variant: "destructive",
-            title: "Upload failed",
-            description: "Please try again.",
-        });
-        setUploading(false);
-      },
-      async () => {
-        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-        await saveLogoUrlToFirestore(downloadURL);
-        setUploading(false);
-        setFile(null);
-        toast({
-            title: "Success!",
-            description: "Logo uploaded successfully!",
-        });
-      }
-    );
-  };
-
-  const saveLogoUrlToFirestore = async (url: string) => {
-    if (!db) return;
-    try {
-      const settingsRef = doc(db, 'site-settings', 'logo');
-      await setDoc(settingsRef, { url });
-    } catch (error) {
-      console.error('Error saving logo URL to Firestore:', error);
-      toast({
-        variant: "destructive",
-        title: "Database Error",
-        description: "Failed to save logo URL.",
-      });
+      onDrop([selectedFile]);
     }
   };
 
@@ -136,7 +136,7 @@ export default function LogoUploaderSection() {
                 accept="image/*"
               />
             </div>
-            {file && (
+            {file && !uploading && (
               <div className="mt-6">
                 <p className="text-sm font-medium text-muted-foreground">Selected file: {file.name}</p>
               </div>

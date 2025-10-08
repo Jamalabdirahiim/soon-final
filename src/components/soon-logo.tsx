@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 export function SoonLogo({ className, logoSrc, isInFooter }: { className?: string; logoSrc: string, isInFooter?: boolean }) {
 
   return (
-    <Link href="/" aria-label="Back to homepage" className={cn("transition-all duration-300", className)}>
+    <Link href="/" aria-label="Back to homepage" className="flex items-center">
       <Image 
         src={logoSrc}
         alt="SOON Logo" 
@@ -17,7 +17,8 @@ export function SoonLogo({ className, logoSrc, isInFooter }: { className?: strin
         priority
         className={cn(
             "h-14 w-auto transition-all duration-300",
-            isInFooter && "brightness-0 invert-[1] drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]"
+            isInFooter && "brightness-0 invert",
+            className
         )}
         key={logoSrc} 
         data-ai-hint="minimalist logo"

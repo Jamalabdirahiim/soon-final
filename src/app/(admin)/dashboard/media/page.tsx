@@ -7,7 +7,7 @@ import { HeroImageUploader } from "@/components/hero-image-uploader";
 import { MobileHeroImageUploader } from "@/components/mobile-hero-image-uploader";
 import { FeatureImageUploader } from "@/components/feature-image-uploader";
 import { MobileFeatureImageUploader } from "@/components/mobile-feature-image-uploader";
-import { MediaLibrary } from "@/app/admin/dashboard/media/media-library";
+import { MediaLibrary } from "./media-library";
 
 export default function MediaPage() {
     return (

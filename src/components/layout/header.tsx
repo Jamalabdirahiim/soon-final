@@ -43,7 +43,7 @@ export default function Header({ logoUrl }: { logoUrl: string }) {
     >
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         <div className="flex items-center">
-            <SoonLogo hasScrolled={isScrolledOrMobileMenuOpen} logoSrc={logoUrl} />
+            <SoonLogo hasScrolled={hasScrolled} logoSrc={logoUrl} />
         </div>
 
         <nav className="hidden items-center gap-6 md:flex">
@@ -53,7 +53,7 @@ export default function Header({ logoUrl }: { logoUrl: string }) {
               href={link.href}
               className={cn(
                 "text-sm font-medium transition-colors hover:text-primary",
-                isScrolledOrMobileMenuOpen ? "text-foreground/80" : "text-primary-foreground/80 hover:text-primary-foreground drop-shadow-sm"
+                !hasScrolled ? "text-primary-foreground/80 hover:text-primary-foreground drop-shadow-sm" : "text-foreground/80"
               )}
             >
               {link.label}
@@ -65,8 +65,8 @@ export default function Header({ logoUrl }: { logoUrl: string }) {
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className={cn(
-                  "text-foreground hover:bg-accent hover:text-accent-foreground", 
-                  !isScrolledOrMobileMenuOpen && "text-white hover:text-white hover:bg-white/10"
+                  "hover:bg-accent hover:text-accent-foreground", 
+                  !hasScrolled ? "text-white hover:text-white hover:bg-white/10" : "text-foreground"
                 )}>
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Open navigation menu</span>

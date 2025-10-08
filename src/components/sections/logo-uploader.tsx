@@ -3,8 +3,7 @@
 
 import React, { useState, useCallback, useEffect } from 'react';
 import { useDropzone, type FileWithPath } from 'react-dropzone';
-import { useFirestore, useStorage } from '@/firebase';
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { useFirestore } from '@/firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
@@ -15,22 +14,28 @@ import { cn } from '@/lib/utils';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 
+// Function to convert file to Base64
+const toBase64 = (file: File): Promise<string> => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = error => reject(error);
+});
+
 export default function LogoUploader() {
-  const storage = useStorage();
   const firestore = useFirestore();
   const { toast } = useToast();
 
   const [file, setFile] = useState<FileWithPath | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    if (storage && firestore) {
+    if (firestore) {
       setIsReady(true);
     }
-  }, [storage, firestore]);
+  }, [firestore]);
 
   useEffect(() => {
     if (file) {
@@ -52,77 +57,53 @@ export default function LogoUploader() {
     onDrop,
     accept: { 'image/*': ['.jpeg', '.png', '.svg', '.gif', '.webp'] },
     multiple: false,
-    disabled: isUploading || !isReady,
+    disabled: isProcessing || !isReady,
   });
   
   const handleUpload = useCallback(async () => {
-    if (!file || !storage || !firestore) {
+    if (!file || !firestore) {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Component not ready. Please try again in a moment.",
+        description: "Uploader not ready. Please try again in a moment.",
       });
       return;
     }
 
-    setIsUploading(true);
-    setUploadProgress(0);
+    setIsProcessing(true);
 
-    const storageRef = ref(storage, `logos/${Date.now()}_${file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
+    try {
+        const dataUrl = await toBase64(file);
+        
+        const logoDocRef = doc(firestore, 'site-settings', 'logo');
+        
+        await setDoc(logoDocRef, { url: dataUrl }, { merge: true });
 
-    uploadTask.on('state_changed',
-      (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setUploadProgress(progress);
-      },
-      (error) => {
-        console.error("Upload error:", error);
         toast({
-          variant: "destructive",
-          title: "Upload Failed",
-          description: `Storage error: ${error.message}. Check storage rules and CORS settings.`,
-        });
-        setIsUploading(false);
-        setUploadProgress(null);
-      },
-      async () => {
-        try {
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          const logoDocRef = doc(firestore, 'site-settings', 'logo');
-          
-          setDoc(logoDocRef, { url: downloadURL }, { merge: true }).catch(serverError => {
-             const permissionError = new FirestorePermissionError({
-                path: logoDocRef.path,
-                operation: 'update',
-                requestResourceData: { url: downloadURL },
-            });
-            errorEmitter.emit('permission-error', permissionError);
-          });
-
-          toast({
             title: "Upload Successful!",
             description: "Your new logo has been applied across the site.",
-          });
-          
-          // Dispatch a custom event to notify other components (like the header)
-          window.dispatchEvent(new CustomEvent('logoChanged'));
-          setFile(null); // Clear the file after successful upload
+        });
 
-        } catch (dbError) {
-          console.error("Firestore error:", dbError);
-          toast({
-            variant: "destructive",
-            title: "Database Error",
-            description: "Could not save the new logo URL. Please contact support.",
-          });
-        } finally {
-            setIsUploading(false);
-            setUploadProgress(null);
+        // Dispatch a custom event to notify other components (like the header)
+        window.dispatchEvent(new CustomEvent('logoChanged'));
+        setFile(null); // Clear the file after successful upload
+
+    } catch (error: any) {
+        console.error("Upload or save error:", error);
+        
+        if (error.name === 'FirestorePermissionError') {
+             errorEmitter.emit('permission-error', error);
+        } else {
+             toast({
+                variant: "destructive",
+                title: "An Error Occurred",
+                description: "Could not save the new logo. Please check the console for details.",
+            });
         }
-      }
-    );
-  }, [file, storage, firestore, toast]);
+    } finally {
+        setIsProcessing(false);
+    }
+  }, [file, firestore, toast]);
 
   return (
     <section id="logo-uploader" className="bg-secondary">
@@ -152,7 +133,7 @@ export default function LogoUploader() {
                 {preview ? (
                     <div className="relative w-full h-full p-4">
                         <Image src={preview} alt="Logo preview" layout="fill" objectFit="contain" />
-                        {!isUploading && (
+                        {!isProcessing && (
                           <Button variant="ghost" size="icon" className="absolute top-2 right-2 bg-background/50 backdrop-blur-sm" onClick={(e) => { e.stopPropagation(); setFile(null);}}>
                               <X className="h-4 w-4" />
                           </Button>
@@ -170,17 +151,17 @@ export default function LogoUploader() {
                 )}
             </div>
 
-            {uploadProgress !== null && isUploading && (
+            {isProcessing && (
                 <div className="w-full text-center space-y-2 mt-4">
-                    <Progress value={uploadProgress} />
-                    <p className="text-sm text-muted-foreground">Uploading... {Math.round(uploadProgress)}%</p>
+                    <Progress value={undefined} />
+                    <p className="text-sm text-muted-foreground">Processing and saving...</p>
                 </div>
             )}
 
-            {file && !isUploading && (
+            {file && !isProcessing && (
                 <div className="mt-6 flex justify-center">
-                    <Button onClick={handleUpload} size="lg" disabled={isUploading || !isReady}>
-                        {isUploading ? "Uploading..." : "Apply Logo"}
+                    <Button onClick={handleUpload} size="lg" disabled={isProcessing || !isReady}>
+                        {isProcessing ? "Saving..." : "Apply Logo"}
                     </Button>
                 </div>
             )}

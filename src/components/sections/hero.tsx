@@ -20,7 +20,7 @@ export default function Hero() {
             {subheadline}
           </p>
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button asChild size="lg" className="premium-red-bg text-primary-foreground hover:brightness-110 transition-transform hover:scale-105 shadow-lg">
+            <Button asChild size="lg" className="premium-blue-bg text-primary-foreground hover:brightness-110 transition-transform hover:scale-105 shadow-lg">
               <Link href="#pricing">View Plans</Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="transition-transform hover:scale-105">

@@ -9,7 +9,7 @@ import Link from "next/link";
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="bg-secondary">
+    <section id="pricing" className="bg-background">
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
@@ -64,7 +64,7 @@ export default function Pricing() {
                 </ul>
               </CardContent>
               <CardFooter className="p-6">
-                <Button asChild className="w-full premium-red-bg text-primary-foreground hover:brightness-110" size="lg">
+                <Button asChild className="w-full premium-blue-bg text-primary-foreground hover:brightness-110 transition-transform hover:scale-105" size="lg">
                   <Link href="#contact">Get Started</Link>
                 </Button>
               </CardFooter>

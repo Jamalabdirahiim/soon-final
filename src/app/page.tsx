@@ -3,7 +3,7 @@ import { initializeFirebase } from "@/firebase/index.server";
 import { doc, getDoc } from "firebase/firestore";
 
 import Header from "@/components/layout/header";
-import Hero from "@/components/sections/hero";
+import HeroImage from "@/components/sections/hero-image";
 import Services from "@/components/sections/services";
 import Pricing from "@/components/sections/pricing";
 import Faq from "@/components/sections/faq";
@@ -13,6 +13,7 @@ import FadeInWrapper from "@/components/fade-in-wrapper";
 import Iptv from "@/components/sections/iptv";
 import { placeholderImages } from "@/lib/placeholder-images.json";
 import Customization from "@/components/sections/customization";
+import HeroText from "@/components/sections/hero-text";
 
 async function getSiteData() {
   const { firestore } = initializeFirebase();
@@ -57,7 +58,8 @@ export default async function Home() {
     <div className="flex min-h-[100dvh] flex-col bg-background">
       <Header logoUrl={logoUrl} />
       <main className="flex-1">
-        <Hero />
+        <HeroImage heroImageUrl={heroImageUrl} mobileHeroImageUrl={mobileHeroImageUrl} />
+        <HeroText />
         
         <Customization />
         

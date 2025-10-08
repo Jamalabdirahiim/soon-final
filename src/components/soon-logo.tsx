@@ -5,9 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
-export function SoonLogo({ className, hasScrolled, logoSrc }: { className?: string; hasScrolled?: boolean, logoSrc: string }) {
-  
-  const isFooter = hasScrolled === undefined;
+export function SoonLogo({ className, hasScrolled, logoSrc, isInFooter }: { className?: string; hasScrolled?: boolean, logoSrc: string, isInFooter?: boolean }) {
 
   return (
     <Link href="/" aria-label="Back to homepage" className={cn("transition-all duration-300", className)}>
@@ -19,7 +17,7 @@ export function SoonLogo({ className, hasScrolled, logoSrc }: { className?: stri
         priority
         className={cn(
             "h-14 w-auto transition-all duration-300",
-            isFooter && "brightness-0 invert-[1] drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]"
+            isInFooter && "brightness-0 invert-[1] drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]"
         )}
         key={logoSrc} 
         data-ai-hint="minimalist logo"

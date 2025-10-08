@@ -9,39 +9,42 @@ import {
 } from "@/components/ui/accordion";
 import { content } from "@/lib/content";
 import { HelpCircle } from "lucide-react";
+import FadeInWrapper from "../fade-in-wrapper";
 
 export default function Faq() {
   return (
     <section id="faq" className="bg-secondary">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="flex flex-col items-center justify-center space-y-4 text-center">
-          <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 rounded-lg bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">
-              <HelpCircle className="h-4 w-4" />
-              <span>FAQ</span>
+      <FadeInWrapper>
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="flex flex-col items-center justify-center space-y-4 text-center">
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-2 rounded-lg bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">
+                <HelpCircle className="h-4 w-4" />
+                <span>FAQ</span>
+              </div>
+              <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-5xl premium-blue-text">
+                Common Questions
+              </h2>
+              <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                Have questions? We have answers. Here are some common things people ask.
+              </p>
             </div>
-            <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-5xl premium-blue-text">
-              Common Questions
-            </h2>
-            <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Have questions? We have answers. Here are some common things people ask.
-            </p>
+          </div>
+
+          <div className="mx-auto mt-12 max-w-3xl">
+            <Accordion type="single" collapsible className="w-full">
+              {content.faq.map((item, index) => (
+                <AccordionItem key={index} value={`item-${index}`}>
+                  <AccordionTrigger className="text-lg font-semibold text-left">{item.question}</AccordionTrigger>
+                  <AccordionContent className="text-base text-muted-foreground">
+                    {item.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
           </div>
         </div>
-
-        <div className="mx-auto mt-12 max-w-3xl">
-          <Accordion type="single" collapsible className="w-full">
-            {content.faq.map((item, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="text-lg font-semibold text-left">{item.question}</AccordionTrigger>
-                <AccordionContent className="text-base text-muted-foreground">
-                  {item.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
-      </div>
+      </FadeInWrapper>
     </section>
   );
 }

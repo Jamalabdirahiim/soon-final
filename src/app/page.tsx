@@ -9,7 +9,6 @@ import Pricing from "@/components/sections/pricing";
 import Faq from "@/components/sections/faq";
 import Contact from "@/components/sections/contact";
 import Footer from "@/components/layout/footer";
-import FadeInWrapper from "@/components/fade-in-wrapper";
 import Iptv from "@/components/sections/iptv";
 import { placeholderImages } from "@/lib/placeholder-images.json";
 import Customization from "@/components/sections/customization";
@@ -64,21 +63,11 @@ export default async function Home() {
         
         <Customization />
         
-        <FadeInWrapper>
-          <Iptv />
-        </FadeInWrapper>
-        <FadeInWrapper>
-          <Services />
-        </FadeInWrapper>
-        <FadeInWrapper>
-          <Pricing />
-        </FadeInWrapper>
-        <FadeInWrapper>
-          <Faq />
-        </FadeInWrapper>
-        <FadeInWrapper>
-          <Contact />
-        </FadeInWrapper>
+        <Iptv />
+        <Services />
+        <Pricing />
+        <Faq />
+        <Contact />
       </main>
       <Footer logoUrl={logoUrl} />
     </div>

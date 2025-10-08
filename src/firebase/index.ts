@@ -16,7 +16,12 @@ let auth: Auth;
 let firestore: Firestore;
 let storage: Storage;
 
+// This function is for CLIENT-side use only
 function initializeFirebase() {
+  if (typeof window === 'undefined') {
+    throw new Error("Firebase client initialization should only be called on the client.");
+  }
+  
   if (getApps().length === 0) {
     firebaseApp = initializeApp(firebaseConfig);
     auth = getAuth(firebaseApp);

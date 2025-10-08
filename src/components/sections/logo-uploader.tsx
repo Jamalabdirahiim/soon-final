@@ -12,6 +12,7 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
+import { revalidateHome } from '@/app/actions';
 
 // Function to convert file to Base64
 const toBase64 = (file: File): Promise<string> => new Promise((resolve, reject) => {
@@ -106,25 +107,24 @@ export default function LogoUploader() {
         
         const logoDocRef = doc(firestore, 'site-settings', 'logo');
         
-        // This is an intentional non-awaited call to allow for optimistic UI
-        setDoc(logoDocRef, { url: dataUrl }, { merge: true }).catch(error => {
-          console.error("Firestore save error:", error);
-          const permissionError = new FirestorePermissionError({
-            path: logoDocRef.path,
-            operation: 'update',
-            requestResourceData: { url: 'REDACTED_DATA_URL' }
+        setDoc(logoDocRef, { url: dataUrl }, { merge: true })
+          .then(() => {
+            revalidateHome(); // Revalidate the homepage to show the new logo
+            toast({
+                title: "Upload Successful!",
+                description: "Your new logo has been applied across the site.",
+            });
+            setFile(null); // Clear the file after successful upload
+          })
+          .catch(error => {
+            console.error("Firestore save error:", error);
+            const permissionError = new FirestorePermissionError({
+              path: logoDocRef.path,
+              operation: 'update',
+              requestResourceData: { url: 'REDACTED_DATA_URL' }
+            });
+            errorEmitter.emit('permission-error', permissionError);
           });
-          errorEmitter.emit('permission-error', permissionError);
-        });
-
-        toast({
-            title: "Upload Successful!",
-            description: "Your new logo has been applied across the site.",
-        });
-
-        // Dispatch a custom event to notify other components (like the header)
-        window.dispatchEvent(new CustomEvent('logoChanged'));
-        setFile(null); // Clear the file after successful upload
 
     } catch (error: any) {
         console.error("Upload or save error:", error);

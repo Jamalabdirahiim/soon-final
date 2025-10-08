@@ -12,6 +12,7 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
+import { revalidateHome } from '@/app/actions';
 
 const toBase64 = (file: File): Promise<string> => new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -103,23 +104,24 @@ export default function HeroImageUploader() {
         
         const configDocRef = doc(firestore, 'site-settings', 'config');
         
-        setDoc(configDocRef, { heroImageUrl: dataUrl }, { merge: true }).catch(error => {
-          console.error("Firestore save error:", error);
-          const permissionError = new FirestorePermissionError({
-            path: configDocRef.path,
-            operation: 'update',
-            requestResourceData: { heroImageUrl: 'REDACTED_DATA_URL' }
+        setDoc(configDocRef, { heroImageUrl: dataUrl }, { merge: true })
+          .then(() => {
+            revalidateHome();
+            toast({
+                title: "Upload Successful!",
+                description: "Your new hero image has been applied.",
+            });
+            setFile(null);
+          })
+          .catch(error => {
+            console.error("Firestore save error:", error);
+            const permissionError = new FirestorePermissionError({
+              path: configDocRef.path,
+              operation: 'update',
+              requestResourceData: { heroImageUrl: 'REDACTED_DATA_URL' }
+            });
+            errorEmitter.emit('permission-error', permissionError);
           });
-          errorEmitter.emit('permission-error', permissionError);
-        });
-
-        toast({
-            title: "Upload Successful!",
-            description: "Your new hero image has been applied.",
-        });
-
-        window.dispatchEvent(new CustomEvent('heroImageChanged'));
-        setFile(null);
 
     } catch (error: any) {
         console.error("Upload or save error:", error);

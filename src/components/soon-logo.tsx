@@ -5,43 +5,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
-import { useDoc } from '@/firebase';
-import { doc } from 'firebase/firestore';
-import { useFirestore } from '@/firebase';
-import { useEffect, useState } from 'react';
 
-export function SoonLogo({ className, hasScrolled }: { className?: string; hasScrolled?: boolean }) {
+export function SoonLogo({ className, hasScrolled, logoSrc }: { className?: string; hasScrolled?: boolean, logoSrc: string }) {
   const isMobile = useIsMobile();
-  const firestore = useFirestore();
-  const defaultLogoPath = '/logo.svg';
-  
-  const [logoKey, setLogoKey] = useState(Date.now());
-  const [logoSrc, setLogoSrc] = useState(defaultLogoPath);
-
-  // The key option in useDoc forces a re-fetch when the key changes.
-  const { data: settings } = useDoc(
-    firestore ? doc(firestore, 'site-settings', 'logo') : null,
-    { key: logoKey } 
-  );
-
-  // Listen for the custom event to update the logo
-  useEffect(() => {
-    const handleLogoChange = () => {
-      setLogoKey(Date.now());
-    };
-    window.addEventListener('logoChanged', handleLogoChange);
-    return () => {
-      window.removeEventListener('logoChanged', handleLogoChange);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (settings?.url) {
-      setLogoSrc(settings.url);
-    } else {
-      setLogoSrc(defaultLogoPath);
-    }
-  }, [settings]);
   
   return (
     <Link href="/" aria-label="Back to homepage" className={cn("transition-all duration-300", className)}>

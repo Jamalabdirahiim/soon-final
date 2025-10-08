@@ -11,22 +11,16 @@ import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { content } from "@/lib/content";
 
-export default function Header() {
+export default function Header({ logoUrl }: { logoUrl: string }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleScroll = () => {
-      const heroSection = document.getElementById('home');
-      if (heroSection) {
-        // A bit more than header height
-        setHasScrolled(window.scrollY > 80);
-      } else {
-        setHasScrolled(window.scrollY > 50);
-      }
+      setHasScrolled(window.scrollY > 50);
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
 
     return () => {
@@ -60,7 +54,7 @@ export default function Header() {
     >
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         <div className="flex items-center">
-            <SoonLogo hasScrolled={isScrolledOrMobile} />
+            <SoonLogo hasScrolled={isScrolledOrMobile} logoSrc={logoUrl} />
         </div>
 
         <nav className="hidden items-center gap-6 md:flex">
@@ -92,7 +86,7 @@ export default function Header() {
             <SheetContent side="left" className="w-[300px] bg-background">
                 <div className="flex h-full flex-col p-6">
                 <div className="mb-8">
-                    <SoonLogo hasScrolled={true} />
+                    <SoonLogo hasScrolled={true} logoSrc={logoUrl} />
                 </div>
                 <nav className="flex flex-col gap-6">
                     {content.navLinks.map((link) => (

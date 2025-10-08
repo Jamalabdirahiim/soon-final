@@ -1,6 +1,7 @@
 "use server";
 
 import * as z from "zod";
+import { revalidatePath } from "next/cache";
 
 const formSchema = z.object({
   name: z.string().min(2),
@@ -27,4 +28,8 @@ export async function submitContactForm(values: z.infer<typeof formSchema>) {
     }
     return { success: false, message: "An unexpected error occurred." };
   }
+}
+
+export async function revalidateHome() {
+  revalidatePath('/');
 }

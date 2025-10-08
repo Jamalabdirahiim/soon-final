@@ -77,7 +77,7 @@ export default async function Home() {
           <Contact />
         </FadeInWrapper>
       </main>
-      <Footer />
+      <Footer logoUrl={logoUrl} />
     </div>
   );
 }

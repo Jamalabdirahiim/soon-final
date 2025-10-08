@@ -13,14 +13,14 @@ const socialIconMap: { [key: string]: React.ElementType } = {
   Twitter,
 };
 
-export default function Footer() {
+export default function Footer({ logoUrl }: { logoUrl: string }) {
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className="bg-primary text-primary-foreground">
       <div className="container mx-auto grid grid-cols-1 gap-12 px-4 py-12 md:grid-cols-2 lg:grid-cols-4 md:px-6">
         <div className="col-span-1 md:col-span-2 lg:col-span-1">
-          <SoonLogo />
+          <SoonLogo logoSrc={logoUrl} />
           <p className="mt-4 text-sm text-primary-foreground/80">
             Connecting Somalia with high-speed fiber internet and IPTV.
           </p>

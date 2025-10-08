@@ -103,5 +103,8 @@
     "phone": "+252 61 858 888",
     "email": "info@soon.so",
     "address": "Makka Al Mukarama Road, Mogadishu, Somalia"
+  },
+  "footer": {
+    "copyright": "SOON. All rights reserved."
   }
 }

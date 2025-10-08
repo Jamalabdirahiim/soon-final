@@ -7,6 +7,8 @@ import { cn } from '@/lib/utils';
 
 export function SoonLogo({ className, logoSrc, isInFooter }: { className?: string; logoSrc: string, isInFooter?: boolean }) {
 
+  if (!logoSrc) return null;
+
   return (
     <Link href="/" aria-label="Back to homepage" className="flex items-center">
       <Image 

@@ -50,6 +50,9 @@ type Content = {
     email: string;
     address: string;
   };
+  footer: {
+    copyright: string;
+  };
 };
 
 // We are providing a structured and typed content object

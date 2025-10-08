@@ -8,7 +8,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Progress } from '@/components/ui/progress';
-import { UploadCloud, X, ClipboardPaste } from 'lucide-react';
+import { UploadCloud, X } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { errorEmitter } from '@/firebase/error-emitter';
@@ -179,10 +179,6 @@ export default function LogoUploader() {
                         <p className="mt-2 font-semibold">
                             {isDragActive ? 'Drop your logo here' : "Drag 'n' drop or click to upload"}
                         </p>
-                        <div className="flex items-center justify-center mt-2 text-xs gap-2">
-                          <ClipboardPaste className="h-4 w-4" />
-                          <span>You can also paste from clipboard</span>
-                        </div>
                          {!isReady && <p className="text-xs mt-2 text-destructive">Initializing uploader...</p>}
                     </div>
                 )}
@@ -207,5 +203,3 @@ export default function LogoUploader() {
     </section>
   );
 }
-
-

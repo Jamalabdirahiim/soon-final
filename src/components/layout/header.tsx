@@ -28,33 +28,22 @@ export default function Header({ logoUrl }: { logoUrl: string }) {
     }
   }, []);
 
-
   const handleLinkClick = () => {
     setIsMobileMenuOpen(false);
   };
   
-  if (isMobile === undefined) {
-    return (
-      <header className="fixed top-0 z-50 w-full bg-transparent h-20">
-        <div className="container mx-auto flex h-full items-center justify-between px-4 md:px-6">
-          {/* Render a placeholder or simplified header during hydration */}
-        </div>
-      </header>
-    );
-  }
-
-  const isScrolledOrMobile = hasScrolled || isMobile;
+  const isScrolledOrMobileMenuOpen = hasScrolled || (isMobile && isMobileMenuOpen);
 
   return (
     <header
       className={cn(
         "fixed top-0 z-50 w-full transition-all duration-300",
-        isScrolledOrMobile ? "bg-background/80 backdrop-blur-sm shadow-md" : "bg-transparent"
+        isScrolledOrMobileMenuOpen ? "bg-background/80 backdrop-blur-sm shadow-md" : "bg-transparent"
       )}
     >
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         <div className="flex items-center">
-            <SoonLogo hasScrolled={isScrolledOrMobile} logoSrc={logoUrl} />
+            <SoonLogo hasScrolled={isScrolledOrMobileMenuOpen} logoSrc={logoUrl} />
         </div>
 
         <nav className="hidden items-center gap-6 md:flex">
@@ -64,7 +53,7 @@ export default function Header({ logoUrl }: { logoUrl: string }) {
               href={link.href}
               className={cn(
                 "text-sm font-medium transition-colors hover:text-primary",
-                isScrolledOrMobile ? "text-foreground/80" : "text-primary-foreground/80 hover:text-primary-foreground drop-shadow-sm"
+                isScrolledOrMobileMenuOpen ? "text-foreground/80" : "text-primary-foreground/80 hover:text-primary-foreground drop-shadow-sm"
               )}
             >
               {link.label}
@@ -77,7 +66,7 @@ export default function Header({ logoUrl }: { logoUrl: string }) {
             <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className={cn(
                   "text-foreground hover:bg-accent hover:text-accent-foreground", 
-                  !isScrolledOrMobile && "text-white hover:text-white hover:bg-white/10"
+                  !isScrolledOrMobileMenuOpen && "text-white hover:text-white hover:bg-white/10"
                 )}>
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Open navigation menu</span>

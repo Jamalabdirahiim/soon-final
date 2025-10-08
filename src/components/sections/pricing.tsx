@@ -27,7 +27,7 @@ export default function Pricing() {
           {content.pricingPlans.map((plan) => (
             <Card
               key={plan.name}
-              className="flex flex-col rounded-xl border shadow-lg"
+              className="flex flex-col rounded-xl border shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
             >
               <CardHeader className="items-center text-center pt-8">
                 <CardTitle className="font-headline text-2xl">{plan.name}</CardTitle>
@@ -37,8 +37,8 @@ export default function Pricing() {
                 </div>
                 <p className="text-lg font-semibold text-primary">{plan.speed}</p>
               </CardHeader>
-              <CardContent className="flex-grow space-y-6 px-8">
-                <div className="space-y-3 text-sm text-muted-foreground">
+              <CardContent className="flex-grow space-y-6 px-6 md:px-8">
+                <div className="space-y-4 text-sm text-muted-foreground">
                   <div className="flex items-start gap-3">
                     <Home className="w-5 h-5 text-primary mt-0.5 shrink-0" />
                     <span><strong className="text-foreground">For Home:</strong> {plan.homeUse}</span>
@@ -48,7 +48,7 @@ export default function Pricing() {
                     <span><strong className="text-foreground">For Business:</strong> {plan.businessUse}</span>
                   </div>
                 </div>
-                 <ul className="space-y-2 text-sm">
+                 <ul className="space-y-3 text-sm">
                     <li className="flex items-center gap-2">
                         <CheckCircle className="w-4 h-4 text-green-500" />
                         <span>Unlimited Data</span>

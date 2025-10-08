@@ -11,7 +11,6 @@ import Contact from "@/components/sections/contact";
 import Footer from "@/components/layout/footer";
 import FadeInWrapper from "@/components/fade-in-wrapper";
 import Iptv from "@/components/sections/iptv";
-import HeroText from "@/components/sections/hero-text";
 import { placeholderImages } from "@/lib/placeholder-images.json";
 import Customization from "@/components/sections/customization";
 
@@ -59,7 +58,6 @@ export default async function Home() {
       <Header logoUrl={logoUrl} />
       <main className="flex-1">
         <HeroImage heroImageUrl={heroImageUrl} mobileHeroImageUrl={mobileHeroImageUrl} />
-        <HeroText />
         
         <Customization />
         

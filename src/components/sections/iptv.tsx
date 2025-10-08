@@ -10,6 +10,7 @@ import { useDoc, useFirestore } from "@/firebase";
 import { doc } from "firebase/firestore";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useEffect, useState } from "react";
+import { Tv } from "lucide-react";
 
 export default function Iptv() {
   const defaultIptvImage = placeholderImages.find(p => p.id === 'iptv-hero');
@@ -43,8 +44,9 @@ export default function Iptv() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
           <div className="space-y-6">
-            <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">
-              SOON IPTV
+            <div className="inline-flex items-center gap-2 rounded-lg bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">
+              <Tv className="h-4 w-4" />
+              <span>SOON IPTV</span>
             </div>
             <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl premium-blue-text">
               {content.iptv.headline}

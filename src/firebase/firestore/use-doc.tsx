@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -11,8 +12,14 @@ import { useFirestore } from '@/firebase';
 import { errorEmitter } from '../error-emitter';
 import { FirestorePermissionError } from '../errors';
 
+// Allow passing an options object which can be used to force a re-fetch
+interface UseDocOptions {
+  key?: any;
+}
+
 export const useDoc = <T extends DocumentData>(
-  ref: DocumentReference<T> | null
+  ref: DocumentReference<T> | null,
+  options?: UseDocOptions
 ) => {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
@@ -20,9 +27,12 @@ export const useDoc = <T extends DocumentData>(
 
   useEffect(() => {
     if (!ref) {
+      setData(null);
       setLoading(false);
       return;
     }
+    
+    setLoading(true);
 
     const unsubscribe = onSnapshot(
       ref,
@@ -46,7 +56,8 @@ export const useDoc = <T extends DocumentData>(
     );
 
     return () => unsubscribe();
-  }, [ref]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ref, options?.key]); // Add the key to the dependency array
 
   return { data, loading, error };
 };

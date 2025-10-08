@@ -16,6 +16,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useUser } from "@/firebase";
 import MobileHeroImageUploader from "@/components/mobile-hero-image-uploader";
 import { Separator } from "@/components/ui/separator";
+import HeroText from "@/components/sections/hero-text";
 
 export default function Home() {
   const { user } = useUser();
@@ -25,6 +26,7 @@ export default function Home() {
       <Header />
       <main className="flex-1">
         <HeroImage />
+        <HeroText />
         
         {user && (
           <section className="bg-secondary py-16 md:py-24">

@@ -16,7 +16,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { SoonLogo } from "@/components/soon-logo";
-import { LogOut, UploadCloud, Images, Palmtree } from "lucide-react";
+import { LogOut, UploadCloud, Images, Palmtree, Image } from "lucide-react";
 import { useAuth, useUser } from "@/firebase";
 import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";

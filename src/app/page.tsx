@@ -11,7 +11,6 @@ import Contact from "@/components/sections/contact";
 import Footer from "@/components/layout/footer";
 import FadeInWrapper from "@/components/fade-in-wrapper";
 import Iptv from "@/components/sections/iptv";
-import LogoUploader from "@/components/sections/logo-uploader";
 
 export default function Home() {
 
@@ -21,9 +20,6 @@ export default function Home() {
       <main className="flex-1">
         <HeroImage />
         <HeroText />
-        <FadeInWrapper>
-          <LogoUploader />
-        </FadeInWrapper>
         <FadeInWrapper>
           <Iptv />
         </FadeInWrapper>

@@ -6,9 +6,32 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { placeholderImages } from "@/lib/placeholder-images.json";
 import { content } from "@/lib/content";
+import { useDoc, useFirestore } from "@/firebase";
+import { doc } from "firebase/firestore";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useEffect, useState } from "react";
 
 export default function Iptv() {
-  const iptvImage = placeholderImages.find(p => p.id === 'iptv-hero');
+  const defaultIptvImage = placeholderImages.find(p => p.id === 'iptv-hero');
+  const isMobile = useIsMobile();
+  const firestore = useFirestore();
+
+  const { data: settings } = useDoc(
+      firestore ? doc(firestore, 'site-settings', 'config') : null
+  );
+
+  const [currentSrc, setCurrentSrc] = useState(isMobile ? defaultIptvImage?.imageUrl : defaultIptvImage?.imageUrl);
+
+  useEffect(() => {
+      const featureSrc = settings?.featureImageUrl || defaultIptvImage?.imageUrl;
+      const mobileFeatureSrc = settings?.mobileFeatureImageUrl || featureSrc;
+      
+      const newSrc = isMobile ? mobileFeatureSrc : featureSrc;
+      if (newSrc) {
+          setCurrentSrc(newSrc);
+      }
+  }, [settings, isMobile, defaultIptvImage]);
+
 
   return (
     <section id="iptv" className="bg-secondary">
@@ -35,15 +58,15 @@ export default function Iptv() {
           
           <div className="relative rounded-xl shadow-2xl overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent"></div>
-            {iptvImage && (
+            {currentSrc && (
               <Image
-                src={iptvImage.imageUrl}
-                alt={iptvImage.description}
+                src={currentSrc}
+                alt={defaultIptvImage?.description || "IPTV service interface"}
                 width={1200}
                 height={900}
                 className="w-full h-auto object-cover"
-                data-ai-hint={iptvImage.imageHint}
-                key={iptvImage.id}
+                data-ai-hint={defaultIptvImage?.imageHint}
+                key={currentSrc}
               />
             )}
           </div>

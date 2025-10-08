@@ -28,7 +28,7 @@ export function MobileFeatureImageUploader() {
       const settingsDocRef = doc(firestore, 'site-settings', 'config');
       await setDoc(settingsDocRef, { mobileFeatureImageUrl: imageDataUrl }, { merge: true });
       toast({
-        title: "Mobile Bluezone image updated!",
+        title: "Mobile IPTV image updated!",
         description: "Your new image has been applied for mobile.",
       });
     } catch (error) {
@@ -43,7 +43,7 @@ export function MobileFeatureImageUploader() {
 
   return (
     <div className="space-y-4">
-        <h3 className="font-medium">Mobile Bluezone Image</h3>
+        <h3 className="font-medium">Mobile IPTV Image</h3>
         <div className="flex flex-col sm:flex-row items-center gap-4">
           <Button onClick={() => setIsLibraryOpen(true)} disabled={!firestore} variant="outline">
             <Library className="mr-2" />
@@ -51,12 +51,12 @@ export function MobileFeatureImageUploader() {
           </Button>
         </div>
         <p className="text-xs text-muted-foreground">
-          Recommended for portrait images.
+          Recommended for portrait images (e.g., 9:16).
         </p>
         <Dialog open={isLibraryOpen} onOpenChange={setIsLibraryOpen}>
             <DialogContent className="max-w-4xl h-[80vh] flex flex-col">
                 <DialogHeader>
-                    <DialogTitle>Select Mobile Feature Image</DialogTitle>
+                    <DialogTitle>Select Mobile IPTV Image</DialogTitle>
                     <DialogDescription>Choose an image from your library or upload a new one.</DialogDescription>
                 </DialogHeader>
                  <div className="flex-grow overflow-y-auto">

@@ -28,8 +28,8 @@ export function FeatureImageUploader() {
       const settingsDocRef = doc(firestore, 'site-settings', 'config');
       await setDoc(settingsDocRef, { featureImageUrl: imageDataUrl }, { merge: true });
       toast({
-        title: "Feature image updated!",
-        description: "Your new feature image has been applied.",
+        title: "IPTV image updated!",
+        description: "Your new IPTV section image has been applied.",
       });
     } catch (error) {
        console.error("Error saving image URL to Firestore:", error);
@@ -43,7 +43,7 @@ export function FeatureImageUploader() {
 
   return (
     <div className="space-y-4">
-        <h3 className="font-medium">Bluezone Image</h3>
+        <h3 className="font-medium">Desktop IPTV Image</h3>
         <div className="flex flex-col sm:flex-row items-center gap-4">
           <Button onClick={() => setIsLibraryOpen(true)} disabled={!firestore} variant="outline">
             <Library className="mr-2" />
@@ -51,12 +51,12 @@ export function FeatureImageUploader() {
           </Button>
         </div>
         <p className="text-xs text-muted-foreground">
-          Transparent laptop images work best.
+          Recommended aspect ratio: 16:9 or 4:3.
         </p>
         <Dialog open={isLibraryOpen} onOpenChange={setIsLibraryOpen}>
             <DialogContent className="max-w-4xl h-[80vh] flex flex-col">
                 <DialogHeader>
-                    <DialogTitle>Select Feature Image</DialogTitle>
+                    <DialogTitle>Select IPTV Image</DialogTitle>
                     <DialogDescription>Choose an image from your library or upload a new one.</DialogDescription>
                 </DialogHeader>
                 <div className="flex-grow overflow-y-auto">

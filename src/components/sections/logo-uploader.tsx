@@ -7,7 +7,6 @@ import { useFirestore } from '@/firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Progress } from '@/components/ui/progress';
 import { UploadCloud, X } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
@@ -140,66 +139,47 @@ export default function LogoUploader() {
   }, [file, firestore, toast]);
 
   return (
-    <section id="logo-uploader" className="bg-secondary">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="flex flex-col items-center justify-center space-y-4 text-center">
-          <div className="space-y-2">
-            <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Customize</div>
-            <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-5xl">
-              Upload Your Logo
-            </h2>
-            <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Update your brand identity in real-time. Drag, drop, or paste your new logo below.
-            </p>
-          </div>
+    <div className="w-full">
+        <div 
+            {...getRootProps()} 
+            className={cn(
+                "flex flex-col items-center justify-center w-full h-48 border-2 border-dashed rounded-lg cursor-pointer transition-colors",
+                "hover:bg-accent/50",
+                isDragActive ? "border-primary bg-primary/10" : "border-border bg-background",
+                !isReady && "cursor-not-allowed opacity-50"
+            )}
+        >
+            <input {...getInputProps()} />
+            {preview ? (
+                <div className="relative w-full h-full p-4">
+                    <Image src={preview} alt="Logo preview" layout="fill" objectFit="contain" />
+                    {!isProcessing && (
+                      <Button variant="ghost" size="icon" className="absolute top-2 right-2 bg-background/50 backdrop-blur-sm" onClick={(e) => { e.stopPropagation(); setFile(null);}}>
+                          <X className="h-4 w-4" />
+                      </Button>
+                    )}
+                </div>
+            ) : (
+                <div className="text-center text-muted-foreground p-4">
+                    <UploadCloud className="mx-auto h-12 w-12" />
+                    <p className="mt-2 font-semibold">
+                        {isDragActive ? 'Drop your logo here' : "Drag 'n' drop, click, or paste"}
+                    </p>
+                    <p className="text-xs mt-1">
+                        Your logo will be updated instantly.
+                    </p>
+                     {!isReady && <p className="text-xs mt-2 text-destructive">Initializing uploader...</p>}
+                </div>
+            )}
         </div>
-        <div className="mx-auto mt-12 max-w-xl">
-           <div 
-                {...getRootProps()} 
-                className={cn(
-                    "flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer transition-colors",
-                    "hover:bg-accent/50",
-                    isDragActive ? "border-primary bg-primary/10" : "border-border bg-background",
-                    !isReady && "cursor-not-allowed opacity-50"
-                )}
-            >
-                <input {...getInputProps()} />
-                {preview ? (
-                    <div className="relative w-full h-full p-4">
-                        <Image src={preview} alt="Logo preview" layout="fill" objectFit="contain" />
-                        {!isProcessing && (
-                          <Button variant="ghost" size="icon" className="absolute top-2 right-2 bg-background/50 backdrop-blur-sm" onClick={(e) => { e.stopPropagation(); setFile(null);}}>
-                              <X className="h-4 w-4" />
-                          </Button>
-                        )}
-                    </div>
-                ) : (
-                    <div className="text-center text-muted-foreground p-4">
-                        <UploadCloud className="mx-auto h-12 w-12" />
-                        <p className="mt-2 font-semibold">
-                            {isDragActive ? 'Drop your logo here' : "Drag 'n' drop or click to upload"}
-                        </p>
-                         {!isReady && <p className="text-xs mt-2 text-destructive">Initializing uploader...</p>}
-                    </div>
-                )}
+
+        {file && !isProcessing && (
+            <div className="mt-4 flex justify-end">
+                <Button onClick={handleUpload} disabled={isProcessing || !isReady}>
+                    {isProcessing ? "Saving..." : "Apply Logo"}
+                </Button>
             </div>
-
-            {isProcessing && (
-                <div className="w-full text-center space-y-2 mt-4">
-                    <Progress value={undefined} />
-                    <p className="text-sm text-muted-foreground">Processing and saving...</p>
-                </div>
-            )}
-
-            {file && !isProcessing && (
-                <div className="mt-6 flex justify-center">
-                    <Button onClick={handleUpload} size="lg" disabled={isProcessing || !isReady}>
-                        {isProcessing ? "Saving..." : "Apply Logo"}
-                    </Button>
-                </div>
-            )}
-        </div>
-      </div>
-    </section>
+        )}
+    </div>
   );
 }

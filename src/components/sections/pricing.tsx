@@ -50,15 +50,11 @@ export default function Pricing() {
                 </div>
                  <ul className="space-y-3 text-sm">
                     <li className="flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-green-500" />
+                        <CheckCircle className="w-4 h-4 text-primary" />
                         <span>Unlimited Data</span>
                     </li>
                     <li className="flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-green-500" />
-                        <span>No Contracts</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-green-500" />
+                        <CheckCircle className="w-4 h-4 text-primary" />
                         <span>24/7 Support</span>
                     </li>
                 </ul>

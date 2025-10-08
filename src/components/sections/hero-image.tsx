@@ -34,7 +34,7 @@ export default function HeroImage({ heroImageUrl, mobileHeroImageUrl }: HeroImag
 
   return (
     <section id="home" className="relative w-full py-0">
-      <div className="relative w-full h-[40vh] md:h-[60vh] overflow-hidden">
+      <div className="relative w-full h-[60vh] md:h-[80vh] overflow-hidden">
           {currentSrc && (
             <Image
                 src={currentSrc}

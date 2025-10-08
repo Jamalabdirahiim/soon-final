@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { createContext, useContext, ReactNode, useMemo } from 'react';
@@ -27,6 +28,10 @@ export const FirebaseProvider = ({
   ...props
 }: { children: ReactNode } & Partial<FirebaseContextType>) => {
   const { firebaseApp, auth, firestore, storage } = useMemo(() => {
+    // This check ensures Firebase is only initialized on the client side.
+    if (typeof window === 'undefined') {
+      return { firebaseApp: null, auth: null, firestore: null, storage: null };
+    }
     if (props.firebaseApp) {
       return {
         firebaseApp: props.firebaseApp,

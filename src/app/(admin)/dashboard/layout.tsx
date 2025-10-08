@@ -55,19 +55,13 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
           <SidebarContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton onClick={() => router.push('/admin/dashboard')} isActive={isActive('/admin/dashboard')}>
+                <SidebarMenuButton onClick={() => router.push('/dashboard')} isActive={isActive('/dashboard')}>
                   <Palmtree />
                   Dashboard
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton onClick={() => router.push('/admin/dashboard/logo')} isActive={isActive('/admin/dashboard/logo')}>
-                  <UploadCloud />
-                  Logo
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton onClick={() => router.push('/admin/dashboard/media')} isActive={isActive('/admin/dashboard/media')}>
+                <SidebarMenuButton onClick={() => router.push('/dashboard/media')} isActive={isActive('/dashboard/media')}>
                   <Images />
                   Media
                 </SidebarMenuButton>

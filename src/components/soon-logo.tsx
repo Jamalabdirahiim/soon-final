@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
-export function SoonLogo({ className, hasScrolled, logoSrc, isInFooter }: { className?: string; hasScrolled?: boolean, logoSrc: string, isInFooter?: boolean }) {
+export function SoonLogo({ className, logoSrc, isInFooter }: { className?: string; logoSrc: string, isInFooter?: boolean }) {
 
   return (
     <Link href="/" aria-label="Back to homepage" className={cn("transition-all duration-300", className)}>

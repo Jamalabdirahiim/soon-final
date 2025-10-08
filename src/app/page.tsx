@@ -59,6 +59,7 @@ export default async function Home() {
       <Header logoUrl={logoUrl} />
       <main className="flex-1">
         <HeroImage heroImageUrl={heroImageUrl} mobileHeroImageUrl={mobileHeroImageUrl} />
+        
         <HeroText />
         
         <Customization />

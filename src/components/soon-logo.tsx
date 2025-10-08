@@ -19,7 +19,7 @@ export function SoonLogo({ className, hasScrolled }: { className?: string; hasSc
   const [logoSrc, setLogoSrc] = useState(defaultLogoPath);
 
   // The key option in useDoc forces a re-fetch when the key changes.
-  const { data: settings, loading: logoLoading } = useDoc(
+  const { data: settings } = useDoc(
     firestore ? doc(firestore, 'site-settings', 'logo') : null,
     { key: logoKey } 
   );
@@ -44,18 +44,6 @@ export function SoonLogo({ className, hasScrolled }: { className?: string; hasSc
   }, [settings]);
 
   const isScrolledOrMobile = hasScrolled || isMobile;
-
-  if (logoLoading && !logoSrc) {
-    return (
-        <div className={cn("transition-all duration-300", className)}>
-            <div className={cn(
-                "bg-gray-300 animate-pulse rounded-md w-[200px] h-[56px]",
-                !isScrolledOrMobile ? "bg-white/50" : "",
-            )} />
-        </div>
-    );
-  }
-
   const isDataUrl = logoSrc.startsWith('data:image');
 
   return (

@@ -30,11 +30,13 @@ export default function Header({ logoUrl }: { logoUrl: string }) {
     setIsMobileMenuOpen(false);
   };
 
+  const isScrolledOrMobileMenuOpen = hasScrolled || isMobileMenuOpen;
+
   return (
     <header
       className={cn(
         "fixed top-0 z-50 w-full transition-all duration-300",
-        hasScrolled || isMobileMenuOpen
+        isScrolledOrMobileMenuOpen
           ? "bg-background/80 backdrop-blur-sm shadow-md"
           : "bg-transparent"
       )}
@@ -43,14 +45,14 @@ export default function Header({ logoUrl }: { logoUrl: string }) {
         <SoonLogo 
           logoSrc={logoUrl} 
           className={cn(
-            !hasScrolled && !isMobileMenuOpen ? "brightness-0 invert drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]" : ""
+            !isScrolledOrMobileMenuOpen ? "brightness-0 invert drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]" : ""
           )}
         />
 
         <nav
           className={cn(
             "hidden items-center gap-6 md:flex transition-colors duration-300",
-            !hasScrolled && !isMobileMenuOpen ? "text-white" : "text-foreground/80"
+            !hasScrolled ? "text-white" : "text-foreground/80"
           )}
         >
           {content.navLinks.map((link) => (

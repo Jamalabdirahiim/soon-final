@@ -29,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfairDisplay.variable} !scroll-smooth`}>
+    <html lang="en" className={`${inter.variable} ${playfairDisplay.variable} scroll-smooth`}>
       <body className="font-body antialiased bg-background">
         <FirebaseProvider>
           {children}

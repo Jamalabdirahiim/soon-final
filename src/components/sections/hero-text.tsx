@@ -1,4 +1,3 @@
-
 "use client";
 
 import { content } from "@/lib/content";

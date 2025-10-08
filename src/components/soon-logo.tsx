@@ -13,8 +13,10 @@ import { useEffect, useState } from 'react';
 export function SoonLogo({ className, hasScrolled }: { className?: string; hasScrolled?: boolean }) {
   const isMobile = useIsMobile();
   const firestore = useFirestore();
+  const defaultLogoPath = '/logo.svg';
   
   const [logoKey, setLogoKey] = useState(Date.now());
+  const [logoSrc, setLogoSrc] = useState(defaultLogoPath);
 
   // The key option in useDoc forces a re-fetch when the key changes.
   const { data: settings, loading: logoLoading } = useDoc(
@@ -33,12 +35,17 @@ export function SoonLogo({ className, hasScrolled }: { className?: string; hasSc
     };
   }, []);
 
-  const logoSrc = settings?.url; // This URL can now be a data: URL or a regular http URL
+  useEffect(() => {
+    if (settings?.url) {
+      setLogoSrc(settings.url);
+    } else {
+      setLogoSrc(defaultLogoPath);
+    }
+  }, [settings]);
+
   const isScrolledOrMobile = hasScrolled || isMobile;
 
-  const defaultLogoPath = '/logo.svg';
-
-  if (logoLoading) {
+  if (logoLoading && !logoSrc) {
     return (
         <div className={cn("transition-all duration-300", className)}>
             <div className={cn(
@@ -49,13 +56,12 @@ export function SoonLogo({ className, hasScrolled }: { className?: string; hasSc
     );
   }
 
-  const finalSrc = logoSrc || defaultLogoPath;
-  const isDataUrl = finalSrc.startsWith('data:image');
+  const isDataUrl = logoSrc.startsWith('data:image');
 
   return (
     <Link href="/" aria-label="Back to homepage" className={cn("transition-all duration-300", className)}>
       <Image 
-        src={finalSrc}
+        src={logoSrc}
         alt="SOON Logo" 
         width={200}
         height={56}
@@ -71,7 +77,7 @@ export function SoonLogo({ className, hasScrolled }: { className?: string; hasSc
              // if it's a data URL, we don't apply the filter when not scrolled
              !isScrolledOrMobile && isDataUrl && "drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]"
         )}
-        key={finalSrc} 
+        key={logoSrc} 
         data-ai-hint="minimalist logo"
       />
     </Link>

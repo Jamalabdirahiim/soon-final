@@ -6,9 +6,11 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useDoc } from "@/firebase";
 import { doc } from "firebase/firestore";
 import { useFirestore } from "@/firebase";
+import { useEffect, useState } from "react";
 
 export default function HeroImage() {
     const defaultHeroImage = placeholderImages.find(p => p.id === 'hero-background');
+    const defaultMobileHeroImage = placeholderImages.find(p => p.id === 'mobile-hero-background');
     const isMobile = useIsMobile();
     const firestore = useFirestore();
 
@@ -16,22 +18,29 @@ export default function HeroImage() {
         firestore ? doc(firestore, 'site-settings', 'config') : null
     );
 
-    const heroSrc = settings?.heroImageUrl || defaultHeroImage?.imageUrl;
-    const mobileHeroSrc = settings?.mobileHeroImageUrl || '';
-    
-    const finalSrc = isMobile && mobileHeroSrc ? mobileHeroSrc : heroSrc;
+    const [currentSrc, setCurrentSrc] = useState(isMobile ? defaultMobileHeroImage?.imageUrl : defaultHeroImage?.imageUrl);
+
+    useEffect(() => {
+        const heroSrc = settings?.heroImageUrl || defaultHeroImage?.imageUrl;
+        const mobileHeroSrc = settings?.mobileHeroImageUrl || defaultMobileHeroImage?.imageUrl || heroSrc;
+        
+        const newSrc = isMobile ? mobileHeroSrc : heroSrc;
+        if (newSrc) {
+            setCurrentSrc(newSrc);
+        }
+    }, [settings, isMobile, defaultHeroImage, defaultMobileHeroImage]);
 
   return (
     <section id="home" className="relative w-full h-[60vh] min-h-[400px] flex items-center justify-center text-center pt-20">
-      {finalSrc && (
+      {currentSrc && (
         <Image
-          src={finalSrc}
+          src={currentSrc}
           alt={defaultHeroImage?.description || 'Hero background image'}
           fill
           priority
           className="object-cover z-0"
           data-ai-hint={defaultHeroImage?.imageHint}
-          key={finalSrc}
+          key={currentSrc}
         />
       )}
       <div className="absolute inset-0 bg-black/60 z-10" />

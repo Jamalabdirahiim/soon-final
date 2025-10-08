@@ -18,8 +18,8 @@ export default function Footer() {
 
   return (
     <footer className="bg-primary text-primary-foreground">
-      <div className="container mx-auto grid grid-cols-1 gap-12 px-4 py-12 md:grid-cols-4 md:px-6">
-        <div className="col-span-1 md:col-span-1">
+      <div className="container mx-auto grid grid-cols-1 gap-12 px-4 py-12 md:grid-cols-2 lg:grid-cols-4 md:px-6">
+        <div className="col-span-1 md:col-span-2 lg:col-span-1">
           <SoonLogo />
           <p className="mt-4 text-sm text-primary-foreground/80">
             Connecting Somalia with high-speed fiber internet and IPTV.
@@ -51,7 +51,7 @@ export default function Footer() {
           </ul>
         </div>
         
-        <div className="col-span-1">
+        <div className="col-span-1 md:col-start-2 lg:col-start-auto">
             <h3 className="font-headline text-lg font-bold text-white">Follow Us</h3>
             <div className="mt-4 flex space-x-4">
               {content.socialLinks.map((social) => {

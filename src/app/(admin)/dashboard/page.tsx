@@ -3,7 +3,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import LogoUploader from "@/components/logo-uploader"
+import LogoUploader from "@/components/sections/logo-uploader"
 import { HeroImageUploader } from "@/components/hero-image-uploader"
 import { MobileHeroImageUploader } from "@/components/mobile-hero-image-uploader"
 import { FeatureImageUploader } from "@/components/feature-image-uploader"

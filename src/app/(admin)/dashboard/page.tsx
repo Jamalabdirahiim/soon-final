@@ -2,12 +2,8 @@
 "use client"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
 import LogoUploader from "@/components/sections/logo-uploader"
 import { HeroImageUploader } from "@/components/hero-image-uploader"
-import { MobileHeroImageUploader } from "@/components/mobile-hero-image-uploader"
-import { FeatureImageUploader } from "@/components/feature-image-uploader"
-import { MobileFeatureImageUploader } from "@/components/mobile-feature-image-uploader"
 
 export default function DashboardPage() {
   return (
@@ -33,29 +29,13 @@ export default function DashboardPage() {
       
       <Card>
         <CardHeader>
-          <CardTitle>Hero Images</CardTitle>
+          <CardTitle>Hero Image</CardTitle>
           <CardDescription>
-            Manage the main background images for your homepage hero section.
+            Manage the main background image for your homepage hero section.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent>
           <HeroImageUploader />
-          <Separator />
-          <MobileHeroImageUploader />
-        </CardContent>
-      </Card>
-
-       <Card>
-        <CardHeader>
-          <CardTitle>IPTV Section Images</CardTitle>
-          <CardDescription>
-            Manage the images for the IPTV section on your homepage.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <FeatureImageUploader />
-           <Separator />
-          <MobileFeatureImageUploader />
         </CardContent>
       </Card>
     </div>

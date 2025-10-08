@@ -133,8 +133,7 @@ export function HeroImageUploader() {
   }, [file, firestore, toast]);
 
   return (
-    <div className="space-y-4">
-        <h3 className="font-medium">Desktop Hero Image</h3>
+    <div className="w-full">
         <div 
             {...getRootProps()} 
             className={cn(

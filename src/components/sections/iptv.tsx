@@ -20,17 +20,22 @@ export default function Iptv() {
       firestore ? doc(firestore, 'site-settings', 'config') : null
   );
 
-  const [currentSrc, setCurrentSrc] = useState(isMobile ? defaultIptvImage?.imageUrl : defaultIptvImage?.imageUrl);
-
+  const getSrc = () => {
+    if (isMobile === undefined) return defaultIptvImage?.imageUrl;
+    const featureSrc = settings?.featureImageUrl || defaultIptvImage?.imageUrl;
+    const mobileFeatureSrc = settings?.mobileFeatureImageUrl || featureSrc;
+    return isMobile ? mobileFeatureSrc : featureSrc;
+  };
+  
+  const [currentSrc, setCurrentSrc] = useState(getSrc());
+  
   useEffect(() => {
-      const featureSrc = settings?.featureImageUrl || defaultIptvImage?.imageUrl;
-      const mobileFeatureSrc = settings?.mobileFeatureImageUrl || featureSrc;
-      
-      const newSrc = isMobile ? mobileFeatureSrc : featureSrc;
+      const newSrc = getSrc();
       if (newSrc) {
           setCurrentSrc(newSrc);
       }
-  }, [settings, isMobile, defaultIptvImage]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [settings, isMobile]);
 
 
   return (

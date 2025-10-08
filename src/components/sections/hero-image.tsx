@@ -22,8 +22,15 @@ export default function HeroImage() {
         firestore ? doc(firestore, 'site-settings', 'config') : null,
         { key: heroImageKey }
     );
-
-    const [currentSrc, setCurrentSrc] = useState(isMobile ? defaultMobileHeroImage?.imageUrl : defaultHeroImage?.imageUrl);
+    
+    const getSrc = () => {
+        if (isMobile === undefined) return defaultHeroImage?.imageUrl; // Return default for server render
+        const heroSrc = settings?.heroImageUrl || defaultHeroImage?.imageUrl;
+        const mobileHeroSrc = settings?.mobileHeroImageUrl || defaultMobileHeroImage?.imageUrl || heroSrc;
+        return isMobile ? mobileHeroSrc : heroSrc;
+    }
+    
+    const [currentSrc, setCurrentSrc] = useState(getSrc());
 
     useEffect(() => {
         const handleImageChange = () => {
@@ -36,14 +43,12 @@ export default function HeroImage() {
     }, []);
 
     useEffect(() => {
-        const heroSrc = settings?.heroImageUrl || defaultHeroImage?.imageUrl;
-        const mobileHeroSrc = settings?.mobileHeroImageUrl || defaultMobileHeroImage?.imageUrl || heroSrc;
-        
-        const newSrc = isMobile ? mobileHeroSrc : heroSrc;
+        const newSrc = getSrc();
         if (newSrc) {
             setCurrentSrc(newSrc);
         }
-    }, [settings, isMobile, defaultHeroImage, defaultMobileHeroImage]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [settings, isMobile]);
 
   return (
     <section id="home" className="relative w-full h-[60vh] min-h-[400px] flex items-center justify-center text-center pt-20">

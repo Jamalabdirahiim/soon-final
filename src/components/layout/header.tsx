@@ -39,6 +39,16 @@ export default function Header() {
     setIsMobileMenuOpen(false);
   };
   
+  if (isMobile === undefined) {
+    return (
+      <header className="fixed top-0 z-50 w-full bg-transparent h-20">
+        <div className="container mx-auto flex h-full items-center justify-between px-4 md:px-6">
+          {/* Render a placeholder or simplified header during hydration */}
+        </div>
+      </header>
+    );
+  }
+
   const isScrolledOrMobile = hasScrolled || isMobile;
 
   return (

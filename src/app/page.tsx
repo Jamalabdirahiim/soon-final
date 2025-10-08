@@ -8,7 +8,6 @@ import Services from "@/components/sections/services";
 import FeatureHighlight from "@/components/sections/feature-highlight";
 import Pricing from "@/components/sections/pricing";
 import Faq from "@/components/sections/faq";
-import LogoUploaderSection from "@/components/sections/logo-uploader-section";
 import Contact from "@/components/sections/contact";
 import Footer from "@/components/layout/footer";
 import FadeInWrapper from "@/components/fade-in-wrapper";
@@ -32,9 +31,6 @@ export default function Home() {
         </FadeInWrapper>
         <FadeInWrapper>
           <Faq />
-        </FadeInWrapper>
-        <FadeInWrapper>
-          <LogoUploaderSection />
         </FadeInWrapper>
         <FadeInWrapper>
           <Contact />

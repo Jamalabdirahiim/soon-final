@@ -19,6 +19,7 @@ import {
   Settings,
   User,
   DollarSign,
+  UploadCloud,
 } from "lucide-react";
 import { SoonLogo } from "@/components/soon-logo";
 import { Button } from "@/components/ui/button";
@@ -37,6 +38,7 @@ const sidebarNav = [
   { label: "Content", href: "/admin/dashboard/content", icon: FileText },
   { label: "Pricing", href: "/admin/dashboard/pricing", icon: DollarSign },
   { label: "Media", href: "/admin/dashboard/media", icon: ImageIcon },
+  { label: "Logo", href: "/admin/dashboard/logo", icon: UploadCloud },
   { label: "Analytics", href: "/admin/dashboard/analytics", icon: BarChart2 },
   { label: "Settings", href: "/admin/dashboard/settings", icon: Settings },
 ];

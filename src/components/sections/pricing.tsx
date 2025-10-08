@@ -5,6 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/componen
 import { Button } from "@/components/ui/button";
 import { CheckCircle, Briefcase, Home } from "lucide-react";
 import { content } from "@/lib/content";
+import Link from "next/link";
 
 export default function Pricing() {
   return (
@@ -63,8 +64,8 @@ export default function Pricing() {
                 </ul>
               </CardContent>
               <CardFooter className="p-6">
-                <Button className="w-full premium-red-bg text-primary-foreground hover:brightness-110" size="lg">
-                  Get Started
+                <Button asChild className="w-full premium-red-bg text-primary-foreground hover:brightness-110" size="lg">
+                  <Link href="#contact">Get Started</Link>
                 </Button>
               </CardFooter>
             </Card>

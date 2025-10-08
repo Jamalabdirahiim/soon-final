@@ -2,13 +2,32 @@
 {
   "navLinks": [
     { "label": "Services", "href": "#services" },
+    { "label": "IPTV", "href": "#iptv" },
     { "label": "Pricing", "href": "#pricing" },
     { "label": "FAQ", "href": "#faq" },
     { "label": "Contact", "href": "#contact" }
   ],
+  "socialLinks": [
+    {
+      "name": "Facebook",
+      "url": "https://www.facebook.com/SOON.CISP/"
+    },
+    {
+      "name": "Instagram",
+      "url": "https://www.instagram.com/explore/locations/1022664971/somali-optical-networks/"
+    },
+    {
+      "name": "Twitter",
+      "url": "https://x.com/somali_optical"
+    }
+  ],
   "hero": {
-    "headline": "The Future of Connectivity. Delivered.",
-    "subheadline": "Get the fastest and most reliable internet for your home and business, with speeds that will change the way you connect."
+    "headline": "Experience the Future of Internet & TV.",
+    "subheadline": "Blazing-fast fiber optic internet and over 400+ IPTV channels. Get the most reliable connection for your home and business with SOON."
+  },
+  "iptv": {
+    "headline": "SOON IPTV: Your Home for Entertainment",
+    "subheadline": "Experience over 400 live TV channels. Make your home a center of rest and entertainment."
   },
   "services": [
     {
@@ -64,12 +83,12 @@
       "answer": "Fiber internet uses light to send data through tiny glass wires. It's much faster and more reliable than old internet connections like cable or DSL."
     },
     {
-      "question": "How long does installation take?",
-      "answer": "A standard installation usually takes 2-4 hours. Our technician will set everything up and make sure it works perfectly before they leave."
+      "question": "What is IPTV?",
+      "answer": "IPTV stands for Internet Protocol Television. It's a service that delivers television content over the internet, offering more channels and features than traditional TV."
     },
     {
-      "question": "Can I use my own router?",
-      "answer": "Yes, you can. However, we recommend using the router we provide to get the best speed and performance from our network."
+      "question": "How long does installation take?",
+      "answer": "A standard installation usually takes 2-4 hours. Our technician will set everything up and make sure it works perfectly before they leave."
     },
     {
       "question": "Do you have data limits?",
@@ -81,7 +100,7 @@
     }
   ],
   "contact": {
-    "phone": "+252 61 123 4567",
+    "phone": "+252 61 858 888",
     "email": "info@soon.so",
     "address": "Makka Al Mukarama Road, Mogadishu, Somalia"
   }

@@ -5,17 +5,24 @@ import Link from "next/link";
 import React from "react";
 import { SoonLogo } from "@/components/soon-logo";
 import { content } from "@/lib/content";
+import { Facebook, Instagram, Twitter } from "lucide-react";
+
+const socialIconMap: { [key: string]: React.ElementType } = {
+  Facebook,
+  Instagram,
+  Twitter,
+};
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="premium-red-bg text-primary-foreground">
+    <footer className="bg-primary text-primary-foreground">
       <div className="container mx-auto grid grid-cols-1 gap-12 px-4 py-12 md:grid-cols-4 md:px-6">
         <div className="col-span-1 md:col-span-1">
           <SoonLogo />
           <p className="mt-4 text-sm text-primary-foreground/80">
-            Connecting Somalia with high-speed fiber internet.
+            Connecting Somalia with high-speed fiber internet and IPTV.
           </p>
         </div>
 
@@ -45,19 +52,18 @@ export default function Footer() {
         </div>
         
         <div className="col-span-1">
-            <h3 className="font-headline text-lg font-bold text-white">Legal</h3>
-            <ul className="mt-4 space-y-2">
-                <li>
-                    <Link href="#" className="text-sm text-primary-foreground/80 transition-colors hover:text-white">
-                        Terms of Service
-                    </Link>
-                </li>
-                <li>
-                    <Link href="#" className="text-sm text-primary-foreground/80 transition-colors hover:text-white">
-                        Privacy Policy
-                    </Link>
-                </li>
-            </ul>
+            <h3 className="font-headline text-lg font-bold text-white">Follow Us</h3>
+            <div className="mt-4 flex space-x-4">
+              {content.socialLinks.map((social) => {
+                const Icon = socialIconMap[social.name];
+                return (
+                  <Link key={social.name} href={social.url} target="_blank" rel="noopener noreferrer" className="text-primary-foreground/80 transition-colors hover:text-white">
+                    <Icon className="h-6 w-6" />
+                    <span className="sr-only">{social.name}</span>
+                  </Link>
+                );
+              })}
+            </div>
         </div>
       </div>
       <div className="border-t border-white/10">

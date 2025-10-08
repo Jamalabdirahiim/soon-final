@@ -5,12 +5,12 @@ import Header from "@/components/layout/header";
 import HeroImage from "@/components/sections/hero-image";
 import HeroText from "@/components/sections/hero-text";
 import Services from "@/components/sections/services";
-import FeatureHighlight from "@/components/sections/feature-highlight";
 import Pricing from "@/components/sections/pricing";
 import Faq from "@/components/sections/faq";
 import Contact from "@/components/sections/contact";
 import Footer from "@/components/layout/footer";
 import FadeInWrapper from "@/components/fade-in-wrapper";
+import Iptv from "@/components/sections/iptv";
 
 export default function Home() {
 
@@ -21,10 +21,10 @@ export default function Home() {
         <HeroImage />
         <HeroText />
         <FadeInWrapper>
-          <Services />
+          <Iptv />
         </FadeInWrapper>
         <FadeInWrapper>
-          <FeatureHighlight />
+          <Services />
         </FadeInWrapper>
         <FadeInWrapper>
           <Pricing />

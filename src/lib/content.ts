@@ -6,6 +6,11 @@ type NavLink = {
   href: string;
 };
 
+type SocialLink = {
+  name: "Facebook" | "Instagram" | "Twitter";
+  url: string;
+}
+
 type Service = {
   icon: 'Wifi' | 'Router' | 'Server' | 'LifeBuoy';
   title: string;
@@ -28,10 +33,15 @@ type PricingPlan = {
 
 type Content = {
   navLinks: NavLink[];
+  socialLinks: SocialLink[];
   hero: {
     headline: string;
     subheadline: string;
   };
+  iptv: {
+    headline: string;
+    subheadline: string;
+  },
   services: Service[];
   pricingPlans: PricingPlan[];
   faq: FaqItem[];

@@ -2,15 +2,15 @@
   "placeholderImages": [
     {
       "id": "hero-background",
-      "description": "Abstract background image representing technology or data flow for the hero section.",
-      "imageUrl": "https://images.unsplash.com/photo-1535223289827-42f1e9919769?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxhYnN0cmFjdCUyMGZpYmVyJTIwb3B0aWN8ZW58MHx8fHwxNzYwNDEzOTg4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "Abstract background image representing data flow and fiber optics.",
+      "imageUrl": "https://images.unsplash.com/photo-1540294132333-497959055375?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxhYnN0cmFjdCUyMGJsdWUlMjBsaWdodCUyMHRyYWlsc3xlbnwwfHx8fDE3NjA0MTM5ODh8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "abstract technology"
     },
     {
-      "id": "feature-highlight-image",
-      "description": "A man with glasses holding a laptop.",
-      "imageUrl": "https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwb3J0cmFpdCUyMG9mJTIwYSUyMG1hbCUyMHdpdGglMjBnbGFzc2VzfGVufDB8fHx8MTc2MDQxMTcyNXww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "man glasses"
+      "id": "iptv-hero",
+      "description": "A modern living room with a large TV displaying a colorful user interface, representing an IPTV service.",
+      "imageUrl": "https://images.unsplash.com/photo-1601944177324-f23675a8e70a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxsaXZpbmclMjByb29tJTIwd2l0aCUyMHR2fGVufDB8fHx8MTc2MDQxMTcyNXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "living room television"
     }
   ]
 }

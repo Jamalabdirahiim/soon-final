@@ -68,12 +68,6 @@ export default function Header() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-2 md:flex">
-          <Button asChild variant={isScrolledOrMobile ? 'outline' : 'outline-white'}>
-            <Link href="/admin">Admin</Link>
-          </Button>
-        </div>
-
         <div className="flex items-center md:hidden">
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
@@ -102,11 +96,6 @@ export default function Header() {
                     </Link>
                     ))}
                 </nav>
-                <div className="mt-auto">
-                    <Button asChild className="w-full">
-                    <Link href="/admin" onClick={handleLinkClick}>Admin</Link>
-                    </Button>
-                </div>
                 </div>
             </SheetContent>
             </Sheet>

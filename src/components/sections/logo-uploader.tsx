@@ -24,6 +24,13 @@ export default function LogoUploader() {
   const [preview, setPreview] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    if (storage && firestore) {
+      setIsReady(true);
+    }
+  }, [storage, firestore]);
 
   useEffect(() => {
     if (file) {
@@ -45,7 +52,7 @@ export default function LogoUploader() {
     onDrop,
     accept: { 'image/*': ['.jpeg', '.png', '.svg', '.gif', '.webp'] },
     multiple: false,
-    disabled: isUploading,
+    disabled: isUploading || !isReady,
   });
   
   const handleUpload = useCallback(async () => {
@@ -53,7 +60,7 @@ export default function LogoUploader() {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Prerequisites not met. Please try again later.",
+        description: "Component not ready. Please try again in a moment.",
       });
       return;
     }
@@ -74,7 +81,7 @@ export default function LogoUploader() {
         toast({
           variant: "destructive",
           title: "Upload Failed",
-          description: "Something went wrong during the upload. Please try again.",
+          description: `Storage error: ${error.message}. Check storage rules and CORS settings.`,
         });
         setIsUploading(false);
         setUploadProgress(null);
@@ -98,8 +105,9 @@ export default function LogoUploader() {
             description: "Your new logo has been applied across the site.",
           });
           
+          // Dispatch a custom event to notify other components (like the header)
           window.dispatchEvent(new CustomEvent('logoChanged'));
-          setFile(null);
+          setFile(null); // Clear the file after successful upload
 
         } catch (dbError) {
           console.error("Firestore error:", dbError);
@@ -136,7 +144,8 @@ export default function LogoUploader() {
                 className={cn(
                     "flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer transition-colors",
                     "hover:bg-accent/50",
-                    isDragActive ? "border-primary bg-primary/10" : "border-border bg-background"
+                    isDragActive ? "border-primary bg-primary/10" : "border-border bg-background",
+                    !isReady && "cursor-not-allowed opacity-50"
                 )}
             >
                 <input {...getInputProps()} />
@@ -156,6 +165,7 @@ export default function LogoUploader() {
                             {isDragActive ? 'Drop your logo here' : "Drag 'n' drop or click to upload"}
                         </p>
                         <p className="text-xs mt-1">SVG, PNG, JPG, GIF or WEBP</p>
+                         {!isReady && <p className="text-xs mt-2 text-destructive">Initializing uploader...</p>}
                     </div>
                 )}
             </div>
@@ -169,8 +179,8 @@ export default function LogoUploader() {
 
             {file && !isUploading && (
                 <div className="mt-6 flex justify-center">
-                    <Button onClick={handleUpload} size="lg" disabled={isUploading}>
-                        Apply Logo
+                    <Button onClick={handleUpload} size="lg" disabled={isUploading || !isReady}>
+                        {isUploading ? "Uploading..." : "Apply Logo"}
                     </Button>
                 </div>
             )}

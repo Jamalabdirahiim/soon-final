@@ -34,13 +34,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const sidebarNav = [
-  { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-  { label: "Content", href: "/admin/dashboard/content", icon: FileText },
-  { label: "Pricing", href: "/admin/dashboard/pricing", icon: DollarSign },
-  { label: "Media", href: "/admin/dashboard/media", icon: ImageIcon },
-  { label: "Logo", href: "/admin/dashboard/logo", icon: UploadCloud },
-  { label: "Analytics", href: "/admin/dashboard/analytics", icon: BarChart2 },
-  { label: "Settings", href: "/admin/dashboard/settings", icon: Settings },
+  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { label: "Content", href: "/dashboard/content", icon: FileText },
+  { label: "Pricing", href: "/dashboard/pricing", icon: DollarSign },
+  { label: "Media", href: "/dashboard/media", icon: ImageIcon },
+  { label: "Logo", href: "/dashboard/logo", icon: UploadCloud },
+  { label: "Analytics", href: "/dashboard/analytics", icon: BarChart2 },
+  { label: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {

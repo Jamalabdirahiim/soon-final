@@ -9,7 +9,7 @@ import Link from "next/link";
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="bg-background">
+    <section id="pricing" className="bg-secondary">
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">

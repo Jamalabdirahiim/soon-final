@@ -26,6 +26,7 @@ export default function Home() {
       <Header />
       <main className="flex-1">
         <HeroImage />
+        <HeroImageUploader />
         <HeroText />
         
         {user && (

@@ -3,7 +3,6 @@
 
 import Header from "@/components/layout/header";
 import HeroImage from "@/components/sections/hero-image";
-import HeroText from "@/components/sections/hero-text";
 import Services from "@/components/sections/services";
 import Pricing from "@/components/sections/pricing";
 import Faq from "@/components/sections/faq";
@@ -12,8 +11,12 @@ import Footer from "@/components/layout/footer";
 import FadeInWrapper from "@/components/fade-in-wrapper";
 import Iptv from "@/components/sections/iptv";
 import LogoUploader from "@/components/sections/logo-uploader";
+import HeroImageUploader from "@/components/sections/hero-image-uploader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useUser } from "@/firebase";
+import HeroText from "@/components/sections/hero-text";
+import MobileHeroImageUploader from "@/components/mobile-hero-image-uploader";
+import { Separator } from "@/components/ui/separator";
 
 export default function Home() {
   const { user } = useUser();
@@ -26,23 +29,28 @@ export default function Home() {
         <HeroText />
         
         {user && (
-          <section className="bg-secondary py-12 md:py-16">
+          <section className="bg-secondary py-16 md:py-24">
             <div className="container mx-auto px-4">
-               <Card className="max-w-2xl mx-auto">
+               <Card className="max-w-4xl mx-auto">
                 <CardHeader>
-                  <CardTitle>Logo Management</CardTitle>
+                  <CardTitle className="text-2xl md:text-3xl">Site Customization</CardTitle>
                   <CardDescription>
-                    Upload or change your company logo. For best results, use a transparent PNG, SVG, or paste an image from your clipboard.
+                    Update your branding and hero images. Changes are saved instantly.
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="space-y-8">
                   <LogoUploader />
+                  <Separator />
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <HeroImageUploader />
+                    <MobileHeroImageUploader />
+                  </div>
                 </CardContent>
               </Card>
             </div>
           </section>
         )}
-
+        
         <FadeInWrapper>
           <Iptv />
         </FadeInWrapper>

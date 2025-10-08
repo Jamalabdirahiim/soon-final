@@ -20,7 +20,7 @@ const toBase64 = (file: File): Promise<string> => new Promise((resolve, reject) 
     reader.onerror = error => reject(error);
 });
 
-export default function MobileHeroImageUploader() {
+export default function HeroImageUploader() {
   const firestore = useFirestore();
   const { toast } = useToast();
 
@@ -103,19 +103,19 @@ export default function MobileHeroImageUploader() {
         
         const configDocRef = doc(firestore, 'site-settings', 'config');
         
-        setDoc(configDocRef, { mobileHeroImageUrl: dataUrl }, { merge: true }).catch(error => {
+        setDoc(configDocRef, { heroImageUrl: dataUrl }, { merge: true }).catch(error => {
           console.error("Firestore save error:", error);
           const permissionError = new FirestorePermissionError({
             path: configDocRef.path,
             operation: 'update',
-            requestResourceData: { mobileHeroImageUrl: 'REDACTED_DATA_URL' }
+            requestResourceData: { heroImageUrl: 'REDACTED_DATA_URL' }
           });
           errorEmitter.emit('permission-error', permissionError);
         });
 
         toast({
             title: "Upload Successful!",
-            description: "Your new mobile hero image has been applied.",
+            description: "Your new hero image has been applied.",
         });
 
         window.dispatchEvent(new CustomEvent('heroImageChanged'));
@@ -135,7 +135,7 @@ export default function MobileHeroImageUploader() {
 
   return (
     <div className="w-full">
-        <h3 className="font-medium mb-2">Mobile Hero Image</h3>
+        <h3 className="font-medium mb-2">Desktop Hero Image</h3>
         <div 
             {...getRootProps()} 
             className={cn(
@@ -148,7 +148,7 @@ export default function MobileHeroImageUploader() {
             <input {...getInputProps()} />
             {preview ? (
                 <div className="relative w-full h-full p-4">
-                    <Image src={preview} alt="Mobile hero preview" layout="fill" objectFit="contain" />
+                    <Image src={preview} alt="Hero preview" layout="fill" objectFit="contain" />
                     {!isProcessing && (
                       <Button variant="ghost" size="icon" className="absolute top-2 right-2 bg-background/50 backdrop-blur-sm" onClick={(e) => { e.stopPropagation(); setFile(null);}}>
                           <X className="h-4 w-4" />
@@ -162,7 +162,7 @@ export default function MobileHeroImageUploader() {
                         {isDragActive ? 'Drop image here' : "Drag 'n' drop, click, or paste"}
                     </p>
                     <p className="text-xs mt-1">
-                        Recommended aspect ratio: 9:16
+                        Recommended aspect ratio: 16:9
                     </p>
                      {!isReady && <p className="text-xs mt-2 text-destructive">Initializing...</p>}
                 </div>

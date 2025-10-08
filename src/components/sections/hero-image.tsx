@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -11,14 +12,28 @@ import { useEffect, useState } from "react";
 export default function HeroImage() {
     const defaultHeroImage = placeholderImages.find(p => p.id === 'hero-background');
     const defaultMobileHeroImage = placeholderImages.find(p => p.id === 'mobile-hero-background');
+    
     const isMobile = useIsMobile();
     const firestore = useFirestore();
 
+    const [heroImageKey, setHeroImageKey] = useState(Date.now());
+
     const { data: settings } = useDoc(
-        firestore ? doc(firestore, 'site-settings', 'config') : null
+        firestore ? doc(firestore, 'site-settings', 'config') : null,
+        { key: heroImageKey }
     );
 
     const [currentSrc, setCurrentSrc] = useState(isMobile ? defaultMobileHeroImage?.imageUrl : defaultHeroImage?.imageUrl);
+
+    useEffect(() => {
+        const handleImageChange = () => {
+          setHeroImageKey(Date.now());
+        };
+        window.addEventListener('heroImageChanged', handleImageChange);
+        return () => {
+          window.removeEventListener('heroImageChanged', handleImageChange);
+        };
+    }, []);
 
     useEffect(() => {
         const heroSrc = settings?.heroImageUrl || defaultHeroImage?.imageUrl;

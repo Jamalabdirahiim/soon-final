@@ -3,7 +3,7 @@ import { initializeFirebase } from "@/firebase/index.server";
 import { doc, getDoc } from "firebase/firestore";
 
 import Header from "@/components/layout/header";
-import HeroImage from "@/components/sections/hero-image";
+import Hero from "@/components/sections/hero";
 import Services from "@/components/sections/services";
 import Pricing from "@/components/sections/pricing";
 import Faq from "@/components/sections/faq";
@@ -27,7 +27,7 @@ async function getSiteData() {
 
     const [configDoc, logoDoc] = await Promise.all([
         getDoc(configDocRef),
-        getDoc(logoDocRef)
+        getDoc(logoDoc)
     ]);
     
     const configData = configDoc.exists() ? configDoc.data() : {};
@@ -57,7 +57,7 @@ export default async function Home() {
     <div className="flex min-h-[100dvh] flex-col bg-background">
       <Header logoUrl={logoUrl} />
       <main className="flex-1">
-        <HeroImage heroImageUrl={heroImageUrl} mobileHeroImageUrl={mobileHeroImageUrl} />
+        <Hero />
         
         <Customization />
         

@@ -5,7 +5,6 @@ import { useUser } from "@/firebase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import LogoUploader from "@/components/sections/logo-uploader";
 import { Separator } from "@/components/ui/separator";
-import HeroImageUploader from "@/components/sections/hero-image-uploader";
 import MobileHeroImageUploader from "@/components/mobile-hero-image-uploader";
 
 export default function Customization() {
@@ -22,16 +21,11 @@ export default function Customization() {
                     <CardHeader>
                         <CardTitle className="text-2xl md:text-3xl">Site Customization</CardTitle>
                         <CardDescription>
-                            Update your branding and hero images. Changes are saved instantly.
+                            Update your branding. Changes are saved instantly.
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-8">
                         <LogoUploader />
-                        <Separator />
-                        <div className="grid md:grid-cols-2 gap-8">
-                            <HeroImageUploader />
-                            <MobileHeroImageUploader />
-                        </div>
                     </CardContent>
                 </Card>
             </div>

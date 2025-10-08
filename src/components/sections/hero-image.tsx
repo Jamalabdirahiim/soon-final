@@ -33,19 +33,21 @@ export default function HeroImage({ heroImageUrl, mobileHeroImageUrl }: HeroImag
   }, [heroImageUrl, mobileHeroImageUrl, isMobile]);
 
   return (
-    <section id="home" className="relative w-full h-[45vh] md:h-[65vh]">
-      {currentSrc && (
-        <Image
-            src={currentSrc}
-            alt={defaultHeroImage?.description || "High-speed internet concept"}
-            fill
-            className="w-full h-full object-cover"
-            priority
-            data-ai-hint={defaultHeroImage?.imageHint}
-            key={currentSrc} 
-        />
-      )}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
+    <section id="home" className="relative w-full py-8 md:py-12 bg-secondary">
+      <div className="relative w-full h-[40vh] md:h-[60vh] rounded-xl shadow-2xl overflow-hidden container mx-auto">
+          {currentSrc && (
+            <Image
+                src={currentSrc}
+                alt={defaultHeroImage?.description || "High-speed internet concept"}
+                fill
+                className="w-full h-full object-cover"
+                priority
+                data-ai-hint={defaultHeroImage?.imageHint}
+                key={currentSrc} 
+            />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
+      </div>
     </section>
   );
 }

@@ -19,33 +19,27 @@ export default function Header({ logoUrl }: { logoUrl: string }) {
       setHasScrolled(window.scrollY > 10);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // Check on mount
+    handleScroll(); 
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
-  const handleLinkClick = () => {
-    setIsMobileMenuOpen(false);
-  };
-
-  const isScrolledOrMobileMenuOpen = hasScrolled || isMobileMenuOpen;
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   return (
     <header
       className={cn(
         "fixed top-0 z-50 w-full transition-all duration-300",
-        isScrolledOrMobileMenuOpen
-          ? "bg-background/80 backdrop-blur-sm shadow-md"
-          : "bg-transparent"
+        hasScrolled || isMobileMenuOpen ? "bg-background/80 backdrop-blur-sm shadow-md" : "bg-transparent"
       )}
     >
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         <SoonLogo 
           logoSrc={logoUrl} 
           className={cn(
-            !isScrolledOrMobileMenuOpen ? "brightness-0 invert drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]" : ""
+            !hasScrolled && !isMobileMenuOpen ? "brightness-0 invert drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]" : ""
           )}
         />
 
@@ -92,7 +86,7 @@ export default function Header({ logoUrl }: { logoUrl: string }) {
                       key={link.href}
                       href={link.href}
                       className="text-lg font-medium text-foreground/80 transition-colors hover:text-primary"
-                      onClick={handleLinkClick}
+                      onClick={closeMobileMenu}
                     >
                       {link.label}
                     </Link>

@@ -4,6 +4,9 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    @apply scroll-smooth;
+  }
   :root {
     --background: 345 67% 98%;
     --foreground: 224 71.4% 4.1%;
@@ -75,9 +78,7 @@
     --sidebar-border: 235 70% 22%;
     --sidebar-ring: 199 100% 47%;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
@@ -85,7 +86,7 @@
     @apply bg-background text-foreground;
   }
   section {
-    @apply w-full py-12 md:py-24 lg:py-32;
+    @apply w-full py-12 md:py-24 lg:py-32 scroll-m-20;
   }
 }
 

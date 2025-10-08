@@ -86,7 +86,7 @@ export default function Header({ logoUrl }: { logoUrl: string }) {
                       key={link.href}
                       href={link.href}
                       className="text-lg font-medium text-foreground/80 transition-colors hover:text-primary"
-                      onClick={closeMobileMenu}
+                      onClick={closeMobileMenu} 
                     >
                       {link.label}
                     </Link>

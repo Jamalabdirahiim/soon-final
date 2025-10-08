@@ -19,7 +19,7 @@ async function getSiteData() {
   
   const defaultHeroImage = placeholderImages.find(p => p.id === 'hero-background');
   const defaultMobileHeroImage = placeholderImages.find(p => p.id === 'mobile-hero-background');
-  const defaultLogo = '/logo.svg';
+  const defaultLogo = `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iNTYiIHZpZXdCb3g9IjAgMCAyMDAgNTYiIGZpbGw9Im5vbmUiPgo8dGV4dCB4PSIxMCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJzZXJpZiIgZm9udC1zaXplPSIzNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMwMDdEQjYiPgpTT09OPC90ZXh0Pgo8L3N2Zz4K`;
 
   try {
     const configDocRef = doc(firestore, 'site-settings', 'config');

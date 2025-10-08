@@ -53,7 +53,7 @@ export default function HeroImage() {
           alt={defaultHeroImage?.description || 'Hero background image'}
           fill
           priority
-          className="object-contain z-0"
+          className="object-cover z-0"
           data-ai-hint={defaultHeroImage?.imageHint}
           key={currentSrc}
         />

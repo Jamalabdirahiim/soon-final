@@ -3,8 +3,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LogoUploader } from "@/components/logo-uploader";
-import { MobileLogoUploader } from "@/components/mobile-logo-uploader";
 import { HeroImageUploader } from "@/components/hero-image-uploader";
 import { MobileHeroImageUploader } from "@/components/mobile-hero-image-uploader";
 import { FeatureImageUploader } from "@/components/feature-image-uploader";
@@ -30,9 +28,6 @@ export default function MediaPage() {
                         <TabsContent value="desktop" className="pt-6">
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                                 <div className="space-y-6">
-                                    <LogoUploader />
-                                </div>
-                                <div className="space-y-6">
                                     <HeroImageUploader />
                                 </div>
                                 <div className="space-y-6">
@@ -42,9 +37,6 @@ export default function MediaPage() {
                         </TabsContent>
                         <TabsContent value="mobile" className="pt-6">
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                                <div className="space-y-6">
-                                    <MobileLogoUploader />
-                                </div>
                                 <div className="space-y-6">
                                     <MobileHeroImageUploader />
                                 </div>

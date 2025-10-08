@@ -56,7 +56,7 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="bg-background">
+    <section id="contact" className="bg-secondary">
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">

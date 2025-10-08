@@ -14,7 +14,6 @@ import LogoUploader from "@/components/sections/logo-uploader";
 import HeroImageUploader from "@/components/sections/hero-image-uploader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useUser } from "@/firebase";
-import HeroText from "@/components/sections/hero-text";
 import MobileHeroImageUploader from "@/components/mobile-hero-image-uploader";
 import { Separator } from "@/components/ui/separator";
 
@@ -26,8 +25,6 @@ export default function Home() {
       <Header />
       <main className="flex-1">
         <HeroImage />
-        <HeroImageUploader />
-        <HeroText />
         
         {user && (
           <section className="bg-secondary py-16 md:py-24">

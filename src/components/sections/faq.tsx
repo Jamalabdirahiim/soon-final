@@ -8,6 +8,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { content } from "@/lib/content";
+import { HelpCircle } from "lucide-react";
 
 export default function Faq() {
   return (
@@ -15,7 +16,10 @@ export default function Faq() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
-            <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">FAQ</div>
+            <div className="inline-flex items-center gap-2 rounded-lg bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">
+              <HelpCircle className="h-4 w-4" />
+              <span>FAQ</span>
+            </div>
             <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-5xl premium-blue-text">
               Common Questions
             </h2>

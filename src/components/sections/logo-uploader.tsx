@@ -8,7 +8,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Progress } from '@/components/ui/progress';
-import { UploadCloud, X } from 'lucide-react';
+import { UploadCloud, X, ClipboardPaste } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { errorEmitter } from '@/firebase/error-emitter';
@@ -37,6 +37,42 @@ export default function LogoUploader() {
     }
   }, [firestore]);
 
+  const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
+    if (acceptedFiles.length > 0) {
+      const acceptedFile = acceptedFiles[0];
+      // Add path property if it's missing (e.g., from paste event)
+      if (!('path' in acceptedFile)) {
+        Object.defineProperty(acceptedFile, 'path', {
+          value: acceptedFile.name,
+          writable: true,
+        });
+      }
+      setFile(acceptedFile);
+    }
+  }, []);
+
+  // Handle paste event
+  useEffect(() => {
+    const handlePaste = (event: ClipboardEvent) => {
+      const items = event.clipboardData?.items;
+      if (items) {
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].type.indexOf('image') !== -1) {
+            const file = items[i].getAsFile();
+            if (file) {
+              onDrop([file as FileWithPath]);
+            }
+          }
+        }
+      }
+    };
+
+    window.addEventListener('paste', handlePaste);
+    return () => {
+      window.removeEventListener('paste', handlePaste);
+    };
+  }, [onDrop]);
+
   useEffect(() => {
     if (file) {
       const objectUrl = URL.createObjectURL(file);
@@ -46,12 +82,6 @@ export default function LogoUploader() {
       setPreview(null);
     }
   }, [file]);
-
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (acceptedFiles.length > 0) {
-      setFile(acceptedFiles[0]);
-    }
-  }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -77,7 +107,16 @@ export default function LogoUploader() {
         
         const logoDocRef = doc(firestore, 'site-settings', 'logo');
         
-        await setDoc(logoDocRef, { url: dataUrl }, { merge: true });
+        // This is an intentional non-awaited call to allow for optimistic UI
+        setDoc(logoDocRef, { url: dataUrl }, { merge: true }).catch(error => {
+          console.error("Firestore save error:", error);
+          const permissionError = new FirestorePermissionError({
+            path: logoDocRef.path,
+            operation: 'update',
+            requestResourceData: { url: 'REDACTED_DATA_URL' }
+          });
+          errorEmitter.emit('permission-error', permissionError);
+        });
 
         toast({
             title: "Upload Successful!",
@@ -90,16 +129,11 @@ export default function LogoUploader() {
 
     } catch (error: any) {
         console.error("Upload or save error:", error);
-        
-        if (error.name === 'FirestorePermissionError') {
-             errorEmitter.emit('permission-error', error);
-        } else {
-             toast({
-                variant: "destructive",
-                title: "An Error Occurred",
-                description: "Could not save the new logo. Please check the console for details.",
-            });
-        }
+        toast({
+            variant: "destructive",
+            title: "An Error Occurred",
+            description: "Could not process the logo. Please check the console for details.",
+        });
     } finally {
         setIsProcessing(false);
     }
@@ -115,7 +149,7 @@ export default function LogoUploader() {
               Upload Your Logo
             </h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Update your brand identity in real-time. Drag and drop your new logo below.
+              Update your brand identity in real-time. Drag, drop, or paste your new logo below.
             </p>
           </div>
         </div>
@@ -145,7 +179,10 @@ export default function LogoUploader() {
                         <p className="mt-2 font-semibold">
                             {isDragActive ? 'Drop your logo here' : "Drag 'n' drop or click to upload"}
                         </p>
-                        <p className="text-xs mt-1">SVG, PNG, JPG, GIF or WEBP</p>
+                        <div className="flex items-center justify-center mt-2 text-xs gap-2">
+                          <ClipboardPaste className="h-4 w-4" />
+                          <span>You can also paste from clipboard</span>
+                        </div>
                          {!isReady && <p className="text-xs mt-2 text-destructive">Initializing uploader...</p>}
                     </div>
                 )}
@@ -170,3 +207,4 @@ export default function LogoUploader() {
     </section>
   );
 }
+

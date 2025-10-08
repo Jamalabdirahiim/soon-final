@@ -42,12 +42,7 @@ export function SoonLogo({ className, hasScrolled }: { className?: string; hasSc
       setLogoSrc(defaultLogoPath);
     }
   }, [settings]);
-
-  const isDataUrl = logoSrc.startsWith('data:image');
   
-  // The logo should be white if it's NOT scrolled and NOT a custom data URL logo.
-  const shouldBeWhite = !hasScrolled && !isDataUrl && !isMobile;
-
   return (
     <Link href="/" aria-label="Back to homepage" className={cn("transition-all duration-300", className)}>
       <Image 
@@ -58,10 +53,8 @@ export function SoonLogo({ className, hasScrolled }: { className?: string; hasSc
         priority
         className={cn(
             "h-14 w-auto transition-all duration-300",
-            // When not scrolled and using the default SVG, make it white with a drop shadow.
-            shouldBeWhite && "brightness-0 invert-[1] drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]",
-            // When not scrolled and using a custom data URL, just add a drop shadow.
-            !hasScrolled && isDataUrl && !isMobile && "drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]"
+            // When not scrolled (i.e., over the hero), make the logo white with a drop shadow.
+            !hasScrolled && !isMobile && "brightness-0 invert-[1] drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]"
         )}
         key={logoSrc} 
         data-ai-hint="minimalist logo"

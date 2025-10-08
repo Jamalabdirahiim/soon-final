@@ -11,15 +11,9 @@ import Contact from "@/components/sections/contact";
 import Footer from "@/components/layout/footer";
 import FadeInWrapper from "@/components/fade-in-wrapper";
 import Iptv from "@/components/sections/iptv";
-import LogoUploader from "@/components/sections/logo-uploader";
-import HeroImageUploader from "@/components/sections/hero-image-uploader";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useUser } from "@/firebase";
-import MobileHeroImageUploader from "@/components/mobile-hero-image-uploader";
-import { Separator } from "@/components/ui/separator";
 import HeroText from "@/components/sections/hero-text";
 import { placeholderImages } from "@/lib/placeholder-images.json";
-import UserSession from "@/components/user-session";
+import Customization from "@/components/sections/customization";
 
 async function getSiteData() {
   const { firestore } = initializeFirebase();
@@ -67,30 +61,7 @@ export default async function Home() {
         <HeroImage heroImageUrl={heroImageUrl} mobileHeroImageUrl={mobileHeroImageUrl} />
         <HeroText />
         
-        <UserSession>
-          {(user) => user && (
-            <section className="bg-secondary py-16 md:py-24">
-              <div className="container mx-auto px-4">
-                 <Card className="max-w-4xl mx-auto">
-                  <CardHeader>
-                    <CardTitle className="text-2xl md:text-3xl">Site Customization</CardTitle>
-                    <CardDescription>
-                      Update your branding and hero images. Changes are saved instantly.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-8">
-                    <LogoUploader />
-                    <Separator />
-                    <div className="grid md:grid-cols-2 gap-8">
-                      <HeroImageUploader />
-                      <MobileHeroImageUploader />
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </section>
-          )}
-        </UserSession>
+        <Customization />
         
         <FadeInWrapper>
           <Iptv />

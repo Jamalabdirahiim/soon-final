@@ -8,6 +8,10 @@ import FadeInWrapper from "@/components/fade-in-wrapper";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { content } from "@/lib/content";
+import { useUser } from "@/firebase";
+import { ADMIN_EMAILS } from "@/lib/admin";
+import { ImageUploaderDialog } from "../image-uploader-dialog";
+import { IptvImageUploader } from "./iptv-image-uploader";
 
 interface IptvProps {
   featureImageUrl?: string;
@@ -17,6 +21,8 @@ interface IptvProps {
 export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvProps) {
   const defaultIptvImage = placeholderImages.find(p => p.id === 'iptv-hero');
   const isMobile = useIsMobile();
+  const { user } = useUser();
+  const isAdmin = user && ADMIN_EMAILS.includes(user.email || "");
 
   const getSrc = () => {
     if (isMobile === undefined) return defaultIptvImage?.imageUrl;
@@ -33,16 +39,25 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
       <FadeInWrapper>
         <div className="container mx-auto px-4 md:px-6">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-                <div className="space-y-4 text-center lg:text-left">
+                <div className="space-y-6 text-center lg:text-left">
                     <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-5xl text-primary">
                         {headline}
                     </h2>
                     <p className="text-muted-foreground md:text-lg">
                         {subheadline}
                     </p>
-                    <Button asChild size="lg" className="premium-blue-bg text-primary-foreground hover:brightness-110 transition-transform hover:scale-105 shadow-lg mt-4">
-                        <Link href="#contact">Learn More</Link>
-                    </Button>
+                    {isAdmin ? (
+                       <ImageUploaderDialog
+                          triggerText="Edit IPTV Image"
+                          dialogTitle="Update IPTV Section Image"
+                       >
+                          <IptvImageUploader />
+                       </ImageUploaderDialog>
+                    ) : (
+                      <Button asChild size="lg" className="premium-blue-bg text-primary-foreground hover:brightness-110 transition-transform hover:scale-105 shadow-lg mt-4">
+                          <Link href="#contact">Learn More</Link>
+                      </Button>
+                    )}
                 </div>
                 <div className="relative w-full max-w-2xl mx-auto lg:max-w-none aspect-[16/10]">
                   {currentSrc && (

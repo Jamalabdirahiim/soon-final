@@ -6,7 +6,7 @@ import Pricing from "@/components/sections/pricing";
 import Faq from "@/components/sections/faq";
 import Contact from "@/components/sections/contact";
 import Footer from "@/components/layout/footer";
-import Iptv from "@/components/sections/iptv";
+import IptvHero from "@/components/sections/iptv-hero";
 import Customization from "@/components/sections/customization";
 import { initializeFirebase } from "@/firebase/index.server";
 import { doc, getDoc, Firestore } from "firebase/firestore";
@@ -39,7 +39,7 @@ export default async function Home() {
         />
         <Customization />
         <Services />
-        <Iptv 
+        <IptvHero 
           featureImageUrl={settings?.featureImageUrl}
           mobileFeatureImageUrl={settings?.mobileFeatureImageUrl}
         />

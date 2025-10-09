@@ -29,7 +29,7 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
   const { headline, subheadline } = content.iptv;
 
   return (
-    <section id="iptv" className="bg-secondary py-12 sm:py-16 lg:py-20">
+    <section id="iptv-details" className="bg-secondary py-12 sm:py-16 lg:py-20">
       <FadeInWrapper>
         <div className="container mx-auto px-4 md:px-6">
             <div className="grid lg:grid-cols-2 gap-12 items-center">

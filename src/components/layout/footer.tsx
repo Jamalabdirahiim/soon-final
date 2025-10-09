@@ -43,12 +43,12 @@ export default function Footer() {
   }, [firestore]);
 
   return (
-    <footer className="bg-background text-foreground py-12">
+    <footer className="premium-blue-bg text-primary-foreground py-12">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-sm">
           
           <div className="md:col-span-1 space-y-4">
-            <SoonLogo logoSrc={logoUrl} className="!h-10" />
+            <SoonLogo logoSrc={logoUrl} className="!h-10" isInFooter={true} />
           </div>
 
           <div>
@@ -56,7 +56,7 @@ export default function Footer() {
             <ul className="space-y-3">
               {content.navLinks.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-muted-foreground hover:text-primary transition-colors">
+                  <Link href={link.href} className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -66,7 +66,7 @@ export default function Footer() {
 
           <div>
             <h3 className="font-bold text-base mb-4 tracking-wider">CONTACT US</h3>
-            <div className="space-y-3 text-muted-foreground">
+            <div className="space-y-3 text-primary-foreground/80">
               {content.contact.addressLines.map(line => <p key={line}>{line}</p>)}
               <p>Phone: {content.contact.phone}</p>
               <p>Email: {content.contact.email}</p>
@@ -77,19 +77,19 @@ export default function Footer() {
             <h3 className="font-bold text-base mb-4 tracking-wider">FOLLOW US</h3>
             <div className="flex items-center space-x-4 mb-4">
               {content.socialLinks.map((social) => (
-                <Link href={social.url} key={social.name} className="text-muted-foreground hover:text-primary transition-colors">
+                <Link href={social.url} key={social.name} className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
                   {socialIconMap[social.name]}
                 </Link>
               ))}
             </div>
-            <p className="text-muted-foreground">{content.contact.socialHandle}</p>
+            <p className="text-primary-foreground/80">{content.contact.socialHandle}</p>
           </div>
 
         </div>
 
-        <Separator className="my-8 bg-border/50" />
+        <Separator className="my-8 bg-primary-foreground/20" />
 
-        <div className="text-center text-xs text-muted-foreground space-y-1">
+        <div className="text-center text-xs text-primary-foreground/60 space-y-1">
             <p>{content.footer.copyright}</p>
             <p>Designed & Developed by {content.developer.name} | Contact: {content.developer.contact}</p>
         </div>

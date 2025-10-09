@@ -43,8 +43,8 @@ export default function Contact() {
 
     if (result.success) {
       toast({
-        title: "Message Sent!",
-        description: "Thanks for reaching out. We'll get back to you soon.",
+        title: "Success!",
+        description: "Your message has been sent successfully. We will be in touch shortly.",
       });
       form.reset();
     } else {

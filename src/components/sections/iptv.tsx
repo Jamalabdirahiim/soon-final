@@ -30,17 +30,18 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
   const imageUploadInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    // This effect runs only once on the client-side after initial mount.
     const savedImage = localStorage.getItem('iptvCustomImage');
     if (savedImage) {
       setCurrentSrc(savedImage);
     } else {
+      // Fallback to server-provided or default images if nothing is in localStorage
       const desktopSrc = featureImageUrl || defaultIptvImage?.imageUrl;
       const mobileSrc = mobileFeatureImageUrl || desktopSrc;
-      if (typeof isMobile !== 'undefined') {
-        setCurrentSrc(isMobile ? mobileSrc : desktopSrc);
-      }
+      setCurrentSrc(isMobile ? mobileSrc : desktopSrc);
     }
-  }, [isMobile, featureImageUrl, mobileFeatureImageUrl, defaultIptvImage]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMobile]); // Dependency on isMobile ensures it re-evaluates for responsive changes if needed, but not on every render.
 
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {

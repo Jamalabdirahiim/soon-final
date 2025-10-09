@@ -32,8 +32,8 @@ const resizeImage = (file: File): Promise<string> => {
       img.src = event.target?.result as string;
       img.onload = () => {
         const canvas = document.createElement('canvas');
-        const scaleFactor = MAX_IMAGE_WIDTH / img.width;
-        canvas.width = MAX_IMAGE_WIDTH;
+        const scaleFactor = Math.min(1, MAX_IMAGE_WIDTH / img.width);
+        canvas.width = img.width * scaleFactor;
         canvas.height = img.height * scaleFactor;
 
         const ctx = canvas.getContext('2d');
@@ -62,18 +62,19 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
   const imageUploadInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // This effect runs only once on the client-side after initial mount.
+    // This effect now runs only on the client side.
     const savedImage = localStorage.getItem('iptvCustomImage');
     if (savedImage) {
       setCurrentSrc(savedImage);
     } else {
-      // Fallback to server-provided or default images if nothing is in localStorage
+      // Fallback to server-provided or default images only if nothing is in localStorage
       const desktopSrc = featureImageUrl || defaultIptvImage?.imageUrl;
       const mobileSrc = mobileFeatureImageUrl || desktopSrc;
+      // We need to check isMobile here because it determines the correct fallback.
       setCurrentSrc(isMobile ? mobileSrc : desktopSrc);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobile]); 
+  // The dependency array ensures this runs when `isMobile` changes, which is important for responsive fallbacks.
+  }, [isMobile, featureImageUrl, mobileFeatureImageUrl, defaultIptvImage]);
 
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {

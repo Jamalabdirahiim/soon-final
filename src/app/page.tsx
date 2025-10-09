@@ -9,6 +9,7 @@ import Footer from "@/components/layout/footer";
 import Iptv from "@/components/sections/iptv";
 import Customization from "@/components/sections/customization";
 import Hero from "@/components/sections/hero";
+import IptvImageUploader from "@/components/sections/iptv-image-uploader";
 
 
 export default async function Home() {
@@ -23,6 +24,7 @@ export default async function Home() {
         <Customization />
         
         <Iptv />
+        <IptvImageUploader />
         <Services />
         <Pricing />
         <Faq />

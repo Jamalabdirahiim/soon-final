@@ -52,8 +52,8 @@ export default function HeroImage({ heroImageUrl, mobileHeroImageUrl }: HeroImag
                 <h1 className="font-headline text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl drop-shadow-2xl">
                     Experience the Future of Internet & TV.
                 </h1>
-                <p className="mt-6 max-w-2xl mx-auto text-lg text-gray-200 md:text-xl drop-shadow-lg">
-                    Blazing-fast fiber optic internet and over 400+ IPTV channels. Get the most reliable connection for your home and business with SOON.
+                <p className="mt-6 max-w-3xl mx-auto text-lg text-gray-200 md:text-xl drop-shadow-lg">
+                    High-speed fiber optic internet and premium IPTV for your home and business. Experience the most reliable connection with SOON.
                 </p>
               </Fade>
             </div>

@@ -15,7 +15,7 @@
     {
       "id": "iptv-hero",
       "description": "A modern living room with a large TV displaying a colorful user interface, representing an IPTV service.",
-      "imageUrl": "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxsaXZpbmclMjByb29tJTIwd2l0aCUyMHR2fGVufDB8fHx8MTc2MDQxMTcyNXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://storage.googleapis.com/project-idx-assets/soon-iptv.png",
       "imageHint": "living room television"
     }
   ]

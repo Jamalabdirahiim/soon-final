@@ -3,6 +3,7 @@
 
 import Image from 'next/image';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@/lib/utils';
 
 interface HeroImageProps {
     heroImageUrl?: string;
@@ -16,11 +17,8 @@ export default function HeroImage({ heroImageUrl, mobileHeroImageUrl }: HeroImag
   const isMobile = useIsMobile();
 
   // This function determines the correct image source to display.
-  // It prioritizes the mobile-specific image on mobile devices,
-  // then falls back to the desktop image, and finally to a static placeholder.
   const getSrc = () => {
     // On the server or before the mobile check has run, we can't know the screen size.
-    // Default to the desktop URL if available, otherwise the fallback.
     if (isMobile === undefined) {
       return heroImageUrl || FALLBACK_IMAGE;
     }
@@ -47,8 +45,11 @@ export default function HeroImage({ heroImageUrl, mobileHeroImageUrl }: HeroImag
                 key={currentSrc}
             />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-           <div className="absolute inset-0 flex items-center justify-center">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/20"></div>
+           <div className={cn(
+             "absolute inset-0 flex items-center justify-center",
+             "pt-20 md:pt-0" // Add padding top on mobile to push content down
+            )}>
             <div className="container mx-auto px-4 text-center">
                 <h1 className="font-headline text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl drop-shadow-2xl">
                     Experience the Future of Internet & TV.

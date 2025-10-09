@@ -142,7 +142,7 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
                         <Tv className="h-4 w-4" />
                         <span>SOON IPTV</span>
                     </div>
-                    <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-5xl text-primary">
+                    <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-5xl premium-blue-text">
                         {headline}
                     </h2>
                     <p className="text-muted-foreground md:text-lg">

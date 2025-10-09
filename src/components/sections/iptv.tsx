@@ -13,6 +13,7 @@ import { ADMIN_EMAILS } from "@/lib/admin";
 import { ImageUploaderDialog } from "../image-uploader-dialog";
 import { IptvImageUploader } from "./iptv-image-uploader";
 import { Fade } from "react-awesome-reveal";
+import React, { useState, useEffect, useRef } from "react";
 
 interface IptvProps {
   featureImageUrl?: string;
@@ -24,15 +25,36 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
   const isMobile = useIsMobile();
   const { user } = useUser();
   const isAdmin = user && ADMIN_EMAILS.includes(user.email || "");
+  const [currentSrc, setCurrentSrc] = useState(featureImageUrl || defaultIptvImage?.imageUrl);
+  const imageUploadInput = useRef<HTMLInputElement>(null);
 
-  const getSrc = () => {
-    if (isMobile === undefined) return defaultIptvImage?.imageUrl;
-    const desktopSrc = featureImageUrl || defaultIptvImage?.imageUrl;
-    const mobileSrc = mobileFeatureImageUrl || desktopSrc;
-    return isMobile ? mobileSrc : desktopSrc;
+  useEffect(() => {
+    // On page load, check localStorage for a custom image
+    const savedImage = localStorage.getItem('iptvCustomImage');
+    if (savedImage) {
+      setCurrentSrc(savedImage);
+    } else {
+      // Fallback logic if no custom image is saved
+      const desktopSrc = featureImageUrl || defaultIptvImage?.imageUrl;
+      const mobileSrc = mobileFeatureImageUrl || desktopSrc;
+      setCurrentSrc(isMobile ? mobileSrc : desktopSrc);
+    }
+  }, [isMobile, featureImageUrl, mobileFeatureImageUrl, defaultIptvImage]);
+
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const dataUrl = reader.result as string;
+        setCurrentSrc(dataUrl);
+        localStorage.setItem('iptvCustomImage', dataUrl);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
-  const currentSrc = getSrc();
   const { headline, subheadline } = content.iptv;
 
   return (
@@ -62,17 +84,35 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
                 </div>
               </Fade>
               <Fade direction="right" triggerOnce>
-                <div className="relative w-full max-w-2xl mx-auto lg:max-w-none aspect-[16/10] rounded-xl overflow-hidden">
-                  {currentSrc && (
-                    <Image
-                      src={currentSrc}
-                      alt={defaultIptvImage?.description || "IPTV service interface"}
-                      fill
-                      className="w-full h-full object-cover"
-                      data-ai-hint={defaultIptvImage?.imageHint}
-                      key={currentSrc}
+                <div className="relative w-full max-w-2xl mx-auto lg:max-w-none">
+                    <div className="aspect-[16/10] rounded-xl overflow-hidden">
+                        {currentSrc && (
+                        <Image
+                            id="iptvImageDisplay"
+                            src={currentSrc}
+                            alt={defaultIptvImage?.description || "IPTV service interface"}
+                            fill
+                            className="w-full h-full object-cover"
+                            data-ai-hint={defaultIptvImage?.imageHint}
+                            key={currentSrc}
+                        />
+                        )}
+                    </div>
+                    <input
+                        type="file"
+                        id="imageUploadInput"
+                        ref={imageUploadInput}
+                        accept="image/*"
+                        hidden
+                        onChange={handleImageUpload}
                     />
-                  )}
+                    <button
+                        id="imageUploadButton"
+                        onClick={() => imageUploadInput.current?.click()}
+                        className="absolute bottom-4 right-4 bg-gradient-to-r from-red-500 to-red-700 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:from-red-600 hover:to-red-800 transition-all duration-300"
+                    >
+                        IPTV Image Uploader
+                    </button>
                 </div>
               </Fade>
           </div>
@@ -80,3 +120,4 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
     </section>
   );
 }
+

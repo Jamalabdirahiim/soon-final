@@ -2,13 +2,13 @@
 "use client";
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Wifi, Router, Server, LifeBuoy } from "lucide-react";
+import { Wifi, Tv, Server, LifeBuoy } from "lucide-react";
 import { content } from "@/lib/content";
 import FadeInWrapper from "../fade-in-wrapper";
 
 const iconMap: { [key: string]: React.ElementType } = {
   Wifi,
-  Router,
+  Tv,
   Server,
   LifeBuoy,
 };

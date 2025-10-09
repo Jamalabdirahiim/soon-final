@@ -12,7 +12,7 @@ type SocialLink = {
 }
 
 type Service = {
-  icon: 'Wifi' | 'Router' | 'Server' | 'LifeBuoy';
+  icon: 'Wifi' | 'Tv' | 'Server' | 'LifeBuoy';
   title: string;
   description: string;
 };

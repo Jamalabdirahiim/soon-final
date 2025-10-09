@@ -1,7 +1,6 @@
 
 "use client";
 
-import { useState } from 'react';
 import { useUser } from '@/firebase';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -39,30 +38,43 @@ export default function Customization() {
                             <h3 className="text-lg font-semibold mb-2">Logo</h3>
                             <LogoUploader />
                         </div>
-                        <div className="grid md:grid-cols-2 gap-8">
-                            <div>
-                                <h3 className="text-lg font-semibold mb-2">Hero Image (Desktop)</h3>
-                                <HeroImageUploader />
-                            </div>
-                            <div>
-                                <h3 className="text-lg font-semibold mb-2">Hero Image (Mobile)</h3>
-                                <MobileHeroImageUploader />
-                            </div>
-                        </div>
+                        
+                        <div className="flex flex-col gap-4">
+                            <Dialog>
+                                <DialogTrigger asChild>
+                                    <Button variant="outline">Upload Hero Image</Button>
+                                </DialogTrigger>
+                                <DialogContent className="sm:max-w-[800px]">
+                                    <DialogHeader>
+                                        <DialogTitle>Upload Hero Images</DialogTitle>
+                                    </DialogHeader>
+                                    <div className="py-4 grid md:grid-cols-2 gap-8">
+                                        <div>
+                                            <h3 className="text-lg font-semibold mb-2">Hero Image (Desktop)</h3>
+                                            <HeroImageUploader />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-lg font-semibold mb-2">Hero Image (Mobile)</h3>
+                                            <MobileHeroImageUploader />
+                                        </div>
+                                    </div>
+                                </DialogContent>
+                            </Dialog>
 
-                         <Dialog>
-                            <DialogTrigger asChild>
-                                <Button variant="outline">Upload IPTV Image</Button>
-                            </DialogTrigger>
-                            <DialogContent className="sm:max-w-[800px]">
-                                <DialogHeader>
-                                    <DialogTitle>Upload IPTV Image</DialogTitle>
-                                </DialogHeader>
-                                <div className="py-4">
-                                     <IptvImageUploader />
-                                </div>
-                            </DialogContent>
-                        </Dialog>
+                            <Dialog>
+                                <DialogTrigger asChild>
+                                    <Button variant="outline">Upload IPTV Image</Button>
+                                </DialogTrigger>
+                                <DialogContent className="sm:max-w-[425px]">
+                                    <DialogHeader>
+                                        <DialogTitle>Upload IPTV Image</DialogTitle>
+                                    </DialogHeader>
+                                    <div className="py-4">
+                                        <IptvImageUploader />
+                                    </div>
+                                </DialogContent>
+                            </Dialog>
+                        </div>
                     </CardContent>
                 </Card>
             </div>

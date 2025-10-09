@@ -6,27 +6,25 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { placeholderImages } from "@/lib/placeholder-images.json";
 import { content } from "@/lib/content";
-import { useDoc, useFirestore } from "@/firebase";
-import { doc } from "firebase/firestore";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useEffect, useState } from "react";
 import { Tv } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import FadeInWrapper from "@/components/fade-in-wrapper";
 
-export default function Iptv() {
+interface IptvProps {
+  featureImageUrl?: string;
+  mobileFeatureImageUrl?: string;
+}
+
+export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvProps) {
   const defaultIptvImage = placeholderImages.find(p => p.id === 'iptv-hero');
   const isMobile = useIsMobile();
-  const firestore = useFirestore();
-
-  const { data: settings } = useDoc(
-      firestore ? doc(firestore, 'site-settings', 'config') : null
-  );
 
   const getSrc = () => {
     if (isMobile === undefined) return defaultIptvImage?.imageUrl;
-    const featureSrc = settings?.featureImageUrl || defaultIptvImage?.imageUrl;
-    const mobileFeatureSrc = settings?.mobileFeatureImageUrl || featureSrc;
+    const featureSrc = featureImageUrl || defaultIptvImage?.imageUrl;
+    const mobileFeatureSrc = mobileFeatureImageUrl || featureSrc;
     return isMobile ? mobileFeatureSrc : featureSrc;
   };
   
@@ -38,7 +36,7 @@ export default function Iptv() {
           setCurrentSrc(newSrc);
       }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [settings, isMobile]);
+  }, [featureImageUrl, mobileFeatureImageUrl, isMobile]);
 
 
   return (

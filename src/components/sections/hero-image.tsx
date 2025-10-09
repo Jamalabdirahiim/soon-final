@@ -4,9 +4,7 @@
 import Image from 'next/image';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useEffect, useState } from 'react';
-import { cn } from '@/lib/utils';
 import { placeholderImages } from "@/lib/placeholder-images.json";
-import IptvImageUploader from "@/components/sections/iptv-image-uploader";
 
 interface HeroImageProps {
     heroImageUrl?: string;
@@ -49,7 +47,6 @@ export default function HeroImage({ heroImageUrl, mobileHeroImageUrl }: HeroImag
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
       </div>
-      <IptvImageUploader />
     </section>
   );
 }

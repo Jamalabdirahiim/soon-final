@@ -5,9 +5,11 @@ import { content } from "@/lib/content";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Fade } from "react-awesome-reveal";
+import { useUser } from "@/firebase";
 
 export default function Hero() {
   const { headline, subheadline } = content.hero;
+  const { user } = useUser();
 
   return (
     <section id="home" className="w-full bg-secondary pt-32 pb-20 md:pt-48 md:pb-32">

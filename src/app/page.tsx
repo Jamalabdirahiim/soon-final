@@ -8,22 +8,43 @@ import Contact from "@/components/sections/contact";
 import Footer from "@/components/layout/footer";
 import Iptv from "@/components/sections/iptv";
 import Customization from "@/components/sections/customization";
-import Hero from "@/components/sections/hero";
 import IptvImageUploader from "@/components/sections/iptv-image-uploader";
+import { initializeFirebase } from "@/firebase/index.server";
+import { doc, getDoc, Firestore } from "firebase/firestore";
+
+async function getSiteSettings() {
+  try {
+    const { firestore } = initializeFirebase() as { firestore: Firestore };
+    const configDocRef = doc(firestore, 'site-settings', 'config');
+    const configSnap = await getDoc(configDocRef);
+    if (configSnap.exists()) {
+      return configSnap.data();
+    }
+  } catch (error) {
+    console.error("Error fetching site settings on server:", error);
+  }
+  return null;
+}
 
 
 export default async function Home() {
+  const settings = await getSiteSettings();
+
   return (
     <div className="flex min-h-[100dvh] flex-col bg-background">
       <Header />
       <main className="flex-1">
-        <HeroImage heroImageUrl={undefined} mobileHeroImageUrl={undefined} />
-        <IptvImageUploader />
-        <Hero />
+        <HeroImage 
+          heroImageUrl={settings?.heroImageUrl} 
+          mobileHeroImageUrl={settings?.mobileHeroImageUrl} 
+        />
         
         <Customization />
         
-        <Iptv />
+        <Iptv 
+          featureImageUrl={settings?.featureImageUrl}
+          mobileFeatureImageUrl={settings?.mobileFeatureImageUrl}
+        />
         <Services />
         <Pricing />
         <Faq />

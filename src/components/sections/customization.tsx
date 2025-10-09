@@ -24,7 +24,7 @@ export default function Customization() {
                     <CardHeader>
                         <CardTitle className="text-2xl md:text-3xl">Site Customization</CardTitle>
                         <CardDescription>
-                            Update your site's branding and imagery. Changes are saved instantly.
+                            Update your site's branding and imagery. Changes are saved instantly and will appear on refresh.
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-8">

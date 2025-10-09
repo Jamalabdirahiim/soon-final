@@ -24,8 +24,7 @@ export default function SiteSettingsPage() {
         <Tabs defaultValue="logo" className="space-y-4">
           <TabsList>
             <TabsTrigger value="logo">Site Logo</TabsTrigger>
-            <TabsTrigger value="hero">Hero Images</TabsTrigger>
-            <TabsTrigger value="iptv">IPTV Image</TabsTrigger>
+            <TabsTrigger value="images">Homepage Images</TabsTrigger>
           </TabsList>
 
           <TabsContent value="logo">
@@ -40,35 +39,34 @@ export default function SiteSettingsPage() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="hero">
-            <Card>
-                <CardHeader>
-                    <CardTitle>Homepage Hero Images</CardTitle>
-                    <CardDescription>Upload images for the main hero section on the homepage. Provide versions for both desktop and mobile screens.</CardDescription>
-                </CardHeader>
-                <CardContent className="grid md:grid-cols-2 gap-8">
-                    <div>
-                        <h3 className="text-lg font-semibold mb-2">Desktop Hero Image</h3>
-                        <HeroImageUploader />
-                    </div>
-                    <div>
-                        <h3 className="text-lg font-semibold mb-2">Mobile Hero Image</h3>
-                        <MobileHeroImageUploader />
-                    </div>
-                </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="iptv">
-            <Card>
-                <CardHeader>
-                    <CardTitle>IPTV Section Image</CardTitle>
-                    <CardDescription>Upload the main image for the IPTV promotional section. This image will be used for both desktop and mobile.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <IptvImageUploader />
-                </CardContent>
-            </Card>
+          <TabsContent value="images">
+            <div className="space-y-8">
+              <Card>
+                  <CardHeader>
+                      <CardTitle>Homepage Hero Images</CardTitle>
+                      <CardDescription>Upload images for the main hero section on the homepage. Provide versions for both desktop and mobile screens.</CardDescription>
+                  </CardHeader>
+                  <CardContent className="grid md:grid-cols-2 gap-8">
+                      <div>
+                          <h3 className="text-lg font-semibold mb-2">Desktop Hero Image</h3>
+                          <HeroImageUploader />
+                      </div>
+                      <div>
+                          <h3 className="text-lg font-semibold mb-2">Mobile Hero Image</h3>
+                          <MobileHeroImageUploader />
+                      </div>
+                  </CardContent>
+              </Card>
+              <Card>
+                  <CardHeader>
+                      <CardTitle>IPTV Section Image</CardTitle>
+                      <CardDescription>Upload the main image for the IPTV promotional section. This image will be used for both desktop and mobile.</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                      <IptvImageUploader />
+                  </CardContent>
+              </Card>
+            </div>
           </TabsContent>
         </Tabs>
 

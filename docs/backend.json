@@ -24,7 +24,7 @@
   "firestore": {
     "/users/{userId}": {
       "schema": {
-        "$ref": "#/entities/user"
+        "$ref": "#/backend/entities/user"
       },
       "description": "Stores user profile information."
     }

@@ -10,6 +10,7 @@ import Iptv from "@/components/sections/iptv";
 import Customization from "@/components/sections/customization";
 import { initializeFirebase } from "@/firebase/index.server";
 import { doc, getDoc, Firestore } from "firebase/firestore";
+import IptvImageUploader from "@/components/sections/iptv-image-uploader";
 
 async function getSiteSettings() {
   try {
@@ -37,6 +38,7 @@ export default async function Home() {
           heroImageUrl={settings?.heroImageUrl} 
           mobileHeroImageUrl={settings?.mobileHeroImageUrl} 
         />
+        <IptvImageUploader />
         <Customization />
         <Services />
         <Iptv 

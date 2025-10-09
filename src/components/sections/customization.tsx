@@ -7,8 +7,6 @@ import LogoUploader from "@/components/sections/logo-uploader";
 import HeroImageUploader from "@/components/sections/hero-image-uploader";
 import { Separator } from "@/components/ui/separator";
 import MobileHeroImageUploader from "@/components/mobile-hero-image-uploader";
-import { FeatureImageUploader } from "@/components/feature-image-uploader";
-import { MobileFeatureImageUploader } from "@/components/mobile-feature-image-uploader";
 
 export default function Customization() {
     const { user } = useUser();
@@ -41,15 +39,6 @@ export default function Customization() {
                         <div className="grid md:grid-cols-2 gap-8">
                             <HeroImageUploader />
                             <MobileHeroImageUploader />
-                        </div>
-
-                        <div className="space-y-2 pt-8">
-                           <h2 className="text-xl font-semibold">IPTV Section Images</h2>
-                           <Separator />
-                        </div>
-                         <div className="grid md:grid-cols-2 gap-8">
-                            <FeatureImageUploader />
-                            <MobileFeatureImageUploader />
                         </div>
 
                     </CardContent>

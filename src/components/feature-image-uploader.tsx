@@ -86,7 +86,7 @@ export function FeatureImageUploader() {
     multiple: false,
     disabled: isProcessing || !isReady,
   });
-  
+
   const handleUpload = useCallback(async () => {
     if (!file || !firestore) {
       toast({
@@ -101,9 +101,9 @@ export function FeatureImageUploader() {
 
     try {
         const dataUrl = await toBase64(file);
-        
+
         const configDocRef = doc(firestore, 'site-settings', 'config');
-        
+
         setDoc(configDocRef, { featureImageUrl: dataUrl }, { merge: true })
           .then(() => {
             revalidateHome();
@@ -138,8 +138,8 @@ export function FeatureImageUploader() {
   return (
     <div className="w-full">
         <h3 className="font-medium mb-2">Desktop IPTV Image</h3>
-        <div 
-            {...getRootProps()} 
+        <div
+            {...getRootProps()}
             className={cn(
                 "flex flex-col items-center justify-center w-full h-48 border-2 border-dashed rounded-lg cursor-pointer transition-colors",
                 "hover:bg-accent/50",

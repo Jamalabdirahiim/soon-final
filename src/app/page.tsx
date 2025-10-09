@@ -37,14 +37,12 @@ export default async function Home() {
           heroImageUrl={settings?.heroImageUrl} 
           mobileHeroImageUrl={settings?.mobileHeroImageUrl} 
         />
-        
         <Customization />
-        
+        <Services />
         <Iptv 
           featureImageUrl={settings?.featureImageUrl}
           mobileFeatureImageUrl={settings?.mobileFeatureImageUrl}
         />
-        <Services />
         <Pricing />
         <Faq />
         <Contact />

@@ -7,7 +7,6 @@ import Faq from "@/components/sections/faq";
 import Contact from "@/components/sections/contact";
 import Footer from "@/components/layout/footer";
 import IptvHero from "@/components/sections/iptv-hero";
-import Customization from "@/components/sections/customization";
 import { initializeFirebase } from "@/firebase/index.server";
 import { doc, getDoc, Firestore } from "firebase/firestore";
 
@@ -37,7 +36,6 @@ export default async function Home() {
           heroImageUrl={settings?.heroImageUrl} 
           mobileHeroImageUrl={settings?.mobileHeroImageUrl} 
         />
-        <Customization />
         <Services />
         <IptvHero />
         <Pricing />
@@ -48,4 +46,3 @@ export default async function Home() {
     </div>
   );
 }
-

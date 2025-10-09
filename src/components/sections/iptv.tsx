@@ -12,99 +12,33 @@ import { ADMIN_EMAILS } from "@/lib/admin";
 import { ImageUploaderDialog } from "../image-uploader-dialog";
 import { IptvImageUploader } from "./iptv-image-uploader";
 import { Fade } from "react-awesome-reveal";
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 
 interface IptvProps {
   featureImageUrl?: string;
   mobileFeatureImageUrl?: string;
 }
 
-const MAX_IMAGE_WIDTH = 1920; // Max width for the saved image
-const IMAGE_QUALITY = 0.8; // JPEG quality
-
-// Helper function to resize image using canvas
-const resizeImage = (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = (event) => {
-      const img = document.createElement('img');
-      img.src = event.target?.result as string;
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const scaleFactor = Math.min(1, MAX_IMAGE_WIDTH / img.width);
-        canvas.width = img.width * scaleFactor;
-        canvas.height = img.height * scaleFactor;
-
-        const ctx = canvas.getContext('2d');
-        if (!ctx) {
-          return reject(new Error('Could not get canvas context'));
-        }
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-        resolve(canvas.toDataURL('image/jpeg', IMAGE_QUALITY));
-      };
-      img.onerror = reject;
-    };
-    reader.onerror = reject;
-  });
-};
-
-
 export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvProps) {
   const defaultIptvImage = placeholderImages.find(p => p.id === 'iptv-hero');
   const isMobile = useIsMobile();
   const { user } = useUser();
   const isAdmin = user && ADMIN_EMAILS.includes(user.email || "");
+
+  const getSrc = () => {
+    // Return undefined during server-side rendering or if isMobile is not yet determined.
+    if (isMobile === undefined) {
+      return undefined;
+    }
+
+    const desktopSrc = featureImageUrl || defaultIptvImage?.imageUrl;
+    const mobileSrc = mobileFeatureImageUrl || desktopSrc;
+    
+    return isMobile ? mobileSrc : desktopSrc;
+  };
   
-  const [currentSrc, setCurrentSrc] = useState<string | undefined>(undefined);
-  const [previewSrc, setPreviewSrc] = useState<string | null>(null);
-  const imageUploadInput = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    // This effect now runs only on the client side.
-    const savedImage = localStorage.getItem('iptvCustomImage');
-    if (savedImage) {
-      setCurrentSrc(savedImage);
-    } else {
-      // Fallback to server-provided or default images only if nothing is in localStorage
-      const desktopSrc = featureImageUrl || defaultIptvImage?.imageUrl;
-      const mobileSrc = mobileFeatureImageUrl || desktopSrc;
-      // We need to check isMobile here because it determines the correct fallback.
-      setCurrentSrc(isMobile ? mobileSrc : desktopSrc);
-    }
-  // The dependency array ensures this runs when `isMobile` changes, which is important for responsive fallbacks.
-  }, [isMobile, featureImageUrl, mobileFeatureImageUrl, defaultIptvImage]);
-
-
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      try {
-        const resizedDataUrl = await resizeImage(file);
-        setPreviewSrc(resizedDataUrl);
-      } catch (error) {
-        console.error("Error resizing image:", error);
-        // Optionally, show a toast to the user
-      }
-    }
-  };
-
-  const handleSaveImage = () => {
-    if (previewSrc) {
-      try {
-        localStorage.setItem('iptvCustomImage', previewSrc);
-        setCurrentSrc(previewSrc);
-        setPreviewSrc(null); // Clear preview after saving
-      } catch (error) {
-          console.error("Error saving image to localStorage:", error);
-          // Handle potential quota errors, e.g., by notifying the user.
-      }
-    }
-  };
-
+  const displaySrc = getSrc();
   const { headline, subheadline } = content.iptv;
-  const displaySrc = previewSrc || currentSrc;
 
   return (
     <section id="iptv" className="bg-secondary py-12 sm:py-16 lg:py-20 overflow-hidden">
@@ -134,7 +68,7 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
               </Fade>
               <Fade direction="right" triggerOnce>
                 <div className="relative w-full max-w-2xl mx-auto lg:max-w-none">
-                    <div className="aspect-[16/10] rounded-xl overflow-hidden">
+                    <div className="aspect-[16/10] rounded-xl overflow-hidden bg-muted">
                         {displaySrc && (
                         <Image
                             id="iptvImageDisplay"
@@ -146,31 +80,6 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
                             key={displaySrc}
                         />
                         )}
-                    </div>
-                    <input
-                        type="file"
-                        id="imageUploadInput"
-                        ref={imageUploadInput}
-                        accept="image/*"
-                        hidden
-                        onChange={handleImageUpload}
-                    />
-                    <div className="absolute bottom-4 right-4 flex gap-2">
-                      <button
-                          id="imageUploadButton"
-                          onClick={() => imageUploadInput.current?.click()}
-                          className="bg-gradient-to-r from-red-500 to-red-700 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:from-red-600 hover:to-red-800 transition-all duration-300"
-                      >
-                          IPTV Image Uploader
-                      </button>
-                      {previewSrc && (
-                        <button
-                          onClick={handleSaveImage}
-                          className="bg-gradient-to-r from-green-500 to-green-700 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:from-green-600 hover:to-green-800 transition-all duration-300"
-                        >
-                          Save Image
-                        </button>
-                      )}
                     </div>
                 </div>
               </Fade>

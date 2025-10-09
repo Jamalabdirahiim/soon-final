@@ -25,6 +25,7 @@ interface FooterProps {
 }
 
 export default function Footer({ logoUrl: initialLogoUrl }: FooterProps) {
+  // Use the logoUrl passed from server-side props, with a fallback.
   const logoUrl = initialLogoUrl || defaultLogo;
 
   return (
@@ -33,6 +34,7 @@ export default function Footer({ logoUrl: initialLogoUrl }: FooterProps) {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-sm">
           
           <div className="md:col-span-1 space-y-4">
+            {/* The logo is now passed as a prop, no client-side fetching needed */}
             <SoonLogo logoSrc={logoUrl} className="!h-10" isInFooter={true} />
           </div>
 

@@ -9,13 +9,14 @@ import Footer from "@/components/layout/footer";
 import Iptv from "@/components/sections/iptv";
 import Customization from "@/components/sections/customization";
 import { initializeFirebase } from "@/firebase/index.server";
-import { doc, getDoc, getDocs, collection } from "firebase/firestore";
+import { doc, getDoc, collection } from "firebase/firestore";
 
 async function getSiteData() {
   try {
     const { firestore } = initializeFirebase();
     const settingsRef = collection(firestore, 'site-settings');
 
+    // Fetch config (for hero/iptv images) and logo in parallel
     const [configSnap, logoSnap] = await Promise.all([
       getDoc(doc(settingsRef, 'config')),
       getDoc(doc(settingsRef, 'logo')),
@@ -29,8 +30,10 @@ async function getSiteData() {
       logoUrl,
     };
   } catch (error) {
+    // Log the error for debugging, but don't let it crash the page.
     console.error("Error fetching site settings on server:", error);
   }
+  // Return a default structure if fetching fails
   return { settings: null, logoUrl: null };
 }
 

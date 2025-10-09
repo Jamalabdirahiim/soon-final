@@ -23,6 +23,8 @@ export default function Header({ logoUrl: initialLogoUrl }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   const { user } = useUser();
+  
+  // Use the logoUrl passed from the server-side props, with a fallback.
   const logoUrl = initialLogoUrl || defaultLogo;
 
   const isAdmin = user && ADMIN_EMAILS.includes(user.email || "");
@@ -32,7 +34,7 @@ export default function Header({ logoUrl: initialLogoUrl }: HeaderProps) {
       setHasScrolled(window.scrollY > 10);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); 
+    handleScroll(); // Check scroll position on initial render
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -52,6 +54,7 @@ export default function Header({ logoUrl: initialLogoUrl }: HeaderProps) {
         <SoonLogo 
           logoSrc={logoUrl} 
           className={cn(
+            // Apply inverted brightness for dark hero image background, but only when not scrolled and menu is closed
             !hasScrolled && !isMobileMenuOpen ? "brightness-0 invert drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]" : ""
           )}
         />
@@ -108,7 +111,7 @@ export default function Header({ logoUrl: initialLogoUrl }: HeaderProps) {
                       key={link.href}
                       href={link.href}
                       className="text-lg font-medium text-foreground/80 transition-colors hover:text-primary"
-                      onClick={closeMobileMenu} 
+                      onClick={closeMobileMenu} // Close menu on navigation
                     >
                       {link.label}
                     </Link>

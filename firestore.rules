@@ -2,51 +2,63 @@
  * @fileoverview Firestore Security Rules for the application.
  *
  * Core Philosophy:
- * This ruleset enforces a strict user-ownership model for user profiles. Only the authenticated user can read or write their own profile data.
- * Public read and write access is granted for site-wide settings like the hero image.
+ * This ruleset enforces a strict user-ownership model for user profiles. Users can only read and write their own profile data.
  *
  * Data Structure:
- * - User data: `/users/{userId}` (UID-based ownership)
- * - Site settings: `/site-settings/config` (publicly mutable)
+ * User profiles are stored under the `/users/{userId}` path, where `{userId}` corresponds to the Firebase Authentication UID.
  *
  * Key Security Decisions:
- * - User listing is explicitly disallowed.
- * - Anonymous authentication is used for prototyping, meaning `request.auth` will be null for unauthenticated users.
- *   This is acceptable for a demo but MUST be replaced with a real auth provider in a production app.
+ * - Users can only access their own profile data.
+ * - Listing all users is disallowed for privacy.
+ * - Data validation is relaxed to allow for rapid prototyping, focusing on authorization.
+ * - Anonymous authentication is allowed.
  *
+ * Denormalization for Authorization:
+ *  The rules rely on the Firebase Authentication UID to match the `userId` in the document path. This avoids needing to store redundant user IDs within the document itself.
  */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * @description Enforces user-ownership for profile data.
+     * @description Controls access to user profile documents.
      * @path /users/{userId}
+     * @allow (create) - A user can create their own profile if the userId matches their auth UID.
+     * @allow (get, update, delete) - A user can only read, update, or delete their own profile.
+     * @deny (create) - A user cannot create a profile for another user.
+     * @deny (get, update, delete) - A user cannot read, update, or delete another user's profile.
+     * @principle Enforces document ownership for user profiles.
      */
     match /users/{userId} {
+      // Helper function to check if the user is signed in.
       function isSignedIn() {
         return request.auth != null;
       }
 
+      // Helper function to check if the requested user ID matches the authenticated user's ID.
       function isOwner(userId) {
-        return request.auth.uid == userId;
+        return isSignedIn() && request.auth.uid == userId;
       }
 
-      allow create: if isSignedIn() && isOwner(userId) && request.resource.data.id == userId;
-      allow get: if isOwner(userId);
-      allow update: if isSignedIn() && isOwner(userId) && request.resource.data.id == resource.data.id;
-      allow delete: if isSignedIn() && isOwner(userId);
-      allow list: if false;
-    }
+      // Helper function to check if the user is the existing owner of the document.
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
 
-    /**
-     * @description Allows public read and write access to site configuration.
-     * @path /site-settings/config
-     * @allow (read, create, update) - Anyone can view or modify the site configuration.
-     * @principle Grants public read/write access for shared site settings.
-     */
-    match /site-settings/config {
-      allow read, create, update: if true;
+      // Allow a user to create their own profile.
+      allow create: if isOwner(userId);
+
+      // Allow a user to get their own profile.
+      allow get: if isOwner(userId);
+
+      // Disallow listing all users.
+      allow list: if false;
+
+      // Allow a user to update their own profile.
+      allow update: if isExistingOwner(userId);
+
+      // Allow a user to delete their own profile.
+      allow delete: if isExistingOwner(userId);
     }
   }
 }

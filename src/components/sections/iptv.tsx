@@ -1,10 +1,8 @@
-
 "use client";
 
 import Image from "next/image";
 import { placeholderImages } from "@/lib/placeholder-images.json";
 import { useIsMobile } from "@/hooks/use-mobile";
-import FadeInWrapper from "@/components/fade-in-wrapper";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { content } from "@/lib/content";
@@ -29,15 +27,21 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
   const imageUploadInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // On page load, check localStorage for a custom image
+    // This effect runs once on the client after the component mounts.
+    // It's the correct place to interact with localStorage.
+    
+    // 1. Prioritize the user's permanently saved image from localStorage.
     const savedImage = localStorage.getItem('iptvCustomImage');
     if (savedImage) {
       setCurrentSrc(savedImage);
     } else {
-      // Fallback logic if no custom image is saved
+      // 2. If no saved image, use server-provided images with mobile responsiveness.
       const desktopSrc = featureImageUrl || defaultIptvImage?.imageUrl;
       const mobileSrc = mobileFeatureImageUrl || desktopSrc;
-      setCurrentSrc(isMobile ? mobileSrc : desktopSrc);
+      // We check 'isMobile' here because this effect runs client-side.
+      if (typeof isMobile !== 'undefined') {
+        setCurrentSrc(isMobile ? mobileSrc : desktopSrc);
+      }
     }
   }, [isMobile, featureImageUrl, mobileFeatureImageUrl, defaultIptvImage]);
 
@@ -48,7 +52,9 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
       const reader = new FileReader();
       reader.onloadend = () => {
         const dataUrl = reader.result as string;
+        // Update the image source on the screen immediately.
         setCurrentSrc(dataUrl);
+        // Save the Data URL to localStorage to make it permanent.
         localStorage.setItem('iptvCustomImage', dataUrl);
       };
       reader.readAsDataURL(file);
@@ -120,4 +126,3 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
     </section>
   );
 }
-

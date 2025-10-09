@@ -154,7 +154,7 @@ export default function Contact() {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" disabled={form.formState.isSubmitting} className="transition-transform hover:scale-105">
+                  <Button type="submit" disabled={form.formState.isSubmitting} className="premium-blue-bg text-primary-foreground hover:brightness-110 transition-transform hover:scale-105 shadow-lg">
                     {form.formState.isSubmitting ? "Sending..." : "Send Message"}
                   </Button>
                 </form>

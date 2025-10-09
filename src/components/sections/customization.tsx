@@ -10,8 +10,7 @@ import { Settings } from 'lucide-react';
 import LogoUploader from '@/components/sections/logo-uploader';
 import HeroImageUploader from './hero-image-uploader';
 import MobileHeroImageUploader from './mobile-hero-image-uploader';
-import FeatureImageUploader from './feature-image-uploader';
-import MobileFeatureImageUploader from './mobile-feature-image-uploader';
+import { IptvImageUploader } from './iptv-image-uploader';
 
 export default function Customization() {
     const { user } = useUser();
@@ -57,17 +56,10 @@ export default function Customization() {
                             </DialogTrigger>
                             <DialogContent className="sm:max-w-[800px]">
                                 <DialogHeader>
-                                    <DialogTitle>Upload IPTV Images</DialogTitle>
+                                    <DialogTitle>Upload IPTV Image</DialogTitle>
                                 </DialogHeader>
-                                <div className="grid md:grid-cols-2 gap-8 py-4">
-                                     <div>
-                                        <h3 className="text-lg font-semibold mb-2">IPTV Image (Desktop)</h3>
-                                        <FeatureImageUploader />
-                                    </div>
-                                    <div>
-                                        <h3 className="text-lg font-semibold mb-2">IPTV Image (Mobile)</h3>
-                                        <MobileFeatureImageUploader />
-                                    </div>
+                                <div className="py-4">
+                                     <IptvImageUploader />
                                 </div>
                             </DialogContent>
                         </Dialog>

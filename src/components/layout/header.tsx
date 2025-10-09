@@ -9,38 +9,23 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SoonLogo } from "@/components/soon-logo";
 import { cn } from "@/lib/utils";
 import { content } from "@/lib/content";
-import { useFirestore, useUser } from "@/firebase";
-import { doc, onSnapshot } from "firebase/firestore";
+import { useUser } from "@/firebase";
 import { ADMIN_EMAILS } from "@/lib/admin";
 
 
 const defaultLogo = `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iNTYiIHZpZXdCb3g9IjAgMCAyMDAgNTYiIGZpbGw9Im5vbmUiPgo8dGV4dCB4PSIxMCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJzZXJpZiIgZm9udC1zaXplPSIzNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMwMDdEQjYiPgpTT09OPC90ZXh0Pgo8L3N2Zz4K`;
 
-export default function Header() {
+interface HeaderProps {
+  logoUrl?: string | null;
+}
+
+export default function Header({ logoUrl: initialLogoUrl }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
-  const [logoUrl, setLogoUrl] = useState(defaultLogo);
-  const firestore = useFirestore();
   const { user } = useUser();
+  const logoUrl = initialLogoUrl || defaultLogo;
 
   const isAdmin = user && ADMIN_EMAILS.includes(user.email || "");
-
-  useEffect(() => {
-    if (!firestore) return;
-
-    const logoDocRef = doc(firestore, 'site-settings', 'logo');
-
-    const unsubscribe = onSnapshot(logoDocRef, (doc) => {
-      if (doc.exists()) {
-        setLogoUrl(doc.data().url || defaultLogo);
-      } else {
-        setLogoUrl(defaultLogo);
-      }
-    });
-
-    // Cleanup subscription on unmount
-    return () => unsubscribe();
-  }, [firestore]);
 
   useEffect(() => {
     const handleScroll = () => {

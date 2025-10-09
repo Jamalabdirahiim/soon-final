@@ -1,11 +1,9 @@
 
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { SoonLogo } from "@/components/soon-logo";
 import { content } from "@/lib/content";
-import { useFirestore } from "@/firebase";
-import { doc, onSnapshot } from "firebase/firestore";
 import Link from "next/link";
 import {
   Facebook,
@@ -22,25 +20,12 @@ const socialIconMap: Record<string, React.ReactNode> = {
   Twitter: <Twitter size={20} />,
 };
 
-export default function Footer() {
-  const [logoUrl, setLogoUrl] = useState(defaultLogo);
-  const firestore = useFirestore();
+interface FooterProps {
+  logoUrl?: string | null;
+}
 
-  useEffect(() => {
-    if (!firestore) return;
-
-    const logoDocRef = doc(firestore, 'site-settings', 'logo');
-
-    const unsubscribe = onSnapshot(logoDocRef, (doc) => {
-      if (doc.exists()) {
-        setLogoUrl(doc.data().url || defaultLogo);
-      } else {
-        setLogoUrl(defaultLogo);
-      }
-    });
-
-    return () => unsubscribe();
-  }, [firestore]);
+export default function Footer({ logoUrl: initialLogoUrl }: FooterProps) {
+  const logoUrl = initialLogoUrl || defaultLogo;
 
   return (
     <footer className="premium-blue-bg text-primary-foreground py-12">

@@ -9,29 +9,37 @@ import Footer from "@/components/layout/footer";
 import Iptv from "@/components/sections/iptv";
 import Customization from "@/components/sections/customization";
 import { initializeFirebase } from "@/firebase/index.server";
-import { doc, getDoc, Firestore } from "firebase/firestore";
+import { doc, getDoc, getDocs, collection } from "firebase/firestore";
 
-async function getSiteSettings() {
+async function getSiteData() {
   try {
     const { firestore } = initializeFirebase();
-    const configDocRef = doc(firestore, 'site-settings', 'config');
-    const configSnap = await getDoc(configDocRef);
-    if (configSnap.exists()) {
-      return configSnap.data();
-    }
+    const settingsRef = collection(firestore, 'site-settings');
+
+    const [configSnap, logoSnap] = await Promise.all([
+      getDoc(doc(settingsRef, 'config')),
+      getDoc(doc(settingsRef, 'logo')),
+    ]);
+
+    const settings = configSnap.exists() ? configSnap.data() : {};
+    const logoUrl = logoSnap.exists() ? logoSnap.data().url : null;
+    
+    return {
+      settings,
+      logoUrl,
+    };
   } catch (error) {
     console.error("Error fetching site settings on server:", error);
   }
-  return null;
+  return { settings: null, logoUrl: null };
 }
 
-
 export default async function Home() {
-  const settings = await getSiteSettings();
+  const { settings, logoUrl } = await getSiteData();
 
   return (
     <div className="flex min-h-[100dvh] flex-col bg-background">
-      <Header />
+      <Header logoUrl={logoUrl} />
       <main className="flex-1">
         <HeroImage 
           heroImageUrl={settings?.heroImageUrl} 
@@ -47,7 +55,7 @@ export default async function Home() {
         <Contact />
         <Customization />
       </main>
-      <Footer />
+      <Footer logoUrl={logoUrl} />
     </div>
   );
 }

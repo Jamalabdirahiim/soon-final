@@ -8,7 +8,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useUser, useFirestore } from "@/firebase";
 import { doc, setDoc } from 'firebase/firestore';
 import { Skeleton } from "@/components/ui/skeleton";
-import { ImageIcon, Upload, X } from "lucide-react";
+import { ImageIcon } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -71,6 +71,7 @@ const IptvHero = ({ featureImageUrl, mobileFeatureImageUrl }: IptvHeroProps) => 
     }, [file]);
     
     const handleCloseDialog = () => {
+      if (isProcessing) return;
       setFile(null);
       setIsDialogOpen(false);
     }
@@ -79,6 +80,9 @@ const IptvHero = ({ featureImageUrl, mobileFeatureImageUrl }: IptvHeroProps) => 
         onDrop,
         accept: { 'image/*': ['.jpeg', '.png', '.svg', '.gif', '.webp'] },
         multiple: false,
+        noClick: !user, // Disable click if not logged in
+        noKeyboard: !user,
+        noDrag: !user,
         disabled: !user || isProcessing,
     });
 
@@ -98,6 +102,7 @@ const IptvHero = ({ featureImageUrl, mobileFeatureImageUrl }: IptvHeroProps) => 
             const dataUrl = await toBase64(file);
             const configDocRef = doc(firestore, 'site-settings', 'config');
 
+            // Set both desktop and mobile to the same image for simplicity
             await setDoc(configDocRef, { 
                 featureImageUrl: dataUrl,
                 mobileFeatureImageUrl: dataUrl,
@@ -152,7 +157,7 @@ const IptvHero = ({ featureImageUrl, mobileFeatureImageUrl }: IptvHeroProps) => 
                         key={imageUrl}
                     />
                 ) : (
-                    <div {...getRootProps()} className={cn("w-full h-full flex items-center justify-center cursor-pointer", isDragActive && "bg-primary/10")}>
+                    <div {...getRootProps({ className: cn("w-full h-full flex items-center justify-center", user ? "cursor-pointer" : "cursor-default", isDragActive && "bg-primary/10") })}>
                         <input {...getInputProps()} />
                         <div className="text-center text-muted-foreground p-8">
                             <ImageIcon className="mx-auto h-16 w-16" />
@@ -162,21 +167,21 @@ const IptvHero = ({ featureImageUrl, mobileFeatureImageUrl }: IptvHeroProps) => 
                                  {isDragActive ? 'Drop image to upload' : "Click or drag 'n' drop an image here to set it."}
                                </p>
                             ) : (
-                               <p className="mt-2 text-sm">An admin can upload an image in the customization panel.</p>
+                               <p className="mt-2 text-sm">An admin needs to be logged in to upload an image.</p>
                             )}
                         </div>
                     </div>
                 )}
             </div>
 
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <Dialog open={isDialogOpen} onOpenChange={(open) => !open && handleCloseDialog()}>
                 <DialogContent className="sm:max-w-[500px]" onInteractOutside={(e) => {
                   if (isProcessing) e.preventDefault();
                 }}>
                     <DialogHeader>
                         <DialogTitle>Confirm IPTV Image</DialogTitle>
                         <DialogDescription>
-                           This image will be used for both desktop and mobile views.
+                           This image will be used for both desktop and mobile views. You can set different images in the main Customization Panel.
                         </DialogDescription>
                     </DialogHeader>
                     <div className="py-4">
@@ -199,4 +204,3 @@ const IptvHero = ({ featureImageUrl, mobileFeatureImageUrl }: IptvHeroProps) => 
 };
 
 export default IptvHero;
-

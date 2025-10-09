@@ -5,7 +5,6 @@ import { content } from "@/lib/content";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Fade } from "react-awesome-reveal";
-import LogoUploader from "@/components/sections/logo-uploader";
 
 export default function Hero() {
   const { headline, subheadline } = content.hero;
@@ -29,9 +28,6 @@ export default function Hero() {
             </Button>
           </div>
         </Fade>
-        <div className="mt-8">
-          <LogoUploader />
-        </div>
       </div>
     </section>
   );

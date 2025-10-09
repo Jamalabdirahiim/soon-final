@@ -9,6 +9,15 @@ import { Separator } from "@/components/ui/separator";
 import MobileHeroImageUploader from "@/components/mobile-hero-image-uploader";
 import { FeatureImageUploader } from "@/components/feature-image-uploader";
 import { MobileFeatureImageUploader } from "@/components/mobile-feature-image-uploader";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export default function Customization() {
     const { user } = useUser();
@@ -44,13 +53,27 @@ export default function Customization() {
                         </div>
                         
                         <div className="space-y-2 pt-8">
-                           <h2 className="text-xl font-semibold">IPTV Section Images</h2>
+                           <h2 className="text-xl font-semibold">IPTV Section</h2>
                            <Separator />
                         </div>
-                        <div className="grid md:grid-cols-2 gap-8">
-                            <FeatureImageUploader />
-                            <MobileFeatureImageUploader />
-                        </div>
+
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant="outline">Upload IPTV Image</Button>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-[800px]">
+                            <DialogHeader>
+                              <DialogTitle>Upload IPTV Images</DialogTitle>
+                              <DialogDescription>
+                                Upload separate images for desktop and mobile viewports. Your changes will be saved and applied instantly.
+                              </DialogDescription>
+                            </DialogHeader>
+                            <div className="grid md:grid-cols-2 gap-8 py-4">
+                                <FeatureImageUploader />
+                                <MobileFeatureImageUploader />
+                            </div>
+                          </DialogContent>
+                        </Dialog>
 
                     </CardContent>
                 </Card>

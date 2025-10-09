@@ -13,7 +13,7 @@ import { doc, getDoc, Firestore } from "firebase/firestore";
 
 async function getSiteSettings() {
   try {
-    const { firestore } = initializeFirebase() as { firestore: Firestore };
+    const { firestore } = initializeFirebase();
     const configDocRef = doc(firestore, 'site-settings', 'config');
     const configSnap = await getDoc(configDocRef);
     if (configSnap.exists()) {

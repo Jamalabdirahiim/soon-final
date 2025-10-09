@@ -16,8 +16,8 @@ const iconMap: { [key: string]: React.ElementType } = {
 export default function Services() {
   return (
     <section id="services" className="bg-background pt-12 md:pt-16 lg:pt-20">
-      <FadeInWrapper>
-        <div className="container mx-auto px-4 md:px-6">
+      <div className="container mx-auto px-4 md:px-6">
+        <FadeInWrapper>
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
               <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-5xl premium-blue-text">
@@ -32,22 +32,22 @@ export default function Services() {
             {content.services.map((service) => {
               const Icon = iconMap[service.icon];
               return (
-                <Card key={service.title} className="group transition-all duration-300 hover:shadow-lg hover:-translate-y-2 hover:border-primary">
+                <Card key={service.title} className="group transition-all duration-300 hover:shadow-lg hover:-translate-y-2 hover:border-primary hover:bg-primary hover:text-primary-foreground">
                   <CardHeader className="flex flex-col items-center text-center p-6">
-                    <div className="mb-4 rounded-full bg-primary/10 p-4 transition-colors group-hover:bg-primary">
-                      <Icon className="h-8 w-8 text-primary transition-colors group-hover:text-primary-foreground" />
+                    <div className="mb-4 rounded-full bg-primary/10 p-4 transition-colors group-hover:bg-background/10">
+                      <Icon className="h-8 w-8 text-primary transition-colors group-hover:text-white" />
                     </div>
                     <CardTitle className="font-headline text-lg">{service.title}</CardTitle>
                   </CardHeader>
-                  <CardContent className="text-center text-sm text-muted-foreground px-6 pb-6">
+                  <CardContent className="text-center text-sm text-muted-foreground px-6 pb-6 group-hover:text-primary-foreground/90">
                     <p>{service.description}</p>
                   </CardContent>
                 </Card>
               );
             })}
           </div>
-        </div>
-      </FadeInWrapper>
+        </FadeInWrapper>
+      </div>
     </section>
   );
 }

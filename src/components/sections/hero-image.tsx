@@ -4,27 +4,25 @@
 import Image from 'next/image';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
+import { Fade } from 'react-awesome-reveal';
 
 interface HeroImageProps {
     heroImageUrl?: string;
     mobileHeroImageUrl?: string;
 }
 
-// Default placeholder image in case nothing is provided from the server.
 const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1535957998253-26ae1ef29506?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxhYnN0cmFjdCUyMHRlY2hub2xvZ3l8ZW58MHx8fHwxNzYxMDkyOTE4fDA&ixlib=rb-4.1.0&q=80&w=1080";
 
 export default function HeroImage({ heroImageUrl, mobileHeroImageUrl }: HeroImageProps) {
   const isMobile = useIsMobile();
 
-  // This function determines the correct image source to display.
   const getSrc = () => {
-    // On the server or before the mobile check has run, we can't know the screen size.
     if (isMobile === undefined) {
       return heroImageUrl || FALLBACK_IMAGE;
     }
 
     const desktopSrc = heroImageUrl || FALLBACK_IMAGE;
-    const mobileSrc = mobileHeroImageUrl || desktopSrc; // Mobile falls back to desktop image
+    const mobileSrc = mobileHeroImageUrl || desktopSrc; 
     
     return isMobile ? mobileSrc : desktopSrc;
   };
@@ -45,17 +43,19 @@ export default function HeroImage({ heroImageUrl, mobileHeroImageUrl }: HeroImag
                 key={currentSrc}
             />
           )}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/80"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/80"></div>
            <div className={cn(
              "absolute inset-0 flex items-center justify-center pt-24 md:pt-0"
             )}>
             <div className="container mx-auto px-0 text-center">
+              <Fade direction="up" cascade damping={0.2} triggerOnce>
                 <h1 className="font-headline text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl drop-shadow-2xl">
                     Experience the Future of Internet & TV.
                 </h1>
                 <p className="mt-6 max-w-2xl mx-auto text-lg text-gray-200 md:text-xl drop-shadow-lg">
                     Blazing-fast fiber optic internet and over 400+ IPTV channels. Get the most reliable connection for your home and business with SOON.
                 </p>
+              </Fade>
             </div>
           </div>
       </div>

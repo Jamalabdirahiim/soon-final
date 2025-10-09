@@ -64,7 +64,7 @@ export default function Footer({ logoUrl: initialLogoUrl }: FooterProps) {
             <h3 className="font-bold text-base mb-4 tracking-wider">FOLLOW US</h3>
             <div className="flex items-center space-x-4 mb-4">
               {content.socialLinks.map((social) => (
-                <Link href={social.url} key={social.name} className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                <Link href={social.url} key={social.name} className="text-primary-foreground/80 hover:text-primary-foreground transition-transform hover:scale-110">
                   {socialIconMap[social.name]}
                 </Link>
               ))}

@@ -12,6 +12,7 @@ import { useUser } from "@/firebase";
 import { ADMIN_EMAILS } from "@/lib/admin";
 import { ImageUploaderDialog } from "../image-uploader-dialog";
 import { IptvImageUploader } from "./iptv-image-uploader";
+import { Fade } from "react-awesome-reveal";
 
 interface IptvProps {
   featureImageUrl?: string;
@@ -35,10 +36,10 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
   const { headline, subheadline } = content.iptv;
 
   return (
-    <section id="iptv" className="bg-secondary py-12 sm:py-16 lg:py-20">
-      <FadeInWrapper>
-        <div className="container mx-auto px-4 md:px-6">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
+    <section id="iptv" className="bg-secondary py-12 sm:py-16 lg:py-20 overflow-hidden">
+      <div className="container mx-auto px-4 md:px-6">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <Fade direction="left" triggerOnce>
                 <div className="space-y-6 text-center lg:text-left">
                     <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-5xl text-primary">
                         {headline}
@@ -59,6 +60,8 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
                       </Button>
                     )}
                 </div>
+              </Fade>
+              <Fade direction="right" triggerOnce>
                 <div className="relative w-full max-w-2xl mx-auto lg:max-w-none aspect-[16/10] rounded-xl overflow-hidden">
                   {currentSrc && (
                     <Image
@@ -71,9 +74,9 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
                     />
                   )}
                 </div>
-            </div>
-        </div>
-      </FadeInWrapper>
+              </Fade>
+          </div>
+      </div>
     </section>
   );
 }

@@ -3,6 +3,7 @@
 
 import { AdminOnly } from "@/components/auth/admin-only";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Settings } from "lucide-react";
 import LogoUploader from "@/components/sections/logo-uploader";
 import HeroImageUploader from "@/components/sections/hero-image-uploader";
@@ -20,42 +21,56 @@ export default function SiteSettingsPage() {
           </h2>
         </div>
         
-        <Card>
-            <CardHeader>
-                <CardTitle>Site Logo</CardTitle>
-                <CardDescription>Upload a logo for the site. It will be displayed in the header and footer.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <LogoUploader />
-            </CardContent>
-        </Card>
+        <Tabs defaultValue="logo" className="space-y-4">
+          <TabsList>
+            <TabsTrigger value="logo">Site Logo</TabsTrigger>
+            <TabsTrigger value="hero">Hero Images</TabsTrigger>
+            <TabsTrigger value="iptv">IPTV Image</TabsTrigger>
+          </TabsList>
 
-        <Card>
-            <CardHeader>
-                <CardTitle>Homepage Hero Images</CardTitle>
-                <CardDescription>Upload images for the main hero section on the homepage. Provide versions for both desktop and mobile screens.</CardDescription>
-            </CardHeader>
-            <CardContent className="grid md:grid-cols-2 gap-8">
-                <div>
-                    <h3 className="text-lg font-semibold mb-2">Desktop Hero Image</h3>
-                    <HeroImageUploader />
-                </div>
-                <div>
-                    <h3 className="text-lg font-semibold mb-2">Mobile Hero Image</h3>
-                    <MobileHeroImageUploader />
-                </div>
-            </CardContent>
-        </Card>
-        
-        <Card>
-            <CardHeader>
-                <CardTitle>IPTV Section Image</CardTitle>
-                <CardDescription>Upload the main image for the IPTV promotional section. This image will be used for both desktop and mobile.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <IptvImageUploader />
-            </CardContent>
-        </Card>
+          <TabsContent value="logo">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Site Logo</CardTitle>
+                    <CardDescription>Upload a logo for the site. It will be displayed in the header and footer.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <LogoUploader />
+                </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="hero">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Homepage Hero Images</CardTitle>
+                    <CardDescription>Upload images for the main hero section on the homepage. Provide versions for both desktop and mobile screens.</CardDescription>
+                </CardHeader>
+                <CardContent className="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 className="text-lg font-semibold mb-2">Desktop Hero Image</h3>
+                        <HeroImageUploader />
+                    </div>
+                    <div>
+                        <h3 className="text-lg font-semibold mb-2">Mobile Hero Image</h3>
+                        <MobileHeroImageUploader />
+                    </div>
+                </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="iptv">
+            <Card>
+                <CardHeader>
+                    <CardTitle>IPTV Section Image</CardTitle>
+                    <CardDescription>Upload the main image for the IPTV promotional section. This image will be used for both desktop and mobile.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <IptvImageUploader />
+                </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
 
       </div>
     </AdminOnly>

@@ -48,8 +48,6 @@ export function MediaLibrary({ onSelect }: { onSelect: (url: string) => void }) 
   
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const isAdmin = user && ADMIN_EMAILS.includes(user.email || "");
-
   // Fetches all images from the 'hero/' folder in Cloud Storage.
   const fetchImages = useCallback(async () => {
     if (!storage) return;
@@ -76,10 +74,8 @@ export function MediaLibrary({ onSelect }: { onSelect: (url: string) => void }) 
   }, [storage, toast]);
 
   useEffect(() => {
-    if (isAdmin) {
-      fetchImages();
-    }
-  }, [isAdmin, fetchImages]);
+    fetchImages();
+  }, [fetchImages]);
 
   // Handles the file upload process.
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,16 +126,6 @@ export function MediaLibrary({ onSelect }: { onSelect: (url: string) => void }) 
       });
     }
   };
-
-  if (!isAdmin) {
-    return (
-      <div className="text-center p-8 border-2 border-dashed rounded-lg bg-red-50 border-red-200 text-red-700">
-        <AlertTriangle className="mx-auto h-12 w-12" />
-        <h3 className="mt-4 font-semibold text-lg">Access Denied</h3>
-        <p className="text-sm mt-2">You do not have permission to view this page.</p>
-      </div>
-    );
-  }
 
   return (
     <div>

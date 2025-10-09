@@ -172,6 +172,7 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
                           />
                         )}
                     </div>
+                    {/*
                     <div className="mt-4 flex flex-col sm:flex-row gap-2 justify-center">
                       <input
                         type="file"
@@ -186,6 +187,7 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
                         {isProcessing ? "Processing..." : "IPTV Image Uploader"}
                       </Button>
                     </div>
+                    */}
                 </div>
               </Fade>
           </div>

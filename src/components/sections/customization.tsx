@@ -10,12 +10,11 @@ import { Settings } from 'lucide-react';
 import LogoUploader from '@/components/sections/logo-uploader';
 import HeroImageUploader from './hero-image-uploader';
 import MobileHeroImageUploader from './mobile-hero-image-uploader';
-import FeatureImageUploader from '../feature-image-uploader';
-import MobileFeatureImageUploader from '../mobile-feature-image-uploader';
+import FeatureImageUploader from './feature-image-uploader';
+import MobileFeatureImageUploader from './mobile-feature-image-uploader';
 
 export default function Customization() {
     const { user } = useUser();
-    const [open, setOpen] = useState(false);
 
     if (!user) {
         return null;

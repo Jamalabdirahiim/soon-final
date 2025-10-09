@@ -50,7 +50,7 @@ export default function Header({ logoUrl: initialLogoUrl }: HeaderProps) {
         hasScrolled || isMobileMenuOpen ? "bg-background/80 backdrop-blur-sm shadow-md" : "bg-transparent"
       )}
     >
-      <div className="container mx-auto flex h-20 items-center justify-between px-4">
+      <div className="container mx-auto flex h-20 items-center justify-between">
         <SoonLogo 
           logoSrc={logoUrl} 
           className={cn(

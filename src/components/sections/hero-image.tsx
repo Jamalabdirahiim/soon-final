@@ -45,12 +45,11 @@ export default function HeroImage({ heroImageUrl, mobileHeroImageUrl }: HeroImag
                 key={currentSrc}
             />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/20"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/50 to-black/80"></div>
            <div className={cn(
-             "absolute inset-0 flex items-center justify-center",
-             "pt-20 md:pt-0" // Add padding top on mobile to push content down
+             "absolute inset-0 flex items-center justify-center pt-20 md:pt-0"
             )}>
-            <div className="container mx-auto px-4 text-center">
+            <div className="container mx-auto text-center">
                 <h1 className="font-headline text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl drop-shadow-2xl">
                     Experience the Future of Internet & TV.
                 </h1>

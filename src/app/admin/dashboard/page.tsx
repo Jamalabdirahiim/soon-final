@@ -18,32 +18,16 @@ export default function AdminDashboard() {
             <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <ImageIcon className="h-5 w-5" />
-                      Media Management
-                    </CardTitle>
-                    <CardDescription>
-                        View, upload, and delete images used across the website.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <Button asChild>
-                        <Link href="/admin/dashboard/media">Manage Media</Link>
-                    </Button>
-                </CardContent>
-            </Card>
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
                         <Settings className="h-5 w-5" />
                         Site Settings
                     </CardTitle>
                     <CardDescription>
-                        Modify site configuration, text content, and other settings. (Coming Soon)
+                        Modify site logo, hero images, and other visual elements.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <Button disabled>
-                        Go to Settings
+                    <Button asChild>
+                        <Link href="/admin/dashboard/settings">Manage Site</Link>
                     </Button>
                 </CardContent>
             </Card>

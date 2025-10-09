@@ -1,14 +1,15 @@
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { useStorage, useUser } from '@/firebase';
-import { ref, getDownloadURL } from 'firebase/storage';
+import { useUser } from '@/firebase';
 import { Camera } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { IptvImageUploader } from './iptv-image-uploader';
+import { ADMIN_EMAILS } from '@/lib/admin';
 
 interface IptvHeroProps {
   featureImageUrl?: string;
@@ -17,6 +18,7 @@ interface IptvHeroProps {
 
 const IptvHero = ({ featureImageUrl, mobileFeatureImageUrl }: IptvHeroProps) => {
   const { user } = useUser();
+  const isAdmin = user && ADMIN_EMAILS.includes(user.email || "");
   const [loading, setLoading] = useState(true);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
@@ -27,7 +29,6 @@ const IptvHero = ({ featureImageUrl, mobileFeatureImageUrl }: IptvHeroProps) => 
       setImageUrl(initialUrl);
       setLoading(false);
     } else {
-      // Fallback to a default if you have one, or just show empty/loading state
       setLoading(false);
     }
   }, [featureImageUrl, mobileFeatureImageUrl]);
@@ -51,7 +52,7 @@ const IptvHero = ({ featureImageUrl, mobileFeatureImageUrl }: IptvHeroProps) => 
     }
 
     // If no image URL is available
-    if (user) {
+    if (isAdmin) {
       // Admin is logged in, show an upload dialog trigger
       return (
         <Dialog>
@@ -75,8 +76,8 @@ const IptvHero = ({ featureImageUrl, mobileFeatureImageUrl }: IptvHeroProps) => 
       return (
         <div className="text-center text-muted-foreground p-8">
           <Camera className="mx-auto h-12 w-12 text-gray-400" />
-          <h3 className="mt-4 text-lg font-semibold">IPTV Image Not Set</h3>
-          <p className="mt-1 text-sm text-gray-500">An admin can upload an image in the customization panel.</p>
+          <h3 className="mt-4 text-lg font-semibold">IPTV Image Coming Soon</h3>
+          <p className="mt-1 text-sm text-gray-500">Check back later for a preview of our IPTV service.</p>
         </div>
       );
     }

@@ -1,5 +1,6 @@
-import type {Config} from 'tailwindcss';
 
+import type {Config} from 'tailwindcss';
+// This is a dummy comment to force a rebuild and resolve a caching issue.
 export default {
   darkMode: ['class'],
   content: [

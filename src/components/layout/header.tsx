@@ -88,7 +88,7 @@ export default function Header() {
           ))}
           {isAdmin && (
             <Link
-              href="/admin/dashboard"
+              href="/admin/dashboard/settings"
               className="flex items-center gap-2 text-sm font-medium transition-colors hover:text-primary"
             >
               <Shield className="h-4 w-4" />
@@ -130,7 +130,7 @@ export default function Header() {
                   ))}
                    {isAdmin && (
                     <Link
-                      href="/admin/dashboard"
+                      href="/admin/dashboard/settings"
                       className="flex items-center gap-2 text-lg font-medium text-foreground/80 transition-colors hover:text-primary"
                       onClick={closeMobileMenu}
                     >

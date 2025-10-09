@@ -1,3 +1,4 @@
+"use client";
 
 import { AdminOnly } from "@/components/auth/admin-only";
 import { MediaLibrary } from "./media-library";

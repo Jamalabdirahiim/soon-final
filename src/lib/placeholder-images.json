@@ -8,9 +8,9 @@
     },
     {
       "id": "mobile-hero-background",
-      "description": "Vertical abstract background image representing data flow, suitable for mobile.",
-      "imageUrl": "https://images.unsplash.com/photo-1581092918056-0c9c57262960?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHx2ZXJ0aWNhbCUyMHRlY2hub2xvZ3klMjBhYnN0cmFjdHxlbnwwfHx8fDE3NjA4MTI5OTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "vertical technology"
+      "description": "Vertical SOON IPTV poster image.",
+      "imageUrl": "https://storage.googleapis.com/project-idx-assets/sooon-iptv-poster.png",
+      "imageHint": "iptv poster"
     },
     {
       "id": "iptv-hero",

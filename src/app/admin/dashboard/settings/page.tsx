@@ -57,15 +57,6 @@ export default function SiteSettingsPage() {
                       </div>
                   </CardContent>
               </Card>
-              <Card>
-                  <CardHeader>
-                      <CardTitle>IPTV Section Image</CardTitle>
-                      <CardDescription>Upload the main image for the IPTV promotional section. This image will be used for both desktop and mobile.</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                      <IptvImageUploader />
-                  </CardContent>
-              </Card>
             </div>
           </TabsContent>
         </Tabs>

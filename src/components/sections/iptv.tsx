@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { content } from "@/lib/content";
 import { Fade } from "react-awesome-reveal";
+import { IptvImageUploaderDialog } from './iptv-image-uploader-dialog';
 
 interface IptvProps {
   featureImageUrl?: string;
@@ -46,7 +47,7 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
               </Fade>
               <Fade direction="right" triggerOnce>
                 <div className="relative w-full max-w-2xl mx-auto lg:max-w-none">
-                    <div className="aspect-[16/10] rounded-xl overflow-hidden bg-muted">
+                    <div className="aspect-[16/10] rounded-xl overflow-hidden bg-muted relative group">
                         {currentSrc && (
                           <Image
                               id="iptvImageDisplay"
@@ -58,6 +59,7 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
                               key={currentSrc}
                           />
                         )}
+                        <IptvImageUploaderDialog />
                     </div>
                 </div>
               </Fade>

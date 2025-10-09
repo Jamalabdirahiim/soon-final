@@ -21,7 +21,50 @@ const toBase64 = (file: File): Promise<string> => new Promise((resolve, reject) 
     reader.onerror = error => reject(error);
 });
 
-export function IptvImageUploader() {
+const resizeImage = (file: File, maxWidth: number, maxHeight: number): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const img = document.createElement('img');
+    const canvas = document.createElement('canvas');
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      if (typeof e.target?.result !== 'string') {
+        return reject(new Error('Failed to read file.'));
+      }
+      img.src = e.target.result;
+    };
+
+    img.onload = () => {
+      let { width, height } = img;
+      if (width > height) {
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+      } else {
+        if (height > maxHeight) {
+          width = Math.round((width * maxHeight) / height);
+          height = maxHeight;
+        }
+      }
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        return reject(new Error('Failed to get canvas context.'));
+      }
+      ctx.drawImage(img, 0, 0, width, height);
+      resolve(canvas.toDataURL('image/webp', 0.8)); // Use webp for better compression
+    };
+
+    img.onerror = reject;
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+};
+
+
+export function IptvImageUploader({ onUploadComplete }: { onUploadComplete?: () => void }) {
   const firestore = useFirestore();
   const { toast } = useToast();
 
@@ -82,7 +125,7 @@ export function IptvImageUploader() {
     setIsProcessing(true);
 
     try {
-        const dataUrl = await toBase64(file);
+        const dataUrl = await resizeImage(file, 1280, 720);
         const configDocRef = doc(firestore, 'site-settings', 'config');
         
         const imageData = {
@@ -98,6 +141,7 @@ export function IptvImageUploader() {
                 description: "The IPTV section image has been updated.",
             });
             setFile(null);
+            if (onUploadComplete) onUploadComplete();
           })
           .catch(error => {
             const permissionError = new FirestorePermissionError({
@@ -113,7 +157,7 @@ export function IptvImageUploader() {
     } finally {
         setIsProcessing(false);
     }
-  }, [file, firestore, toast]);
+  }, [file, firestore, toast, onUploadComplete]);
 
   return (
     <div className="w-full">

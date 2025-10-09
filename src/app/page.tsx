@@ -39,10 +39,7 @@ export default async function Home() {
         />
         <Customization />
         <Services />
-        <IptvHero 
-          featureImageUrl={settings?.featureImageUrl}
-          mobileFeatureImageUrl={settings?.mobileFeatureImageUrl}
-        />
+        <IptvHero />
         <Pricing />
         <Faq />
         <Contact />

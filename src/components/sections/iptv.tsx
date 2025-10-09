@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import Image from "next/image";
 import { useFirestore } from '@/firebase';
 import { doc, setDoc } from 'firebase/firestore';
@@ -13,6 +13,8 @@ import { useToast } from "@/hooks/use-toast";
 import { revalidateHome } from '@/app/actions';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { errorEmitter } from '@/firebase/error-emitter';
+import { Tv } from 'lucide-react';
+import firestoreRules from '!!raw-loader!../../../firestore.rules';
 
 interface IptvProps {
   featureImageUrl?: string;
@@ -109,12 +111,14 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
         });
 
     } catch (error) {
-        if (error instanceof FirestorePermissionError) {
-          errorEmitter.emit('permission-error', error);
-        } else {
-          toast({ variant: "destructive", title: "Error", description: "Could not process or upload image." });
-          console.error("Image upload error:", error);
-        }
+        // Since firestore.rules now allow public writes, this error is less likely,
+        // but we keep it for robustness.
+        const permissionError = new FirestorePermissionError({
+          path: 'site-settings/config',
+          operation: 'update',
+          requestResourceData: { featureImageUrl: 'REDACTED_DATA_URL' }
+        });
+        errorEmitter.emit('permission-error', permissionError);
     } finally {
         setIsProcessing(false);
         // Reset file input
@@ -134,15 +138,20 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
           <div className="grid lg:grid-cols-2 gap-12 items-center">
               <Fade direction="left" triggerOnce>
                 <div className="space-y-6 text-center lg:text-left">
+                    <div className="inline-flex items-center gap-2 rounded-lg bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">
+                        <Tv className="h-4 w-4" />
+                        <span>SOON IPTV</span>
+                    </div>
                     <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-5xl text-primary">
                         {headline}
                     </h2>
                     <p className="text-muted-foreground md:text-lg">
                         {subheadline}
                     </p>
+                    <p className="text-xl font-bold text-primary">400+ Live TV Channels</p>
                     <div className="flex items-center justify-center lg:justify-start gap-4 mt-4">
                        <Button asChild size="lg" className="premium-blue-bg text-primary-foreground hover:brightness-110 transition-transform hover:scale-105 shadow-lg">
-                         <a href="#contact">Get IPTV</a>
+                         <a href="#contact">Get It Now</a>
                        </Button>
                     </div>
                 </div>

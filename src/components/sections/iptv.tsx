@@ -19,13 +19,45 @@ interface IptvProps {
   mobileFeatureImageUrl?: string;
 }
 
+const MAX_IMAGE_WIDTH = 1920; // Max width for the saved image
+const IMAGE_QUALITY = 0.8; // JPEG quality
+
+// Helper function to resize image using canvas
+const resizeImage = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = document.createElement('img');
+      img.src = event.target?.result as string;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const scaleFactor = MAX_IMAGE_WIDTH / img.width;
+        canvas.width = MAX_IMAGE_WIDTH;
+        canvas.height = img.height * scaleFactor;
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          return reject(new Error('Could not get canvas context'));
+        }
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        resolve(canvas.toDataURL('image/jpeg', IMAGE_QUALITY));
+      };
+      img.onerror = reject;
+    };
+    reader.onerror = reject;
+  });
+};
+
+
 export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvProps) {
   const defaultIptvImage = placeholderImages.find(p => p.id === 'iptv-hero');
   const isMobile = useIsMobile();
   const { user } = useUser();
   const isAdmin = user && ADMIN_EMAILS.includes(user.email || "");
   
-  const [currentSrc, setCurrentSrc] = useState(featureImageUrl || defaultIptvImage?.imageUrl);
+  const [currentSrc, setCurrentSrc] = useState<string | undefined>(undefined);
   const [previewSrc, setPreviewSrc] = useState<string | null>(null);
   const imageUploadInput = useRef<HTMLInputElement>(null);
 
@@ -41,26 +73,32 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
       setCurrentSrc(isMobile ? mobileSrc : desktopSrc);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobile]); // Dependency on isMobile ensures it re-evaluates for responsive changes if needed, but not on every render.
+  }, [isMobile]); 
 
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const dataUrl = reader.result as string;
-        setPreviewSrc(dataUrl);
-      };
-      reader.readAsDataURL(file);
+      try {
+        const resizedDataUrl = await resizeImage(file);
+        setPreviewSrc(resizedDataUrl);
+      } catch (error) {
+        console.error("Error resizing image:", error);
+        // Optionally, show a toast to the user
+      }
     }
   };
 
   const handleSaveImage = () => {
     if (previewSrc) {
-      localStorage.setItem('iptvCustomImage', previewSrc);
-      setCurrentSrc(previewSrc);
-      setPreviewSrc(null); // Clear preview after saving
+      try {
+        localStorage.setItem('iptvCustomImage', previewSrc);
+        setCurrentSrc(previewSrc);
+        setPreviewSrc(null); // Clear preview after saving
+      } catch (error) {
+          console.error("Error saving image to localStorage:", error);
+          // Handle potential quota errors, e.g., by notifying the user.
+      }
     }
   };
 

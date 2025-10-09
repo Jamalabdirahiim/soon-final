@@ -65,7 +65,7 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
                       src={currentSrc}
                       alt={defaultIptvImage?.description || "IPTV service interface"}
                       fill
-                      className="w-full h-full object-cover rounded-xl shadow-2xl"
+                      className="w-full h-full object-cover rounded-xl"
                       data-ai-hint={defaultIptvImage?.imageHint}
                       key={currentSrc}
                     />

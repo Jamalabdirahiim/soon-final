@@ -35,7 +35,7 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
   const { headline, subheadline } = content.iptv;
 
   return (
-    <section id="iptv-details" className="bg-secondary py-12 sm:py-16 lg:py-20">
+    <section id="iptv" className="bg-secondary py-12 sm:py-16 lg:py-20">
       <FadeInWrapper>
         <div className="container mx-auto px-4 md:px-6">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -59,13 +59,13 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
                       </Button>
                     )}
                 </div>
-                <div className="relative w-full max-w-2xl mx-auto lg:max-w-none aspect-[16/10]">
+                <div className="relative w-full max-w-2xl mx-auto lg:max-w-none aspect-[16/10] rounded-xl overflow-hidden">
                   {currentSrc && (
                     <Image
                       src={currentSrc}
                       alt={defaultIptvImage?.description || "IPTV service interface"}
                       fill
-                      className="w-full h-full object-cover rounded-xl"
+                      className="w-full h-full object-cover"
                       data-ai-hint={defaultIptvImage?.imageHint}
                       key={currentSrc}
                     />

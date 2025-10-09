@@ -1,10 +1,11 @@
-
 "use client";
 
 import { useUser } from "@/firebase";
 import { ADMIN_EMAILS } from "@/lib/admin";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertTriangle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { signInWithGoogle } from "@/firebase/auth/login";
 
 /**
  * A client component that acts as a gatekeeper for admin-only content.
@@ -32,21 +33,27 @@ export function AdminOnly({ children }: { children: React.ReactNode }) {
     );
   }
 
-  const isAdmin = user && ADMIN_EMAILS.includes(user.email || "");
+  const isAdmin = user && user.email && ADMIN_EMAILS.includes(user.email);
 
   // If the user is an admin, render the protected content.
   if (isAdmin) {
     return <>{children}</>;
   }
 
-  // If the user is not an admin, show an access denied message.
+  // If the user is not an admin, show an access denied message with a login button.
   return (
     <div className="w-full h-screen flex items-center justify-center p-4">
        <div className="text-center p-8 border-2 border-dashed rounded-lg bg-red-50 border-red-200 text-red-700 max-w-md">
         <AlertTriangle className="mx-auto h-12 w-12" />
         <h3 className="mt-4 font-semibold text-lg">Access Denied</h3>
         <p className="text-sm mt-2">
-            You do not have permission to view this page. Please contact an administrator if you believe this is an error.
+            You do not have permission to view this page. Please sign in with an authorized admin account.
+        </p>
+        <Button onClick={signInWithGoogle} className="mt-6">
+          Sign in with Google
+        </Button>
+        <p className="text-xs text-red-500 mt-4">
+          After signing in, make sure your email is added to the `ADMIN_EMAILS` array in `src/lib/admin.ts`.
         </p>
       </div>
     </div>

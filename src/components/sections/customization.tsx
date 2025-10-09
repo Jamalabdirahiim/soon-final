@@ -3,13 +3,11 @@
 
 import { useUser } from '@/firebase';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Settings } from 'lucide-react';
 import LogoUploader from '@/components/sections/logo-uploader';
 import HeroImageUploader from './hero-image-uploader';
 import MobileHeroImageUploader from './mobile-hero-image-uploader';
-import { IptvImageUploader } from './iptv-image-uploader';
+import { Separator } from '../ui/separator';
 
 export default function Customization() {
     const { user } = useUser();
@@ -29,51 +27,27 @@ export default function Customization() {
                                 <span>Site Customization</span>
                             </CardTitle>
                             <p className="text-muted-foreground">
-                                Upload your logo and hero images here.
+                                Upload your logo and hero images here. Changes are saved automatically.
                             </p>
                         </div>
                     </CardHeader>
                     <CardContent className="grid gap-8 pt-2">
                         <div>
-                            <h3 className="text-lg font-semibold mb-2">Logo</h3>
+                            <h3 className="text-lg font-semibold mb-2">Site Logo</h3>
                             <LogoUploader />
                         </div>
-                        
-                        <div className="flex flex-col gap-4">
-                            <Dialog>
-                                <DialogTrigger asChild>
-                                    <Button variant="outline">Upload Hero Image</Button>
-                                </DialogTrigger>
-                                <DialogContent className="sm:max-w-[800px]">
-                                    <DialogHeader>
-                                        <DialogTitle>Upload Hero Images</DialogTitle>
-                                    </DialogHeader>
-                                    <div className="py-4 grid md:grid-cols-2 gap-8">
-                                        <div>
-                                            <h3 className="text-lg font-semibold mb-2">Hero Image (Desktop)</h3>
-                                            <HeroImageUploader />
-                                        </div>
-                                        <div>
-                                            <h3 className="text-lg font-semibold mb-2">Hero Image (Mobile)</h3>
-                                            <MobileHeroImageUploader />
-                                        </div>
-                                    </div>
-                                </DialogContent>
-                            </Dialog>
 
-                            <Dialog>
-                                <DialogTrigger asChild>
-                                    <Button variant="outline">Upload IPTV Image</Button>
-                                </DialogTrigger>
-                                <DialogContent className="sm:max-w-[425px]">
-                                    <DialogHeader>
-                                        <DialogTitle>Upload IPTV Image</DialogTitle>
-                                    </DialogHeader>
-                                    <div className="py-4">
-                                        <IptvImageUploader />
-                                    </div>
-                                </DialogContent>
-                            </Dialog>
+                        <Separator />
+                        
+                        <div className="grid md:grid-cols-2 gap-8">
+                            <div>
+                                <h3 className="text-lg font-semibold mb-2">Desktop Hero Image</h3>
+                                <HeroImageUploader />
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-semibold mb-2">Mobile Hero Image</h3>
+                                <MobileHeroImageUploader />
+                            </div>
                         </div>
                     </CardContent>
                 </Card>

@@ -3,23 +3,31 @@
 
 import Image from 'next/image';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { placeholderImages } from "@/lib/placeholder-images.json";
 
 interface HeroImageProps {
     heroImageUrl?: string;
     mobileHeroImageUrl?: string;
 }
 
+// Default placeholder image in case nothing is provided from the server.
+const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1535957998253-26ae1ef29506?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxhYnN0cmFjdCUyMHRlY2hub2xvZ3l8ZW58MHx8fHwxNzYxMDkyOTE4fDA&ixlib=rb-4.1.0&q=80&w=1080";
+
 export default function HeroImage({ heroImageUrl, mobileHeroImageUrl }: HeroImageProps) {
-  const defaultHeroImage = placeholderImages.find(p => p.id === 'hero-background');
   const isMobile = useIsMobile();
 
+  // This function determines the correct image source to display.
+  // It prioritizes the mobile-specific image on mobile devices,
+  // then falls back to the desktop image, and finally to a static placeholder.
   const getSrc = () => {
-    // Return a placeholder if we're on the server and can't determine mobile status
-    if (isMobile === undefined) return defaultHeroImage?.imageUrl;
+    // On the server or before the mobile check has run, we can't know the screen size.
+    // Default to the desktop URL if available, otherwise the fallback.
+    if (isMobile === undefined) {
+      return heroImageUrl || FALLBACK_IMAGE;
+    }
 
-    const desktopSrc = heroImageUrl || defaultHeroImage?.imageUrl;
-    const mobileSrc = mobileHeroImageUrl || desktopSrc;
+    const desktopSrc = heroImageUrl || FALLBACK_IMAGE;
+    const mobileSrc = mobileHeroImageUrl || desktopSrc; // Mobile falls back to desktop image
+    
     return isMobile ? mobileSrc : desktopSrc;
   };
 
@@ -31,11 +39,11 @@ export default function HeroImage({ heroImageUrl, mobileHeroImageUrl }: HeroImag
           {currentSrc && (
             <Image
                 src={currentSrc}
-                alt={defaultHeroImage?.description || "High-speed internet concept"}
+                alt={"High-speed internet concept"}
                 fill
                 className="w-full h-full object-cover"
                 priority
-                data-ai-hint={defaultHeroImage?.imageHint}
+                data-ai-hint={"abstract technology"}
                 key={currentSrc}
             />
           )}

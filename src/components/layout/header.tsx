@@ -128,7 +128,7 @@ export default function Header() {
                       {link.label}
                     </Link>
                   ))}
-                  {isAdmin && (
+                   {isAdmin && (
                     <Link
                       href="/admin/dashboard"
                       className="flex items-center gap-2 text-lg font-medium text-foreground/80 transition-colors hover:text-primary"

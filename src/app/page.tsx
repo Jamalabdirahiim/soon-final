@@ -18,13 +18,12 @@ export default async function Home() {
       <Header />
       <main className="flex-1">
         <HeroImage heroImageUrl={undefined} mobileHeroImageUrl={undefined} />
-        
+        <IptvImageUploader />
         <Hero />
         
         <Customization />
         
         <Iptv />
-        <IptvImageUploader />
         <Services />
         <Pricing />
         <Faq />

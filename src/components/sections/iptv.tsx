@@ -77,12 +77,12 @@ export default function Iptv() {
                   src={currentSrc}
                   alt={defaultIptvImage?.description || "IPTV service interface"}
                   fill
-                  className="w-full h-full object-cover rounded-xl shadow-2xl"
+                  className="w-full h-full object-contain rounded-xl shadow-2xl"
                   data-ai-hint={defaultIptvImage?.imageHint}
                   key={currentSrc}
                 />
               )}
-              <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent rounded-xl"></div>
+              <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent rounded-xl -z-10"></div>
             </div>
           </div>
         </div>

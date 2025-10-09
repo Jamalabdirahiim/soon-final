@@ -1,32 +1,77 @@
+/**
+ * @fileoverview Firestore Security Rules for Prototyping.
+ *
+ * Core Philosophy: This ruleset prioritizes developer velocity by focusing on
+ * strict authentication and authorization while relaxing data validation. This
+ * allows for rapid iteration on the data model without being blocked by schema
+ * enforcement.
+ *
+ * Data Structure: The primary data structure revolves around users. Each user
+ * has a profile stored under `/users/{userId}`.
+ *
+ * Key Security Decisions:
+ * - User listing is explicitly denied to protect user privacy.
+ * - Only authenticated users can access data.
+ * - Users can only read and write their own profile data.
+ * - No data validation is performed beyond ownership checks.
+ *
+ * Denormalization for Authorization:  The user's `uid` is used as the document ID
+ * in the `/users/{userId}` collection. This denormalization simplifies ownership
+ * checks and avoids the need for additional reads.
+ */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    match /users/{userId} {
-      function isSignedIn() {
-        return request.auth != null;
-      }
-
-      function isOwner(userId) {
-        return isSignedIn() && request.auth.uid == userId;
-      }
-
-      function isExistingOwner(userId) {
-        return isOwner(userId) && resource != null;
-      }
-
-      allow create: if isOwner(userId);
-      allow get: if isOwner(userId);
-      allow list: if false;
-      allow update: if isExistingOwner(userId);
-      allow delete: if isExistingOwner(userId);
+    /**
+     * @description Checks if the request is authenticated.
+     * @path N/A
+     * @allow N/A
+     * @deny N/A
+     * @principle Authentication is required for all access.
+     */
+    function isSignedIn() {
+      return request.auth != null;
     }
 
-    match /site-settings/iptv-hero {
-      // Allow public read access for the IPTV hero image URL
-      allow get: if true;
-      // Allow write access only for authenticated users.
-      allow write: if request.auth != null;
+    /**
+     * @description Checks if the authenticated user's UID matches the provided userId.
+     * @path N/A
+     * @allow N/A
+     * @deny N/A
+     * @principle Enforces document ownership.
+     */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    /**
+     * @description Checks if the authenticated user is the owner of an existing document.
+     * @path N/A
+     */
+    function isExistingOwner(userId) {
+      return isOwner(userId) && resource != null;
+    }
+
+    /**
+     * @description Defines security rules for user profiles.
+     * @path /users/{userId}
+     * @allow (create) - Authenticated user can create their own profile if the userId matches their UID.
+     * @allow (get, update, delete) - Authenticated user can get, update, and delete their own profile if the userId matches their UID.
+     * @deny (create) - Authenticated user cannot create a profile with a userId that does not match their UID.
+     * @deny (get, update, delete) - Authenticated user cannot get, update, and delete a profile with a userId that does not match their UID.
+     * @deny (list) - Listing all users is not allowed.
+     * @principle Enforces user-owned data: Only a user can read/write their own profile.
+     */
+    match /users/{userId} {
+      // Read rules
+      allow get: if isOwner(userId);
+      allow list: if false; // User listing is denied for privacy.
+
+      // Write rules
+      allow create: if isOwner(userId);
+      allow update: if isExistingOwner(userId);
+      allow delete: if isExistingOwner(userId);
     }
   }
 }

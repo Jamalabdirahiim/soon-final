@@ -3,19 +3,22 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Image from "next/image";
-import { placeholderImages } from "@/lib/placeholder-images.json";
+import { useFirestore } from '@/firebase';
+import { doc, setDoc } from 'firebase/firestore';
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { content } from "@/lib/content";
 import { Fade } from "react-awesome-reveal";
-import { cn } from '@/lib/utils';
+import { useToast } from "@/hooks/use-toast";
+import { revalidateHome } from '@/app/actions';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 interface IptvProps {
   featureImageUrl?: string;
   mobileFeatureImageUrl?: string;
 }
 
-// Function to resize image using a canvas
 const resizeImage = (file: File, maxWidth: number, maxHeight: number): Promise<string> => {
   return new Promise((resolve, reject) => {
     const img = document.createElement('img');
@@ -31,17 +34,17 @@ const resizeImage = (file: File, maxWidth: number, maxHeight: number): Promise<s
 
     img.onload = () => {
       let { width, height } = img;
-      const ratio = width / height;
-
-      if (width > maxWidth) {
-        width = maxWidth;
-        height = width / ratio;
+      if (width > height) {
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+      } else {
+        if (height > maxHeight) {
+          width = Math.round((width * maxHeight) / height);
+          height = maxHeight;
+        }
       }
-      if (height > maxHeight) {
-        height = maxHeight;
-        width = height * ratio;
-      }
-
       canvas.width = width;
       canvas.height = height;
       const ctx = canvas.getContext('2d');
@@ -49,62 +52,80 @@ const resizeImage = (file: File, maxWidth: number, maxHeight: number): Promise<s
         return reject(new Error('Failed to get canvas context.'));
       }
       ctx.drawImage(img, 0, 0, width, height);
-      // Use a slightly higher quality for webp to balance size and quality
-      resolve(canvas.toDataURL('image/webp', 0.9));
+      resolve(canvas.toDataURL('image/webp', 0.8));
     };
 
-    img.onerror = (err) => reject(err);
-    reader.onerror = (err) => reject(err);
+    img.onerror = reject;
+    reader.onerror = reject;
     reader.readAsDataURL(file);
   });
 };
 
 
 export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvProps) {
-  const defaultIptvImage = placeholderImages.find(p => p.id === 'iptv-hero');
   const isMobile = useIsMobile();
+  const firestore = useFirestore();
+  const { toast } = useToast();
   
-  const [currentSrc, setCurrentSrc] = useState(featureImageUrl || defaultIptvImage?.imageUrl);
-  const [previewSrc, setPreviewSrc] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  
+  const getSrc = () => {
+    const desktopSrc = featureImageUrl || "https://images.unsplash.com/photo-1593359677879-a4bb92f82d72?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxsaXZpbmclMjByb29tJTIwdGVsZXZpc2lvbnxlbnwwfHx8fDE3MjE4MzQ5NDR8MA&ixlib=rb-4.1.0&q=80&w=1080";
+    const mobileSrc = mobileFeatureImageUrl || desktopSrc;
+    
+    if (isMobile === undefined) {
+      return featureImageUrl || desktopSrc;
+    }
+    
+    return isMobile ? mobileSrc : desktopSrc;
+  };
 
+  const currentSrc = getSrc();
+  
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  // Effect to load saved image from localStorage on initial mount
-  useEffect(() => {
-    const savedImage = localStorage.getItem('iptvCustomImage');
-    const finalSrc = savedImage 
-      ? savedImage
-      : (isMobile ? mobileFeatureImageUrl || featureImageUrl : featureImageUrl) || defaultIptvImage?.imageUrl;
-
-    setCurrentSrc(finalSrc);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobile, featureImageUrl, mobileFeatureImageUrl]);
-
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      try {
-        const resizedDataUrl = await resizeImage(file, 1280, 800);
-        setPreviewSrc(resizedDataUrl);
-      } catch (error) {
-        console.error("Error resizing image:", error);
-        // Optionally, show a toast to the user
-      }
-    }
-  };
+    if (!file || !firestore) return;
 
-  const handleSaveImage = () => {
-    if (previewSrc) {
-      localStorage.setItem('iptvCustomImage', previewSrc);
-      setCurrentSrc(previewSrc);
-      setPreviewSrc(null); // Clear preview after saving
+    setIsProcessing(true);
+    toast({ title: "Uploading...", description: "Your image is being processed." });
+
+    try {
+        const dataUrl = await resizeImage(file, 1280, 720);
+        const configDocRef = doc(firestore, 'site-settings', 'config');
+        
+        const imageData = {
+          featureImageUrl: dataUrl,
+          mobileFeatureImageUrl: dataUrl,
+        };
+
+        await setDoc(configDocRef, imageData, { merge: true });
+        
+        await revalidateHome();
+        toast({
+            title: "Upload Successful!",
+            description: "The IPTV section image has been updated.",
+        });
+
+    } catch (error) {
+        if (error instanceof FirestorePermissionError) {
+          errorEmitter.emit('permission-error', error);
+        } else {
+          toast({ variant: "destructive", title: "Error", description: "Could not process or upload image." });
+          console.error("Image upload error:", error);
+        }
+    } finally {
+        setIsProcessing(false);
+        // Reset file input
+        if(fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
     }
   };
 
   const triggerFileSelect = () => fileInputRef.current?.click();
 
-  const displaySrc = previewSrc || currentSrc;
   const { headline, subheadline } = content.iptv;
 
   return (
@@ -129,15 +150,16 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
               <Fade direction="right" triggerOnce>
                 <div className="relative w-full max-w-2xl mx-auto lg:max-w-none">
                     <div className="aspect-[16/10] rounded-xl overflow-hidden bg-muted relative group">
-                        {displaySrc && (
+                        {currentSrc && (
                           <Image
                               id="iptvImageDisplay"
-                              src={displaySrc}
-                              alt={defaultIptvImage?.description || "IPTV service interface"}
+                              src={currentSrc}
+                              alt={"IPTV service interface"}
                               fill
                               className="w-full h-full object-cover"
-                              data-ai-hint={defaultIptvImage?.imageHint}
-                              key={displaySrc}
+                              data-ai-hint={"living room television"}
+                              key={currentSrc}
+                              priority
                           />
                         )}
                     </div>
@@ -149,19 +171,11 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
                         hidden
                         accept="image/*"
                         onChange={handleImageUpload}
+                        disabled={isProcessing}
                       />
-                      <Button id="imageUploadButton" onClick={triggerFileSelect} variant="outline">
-                        IPTV Image Uploader
+                      <Button id="imageUploadButton" onClick={triggerFileSelect} variant="outline" disabled={isProcessing}>
+                        {isProcessing ? "Processing..." : "IPTV Image Uploader"}
                       </Button>
-                      {previewSrc && (
-                        <Button
-                          id="saveImageButton"
-                          onClick={handleSaveImage}
-                          className="premium-red-bg text-white"
-                        >
-                          Save Image
-                        </Button>
-                      )}
                     </div>
                 </div>
               </Fade>

@@ -7,6 +7,18 @@ import LogoUploader from "@/components/sections/logo-uploader";
 import HeroImageUploader from "@/components/sections/hero-image-uploader";
 import { Separator } from "@/components/ui/separator";
 import MobileHeroImageUploader from "@/components/mobile-hero-image-uploader";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { FeatureImageUploader } from "@/components/feature-image-uploader";
+import { MobileFeatureImageUploader } from "@/components/mobile-feature-image-uploader";
+
 
 export default function Customization() {
     const { user } = useUser();

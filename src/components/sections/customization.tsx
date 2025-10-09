@@ -52,11 +52,6 @@ export default function Customization() {
                             <MobileHeroImageUploader />
                         </div>
                         
-                        <div className="space-y-2 pt-8">
-                           <h2 className="text-xl font-semibold">IPTV Section</h2>
-                           <Separator />
-                        </div>
-
                         <Dialog>
                           <DialogTrigger asChild>
                             <Button variant="outline">Upload IPTV Image</Button>

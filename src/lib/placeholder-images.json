@@ -14,8 +14,8 @@
     },
     {
       "id": "iptv-hero",
-      "description": "A modern living room with a large TV displaying a colorful user interface, representing an IPTV service.",
-      "imageUrl": "https://storage.googleapis.com/project-idx-assets/soon-iptv.png",
+      "description": "A modern living room with a large TV displaying a colorful user interface, representing an IPTV service with over 400 channels.",
+      "imageUrl": "https://storage.googleapis.com/project-idx-assets/iptv-400-channels.png",
       "imageHint": "living room television"
     }
   ]

@@ -49,7 +49,7 @@ export default function HeroImage({ heroImageUrl, mobileHeroImageUrl }: HeroImag
            <div className={cn(
              "absolute inset-0 flex items-center justify-center pt-24 md:pt-0"
             )}>
-            <div className="container mx-auto px-2 text-center">
+            <div className="container mx-auto px-0 text-center">
                 <h1 className="font-headline text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl drop-shadow-2xl">
                     Experience the Future of Internet & TV.
                 </h1>

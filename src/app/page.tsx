@@ -8,7 +8,6 @@ import Contact from "@/components/sections/contact";
 import Footer from "@/components/layout/footer";
 import Iptv from "@/components/sections/iptv";
 import Customization from "@/components/sections/customization";
-import IptvImageUploader from "@/components/sections/iptv-image-uploader";
 import { initializeFirebase } from "@/firebase/index.server";
 import { doc, getDoc, Firestore } from "firebase/firestore";
 

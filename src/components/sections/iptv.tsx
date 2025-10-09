@@ -24,22 +24,18 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
   const isMobile = useIsMobile();
   const { user } = useUser();
   const isAdmin = user && ADMIN_EMAILS.includes(user.email || "");
+  
   const [currentSrc, setCurrentSrc] = useState(featureImageUrl || defaultIptvImage?.imageUrl);
+  const [previewSrc, setPreviewSrc] = useState<string | null>(null);
   const imageUploadInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // This effect runs once on the client after the component mounts.
-    // It's the correct place to interact with localStorage.
-    
-    // 1. Prioritize the user's permanently saved image from localStorage.
     const savedImage = localStorage.getItem('iptvCustomImage');
     if (savedImage) {
       setCurrentSrc(savedImage);
     } else {
-      // 2. If no saved image, use server-provided images with mobile responsiveness.
       const desktopSrc = featureImageUrl || defaultIptvImage?.imageUrl;
       const mobileSrc = mobileFeatureImageUrl || desktopSrc;
-      // We check 'isMobile' here because this effect runs client-side.
       if (typeof isMobile !== 'undefined') {
         setCurrentSrc(isMobile ? mobileSrc : desktopSrc);
       }
@@ -53,16 +49,22 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
       const reader = new FileReader();
       reader.onloadend = () => {
         const dataUrl = reader.result as string;
-        // Update the image source on the screen immediately.
-        setCurrentSrc(dataUrl);
-        // Save the Data URL to localStorage to make it permanent.
-        localStorage.setItem('iptvCustomImage', dataUrl);
+        setPreviewSrc(dataUrl);
       };
       reader.readAsDataURL(file);
     }
   };
 
+  const handleSaveImage = () => {
+    if (previewSrc) {
+      localStorage.setItem('iptvCustomImage', previewSrc);
+      setCurrentSrc(previewSrc);
+      setPreviewSrc(null); // Clear preview after saving
+    }
+  };
+
   const { headline, subheadline } = content.iptv;
+  const displaySrc = previewSrc || currentSrc;
 
   return (
     <section id="iptv" className="bg-secondary py-12 sm:py-16 lg:py-20 overflow-hidden">
@@ -93,15 +95,15 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
               <Fade direction="right" triggerOnce>
                 <div className="relative w-full max-w-2xl mx-auto lg:max-w-none">
                     <div className="aspect-[16/10] rounded-xl overflow-hidden">
-                        {currentSrc && (
+                        {displaySrc && (
                         <Image
                             id="iptvImageDisplay"
-                            src={currentSrc}
+                            src={displaySrc}
                             alt={defaultIptvImage?.description || "IPTV service interface"}
                             fill
                             className="w-full h-full object-cover"
                             data-ai-hint={defaultIptvImage?.imageHint}
-                            key={currentSrc}
+                            key={displaySrc}
                         />
                         )}
                     </div>
@@ -113,13 +115,23 @@ export default function Iptv({ featureImageUrl, mobileFeatureImageUrl }: IptvPro
                         hidden
                         onChange={handleImageUpload}
                     />
-                    <button
-                        id="imageUploadButton"
-                        onClick={() => imageUploadInput.current?.click()}
-                        className="absolute bottom-4 right-4 bg-gradient-to-r from-red-500 to-red-700 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:from-red-600 hover:to-red-800 transition-all duration-300"
-                    >
-                        IPTV Image Uploader
-                    </button>
+                    <div className="absolute bottom-4 right-4 flex gap-2">
+                      <button
+                          id="imageUploadButton"
+                          onClick={() => imageUploadInput.current?.click()}
+                          className="bg-gradient-to-r from-red-500 to-red-700 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:from-red-600 hover:to-red-800 transition-all duration-300"
+                      >
+                          IPTV Image Uploader
+                      </button>
+                      {previewSrc && (
+                        <button
+                          onClick={handleSaveImage}
+                          className="bg-gradient-to-r from-green-500 to-green-700 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:from-green-600 hover:to-green-800 transition-all duration-300"
+                        >
+                          Save Image
+                        </button>
+                      )}
+                    </div>
                 </div>
               </Fade>
           </div>

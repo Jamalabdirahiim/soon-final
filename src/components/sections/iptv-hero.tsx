@@ -1,129 +1,53 @@
 
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { useUser, useStorage } from '@/firebase';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import { placeholderImages } from '@/lib/placeholder-images.json';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { placeholderImages } from "@/lib/placeholder-images.json";
+import { Camera } from 'lucide-react';
+import { useUser } from '@/firebase';
 
-const IptvHero = () => {
+interface IptvHeroProps {
+    featureImageUrl?: string;
+    mobileFeatureImageUrl?: string;
+}
+
+const IptvHero = ({ featureImageUrl, mobileFeatureImageUrl }: IptvHeroProps) => {
   const { user } = useUser();
-  const storage = useStorage();
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isUploading, setIsUploading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const isMobile = useIsMobile();
 
-  const imagePath = 'hero/iptv-hero.jpg';
+  const getSrc = () => {
+    const defaultImage = placeholderImages.find(p => p.id === 'iptv-hero');
+    if (isMobile === undefined) return defaultImage?.imageUrl;
 
-  // Function to fetch the image URL from Firebase Storage
-  const fetchImageUrl = async (storageInstance: any) => {
-    try {
-      const imageRef = ref(storageInstance, imagePath);
-      const url = await getDownloadURL(imageRef);
-      setImageUrl(url);
-    } catch (e: any) {
-      if (e.code === 'storage/object-not-found') {
-        const defaultImage = placeholderImages.find(p => p.id === 'iptv-hero');
-        setImageUrl(defaultImage?.imageUrl || null);
-      } else {
-        console.error('Error fetching image URL:', e);
-        setError('Failed to load image.');
-      }
-    } finally {
-      setIsLoading(false);
-    }
+    const desktopSrc = featureImageUrl || defaultImage?.imageUrl;
+    const mobileSrc = mobileFeatureImageUrl || desktopSrc;
+    return isMobile ? mobileSrc : desktopSrc;
   };
-
-  // Effect to fetch image on component mount
-  useEffect(() => {
-    if (storage) {
-      fetchImageUrl(storage);
-    }
-  }, [storage]);
-
-  // Handler for file input change
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file || !storage || !user) return;
-
-    setIsUploading(true);
-    setError(null);
-    setSuccessMessage(null);
-
-    const imageRef = ref(storage, imagePath);
-
-    try {
-      // Upload the new image, overwriting the old one
-      await uploadBytes(imageRef, file);
-      // Get the new download URL and update the state
-      const newUrl = await getDownloadURL(imageRef);
-      setImageUrl(newUrl);
-      setSuccessMessage('✅ IPTV image updated successfully');
-    } catch (e) {
-      console.error('Error uploading image:', e);
-      setError('Failed to upload image.');
-    } finally {
-      setIsUploading(false);
-       // Clear the file input
-      if(fileInputRef.current) {
-        fileInputRef.current.value = '';
-      }
-    }
-  };
-
-  // Handler for the "Change Image" button click
-  const handleButtonClick = () => {
-    fileInputRef.current?.click();
-  };
+  
+  const currentSrc = getSrc();
 
   return (
     <section className="flex flex-col items-center" id="iptv">
-      <div className="w-full h-[80vh] relative overflow-hidden rounded-xl bg-secondary flex items-center justify-center">
-        {isLoading ? (
-          <Skeleton className="w-full h-full" />
-        ) : imageUrl ? (
-          <Image
-            src={imageUrl}
-            alt="IPTV Service Showcase"
-            fill
-            className="object-cover w-full h-full"
-            priority
-            key={imageUrl} // Force re-render on URL change
-          />
-        ) : (
-          <div className="text-center text-muted-foreground">
-            <p>Image not found.</p>
-            {error && <p className="text-red-500">{error}</p>}
-          </div>
-        )}
-      </div>
-
-      {user && (
-        <div className="mt-4 text-center">
-          <Button
-            onClick={handleButtonClick}
-            disabled={isUploading}
-            className="premium-blue-bg text-primary-foreground hover:brightness-110 transition-transform hover:scale-105"
-          >
-            {isUploading ? 'Uploading...' : 'Change IPTV Image'}
-          </Button>
-          <input
-            type="file"
-            accept="image/*"
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            className="hidden"
-          />
-          {successMessage && <p className="mt-2 text-sm text-green-600">{successMessage}</p>}
-          {error && !isUploading && <p className="mt-2 text-sm text-red-600">{error}</p>}
+        <div className="w-full h-[80vh] relative overflow-hidden rounded-xl bg-secondary flex items-center justify-center">
+            {currentSrc ? (
+                <Image
+                    src={currentSrc}
+                    alt="IPTV Service Showcase"
+                    fill
+                    className="object-contain w-full h-full"
+                    priority
+                    key={currentSrc} 
+                />
+            ) : (
+                <div className="text-center text-muted-foreground p-8">
+                    <Camera className="mx-auto h-12 w-12 text-gray-400" />
+                    <h3 className="mt-4 text-lg font-semibold">IPTV Image Not Set</h3>
+                    <p className="mt-1 text-sm text-gray-500">An admin can upload an image in the customization panel.</p>
+                </div>
+            )}
         </div>
-      )}
     </section>
   );
 };

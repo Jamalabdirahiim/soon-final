@@ -100,11 +100,16 @@
     }
   ],
   "contact": {
-    "phone": "+252 61 858 888",
-    "email": "info@soon.so",
-    "address": "Makka Al Mukarama Road, Mogadishu, Somalia"
+    "addressLines": ["Soon Plaza, PO.BOX 111, Km5", "Banandir Rd, Mogadishu, Somalia"],
+    "phone": "2434",
+    "email": "info@son.com.so",
+    "socialHandle": "@somali optical networks"
   },
   "footer": {
-    "copyright": "SOON. All rights reserved."
+    "copyright": "2025 Somali Optical Networks. All rights reserved."
+  },
+  "developer": {
+    "name": "Ahmed",
+    "contact": "+252 617994641"
   }
 }

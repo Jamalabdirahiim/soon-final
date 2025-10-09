@@ -12,15 +12,15 @@ import {
   Instagram,
   Twitter,
 } from "lucide-react";
+import { Separator } from "../ui/separator";
 
 const defaultLogo = `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iNTYiIHZpZXdCb3g9IjAgMCAyMDAgNTYiIGZpbGw9Im5vbmUiPgo8dGV4dCB4PSIxMCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJzZXJpZiIgZm9udC1zaXplPSIzNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMwMDdEQjYiPgpTT09OPC90ZXh0Pgo8L3N2Zz4K`;
 
-const socialIconMap = {
-  Facebook: <Facebook size={24} />,
-  Instagram: <Instagram size={24} />,
-  Twitter: <Twitter size={24} />,
+const socialIconMap: Record<string, React.ReactNode> = {
+  Facebook: <Facebook size={20} />,
+  Instagram: <Instagram size={20} />,
+  Twitter: <Twitter size={20} />,
 };
-
 
 export default function Footer() {
   const [logoUrl, setLogoUrl] = useState(defaultLogo);
@@ -39,24 +39,60 @@ export default function Footer() {
       }
     });
 
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, [firestore]);
 
   return (
-    <footer className="bg-blue-900 text-white py-8">
-      <div className="container mx-auto px-4 md:px-6 flex flex-col md:flex-row justify-between items-center">
-        <div className="mb-4 md:mb-0">
-          <SoonLogo logoSrc={logoUrl} isInFooter={true}/>
+    <footer className="bg-background text-foreground py-12">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-sm">
+          
+          <div className="md:col-span-1 space-y-4">
+            <SoonLogo logoSrc={logoUrl} className="!h-10" />
+          </div>
+
+          <div>
+            <h3 className="font-bold text-base mb-4 tracking-wider">QUICK LINKS</h3>
+            <ul className="space-y-3">
+              {content.navLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="text-muted-foreground hover:text-primary transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="font-bold text-base mb-4 tracking-wider">CONTACT US</h3>
+            <div className="space-y-3 text-muted-foreground">
+              {content.contact.addressLines.map(line => <p key={line}>{line}</p>)}
+              <p>Phone: {content.contact.phone}</p>
+              <p>Email: {content.contact.email}</p>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="font-bold text-base mb-4 tracking-wider">FOLLOW US</h3>
+            <div className="flex items-center space-x-4 mb-4">
+              {content.socialLinks.map((social) => (
+                <Link href={social.url} key={social.name} className="text-muted-foreground hover:text-primary transition-colors">
+                  {socialIconMap[social.name]}
+                </Link>
+              ))}
+            </div>
+            <p className="text-muted-foreground">{content.contact.socialHandle}</p>
+          </div>
+
         </div>
-        <div className="flex items-center space-x-4">
-          {content.socialLinks.map((social) => (
-            <Link href={social.url} key={social.name} className="text-white hover:text-gray-300">
-              {socialIconMap[social.name]}
-            </Link>
-          ))}
+
+        <Separator className="my-8 bg-border/50" />
+
+        <div className="text-center text-xs text-muted-foreground space-y-1">
+            <p>{content.footer.copyright}</p>
+            <p>Designed & Developed by {content.developer.name} | Contact: {content.developer.contact}</p>
         </div>
-        <p className="text-sm text-gray-400 mt-4 md:mt-0">&copy; {new Date().getFullYear()} {content.footer.copyright}</p>
       </div>
     </footer>
   );

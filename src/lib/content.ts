@@ -46,12 +46,17 @@ type Content = {
   pricingPlans: PricingPlan[];
   faq: FaqItem[];
   contact: {
+    addressLines: string[];
     phone: string;
     email: string;
-    address: string;
+    socialHandle: string;
   };
   footer: {
     copyright: string;
+  };
+  developer: {
+    name: string;
+    contact: string;
   };
 };
 

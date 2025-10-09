@@ -3,8 +3,20 @@
 
 import Image from "next/image";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useUser } from "@/firebase";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ImageIcon } from "lucide-react";
+import { ImageIcon, Upload } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { FeatureImageUploader } from "@/components/feature-image-uploader";
+import { MobileFeatureImageUploader } from "@/components/mobile-feature-image-uploader";
 
 interface IptvHeroProps {
   featureImageUrl?: string;
@@ -13,9 +25,9 @@ interface IptvHeroProps {
 
 const IptvHero = ({ featureImageUrl, mobileFeatureImageUrl }: IptvHeroProps) => {
     const isMobile = useIsMobile();
+    const { user } = useUser();
 
     const getSrc = () => {
-        // Since we check for isMobile === undefined for loading, we don't need a separate default image here.
         if (isMobile === undefined) return null; 
         
         const desktopSrc = featureImageUrl;
@@ -26,7 +38,6 @@ const IptvHero = ({ featureImageUrl, mobileFeatureImageUrl }: IptvHeroProps) => 
 
     const imageUrl = getSrc();
 
-    // Loading state while useIsMobile is resolving
     if (isMobile === undefined) {
         return (
             <section className="flex flex-col items-center">
@@ -50,7 +61,30 @@ const IptvHero = ({ featureImageUrl, mobileFeatureImageUrl }: IptvHeroProps) => 
                     <div className="text-center text-muted-foreground">
                         <ImageIcon className="mx-auto h-16 w-16" />
                         <h3 className="mt-4 text-lg font-semibold">IPTV Image Not Set</h3>
-                        <p className="mt-2 text-sm">Please upload an image in the customization panel.</p>
+                        {user ? (
+                           <Dialog>
+                             <DialogTrigger asChild>
+                               <Button variant="outline" className="mt-4">
+                                 <Upload className="mr-2 h-4 w-4" />
+                                 Upload IPTV Image
+                               </Button>
+                             </DialogTrigger>
+                             <DialogContent className="sm:max-w-[800px]">
+                               <DialogHeader>
+                                 <DialogTitle>Upload IPTV Images</DialogTitle>
+                                 <DialogDescription>
+                                   Upload separate images for desktop and mobile viewports. Your changes will be saved and applied instantly.
+                                 </DialogDescription>
+                               </DialogHeader>
+                               <div className="grid md:grid-cols-2 gap-8 py-4">
+                                   <FeatureImageUploader />
+                                   <MobileFeatureImageUploader />
+                               </div>
+                             </DialogContent>
+                           </Dialog>
+                        ) : (
+                           <p className="mt-2 text-sm">An admin can upload an image in the customization panel.</p>
+                        )}
                     </div>
                 )}
             </div>

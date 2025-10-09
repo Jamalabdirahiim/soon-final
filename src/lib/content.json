@@ -23,7 +23,7 @@
   ],
   "hero": {
     "headline": "Experience the Future of Internet & TV.",
-    "subheadline": "Blazing-fast fiber optic internet and over 400+ IPTV channels. Get the most reliable connection for your home and business with SOON."
+    "subheadline": "High-speed fiber optic internet and premium IPTV for your home and business. Experience the most reliable connection with SOON."
   },
   "iptv": {
     "headline": "SOON IPTV: Your Home for Entertainment",
@@ -93,6 +93,10 @@
     {
       "question": "Do you have data limits?",
       "answer": "No. All our plans come with unlimited data for a 30-day period. You can stream, work, and play as much as you want without worrying about extra fees."
+    },
+    {
+      "question": "Can I get fiber internet and IPTV in a single package?",
+      "answer": "Yes! We offer bundled packages that combine our high-speed fiber internet with our premium IPTV service at a discounted rate. Contact us to learn more about our bundle deals."
     }
   ],
   "contact": {

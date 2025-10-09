@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { Fade } from 'react-awesome-reveal';
+import { content } from '@/lib/content';
 
 interface HeroImageProps {
     heroImageUrl?: string;
@@ -15,6 +16,7 @@ const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1535957998253-26ae1ef2
 
 export default function HeroImage({ heroImageUrl, mobileHeroImageUrl }: HeroImageProps) {
   const isMobile = useIsMobile();
+  const { headline, subheadline } = content.hero;
 
   const getSrc = () => {
     if (isMobile === undefined) {
@@ -50,10 +52,10 @@ export default function HeroImage({ heroImageUrl, mobileHeroImageUrl }: HeroImag
             <div className="container mx-auto px-0 text-center">
               <Fade direction="up" cascade damping={0.2} triggerOnce>
                 <h1 className="font-headline text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl drop-shadow-2xl">
-                    Experience the Future of Internet & TV.
+                    {headline}
                 </h1>
                 <p className="mt-6 max-w-3xl mx-auto text-lg text-gray-200 md:text-xl drop-shadow-lg">
-                    High-speed fiber optic internet and premium IPTV for your home and business. Experience the most reliable connection with SOON.
+                    {subheadline}
                 </p>
               </Fade>
             </div>

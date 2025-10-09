@@ -3,14 +3,15 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import { Menu, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SoonLogo } from "@/components/soon-logo";
 import { cn } from "@/lib/utils";
 import { content } from "@/lib/content";
-import { useFirestore } from "@/firebase";
+import { useFirestore, useUser } from "@/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
+import { ADMIN_EMAILS } from "@/lib/admin";
 
 
 const defaultLogo = `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iNTYiIHZpZXdCb3g9IjAgMCAyMDAgNTYiIGZpbGw9Im5vbmUiPgo8dGV4dCB4PSIxMCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJzZXJpZiIgZm9udC1zaXplPSIzNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMwMDdEQjYiPgpTT09OPC90ZXh0Pgo8L3N2Zz4K`;
@@ -20,7 +21,9 @@ export default function Header() {
   const [hasScrolled, setHasScrolled] = useState(false);
   const [logoUrl, setLogoUrl] = useState(defaultLogo);
   const firestore = useFirestore();
+  const { user } = useUser();
 
+  const isAdmin = user && ADMIN_EMAILS.includes(user.email || "");
 
   useEffect(() => {
     if (!firestore) return;
@@ -83,6 +86,15 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
+          {isAdmin && (
+            <Link
+              href="/admin/dashboard"
+              className="flex items-center gap-2 text-sm font-medium transition-colors hover:text-primary"
+            >
+              <Shield className="h-4 w-4" />
+              Admin
+            </Link>
+          )}
         </nav>
 
         <div className="flex items-center md:hidden">
@@ -116,6 +128,16 @@ export default function Header() {
                       {link.label}
                     </Link>
                   ))}
+                  {isAdmin && (
+                    <Link
+                      href="/admin/dashboard"
+                      className="flex items-center gap-2 text-lg font-medium text-foreground/80 transition-colors hover:text-primary"
+                      onClick={closeMobileMenu}
+                    >
+                      <Shield className="h-5 w-5" />
+                      Admin
+                    </Link>
+                  )}
                 </nav>
               </div>
             </SheetContent>

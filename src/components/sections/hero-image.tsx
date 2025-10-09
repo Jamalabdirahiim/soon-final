@@ -3,10 +3,7 @@
 
 import Image from 'next/image';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useEffect, useState } from 'react';
 import { placeholderImages } from "@/lib/placeholder-images.json";
-import HeroImageUploader from "@/components/sections/hero-image-uploader";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface HeroImageProps {
     heroImageUrl?: string;
@@ -18,24 +15,19 @@ export default function HeroImage({ heroImageUrl, mobileHeroImageUrl }: HeroImag
   const isMobile = useIsMobile();
 
   const getSrc = () => {
+    // Return a placeholder if we're on the server and can't determine mobile status
     if (isMobile === undefined) return defaultHeroImage?.imageUrl;
+
     const desktopSrc = heroImageUrl || defaultHeroImage?.imageUrl;
     const mobileSrc = mobileHeroImageUrl || desktopSrc;
     return isMobile ? mobileSrc : desktopSrc;
   };
 
-  const [currentSrc, setCurrentSrc] = useState(getSrc());
-
-  useEffect(() => {
-    const newSrc = getSrc();
-    if (newSrc) {
-        setCurrentSrc(newSrc);
-    }
-  }, [heroImageUrl, mobileHeroImageUrl, isMobile]);
+  const currentSrc = getSrc();
 
   return (
-    <section id="home" className="relative w-full py-0">
-      <div className="relative w-full h-[60vh] md:h-[80vh] overflow-hidden">
+    <section id="home" className="relative w-full py-0 -mt-20">
+      <div className="relative w-full h-[60vh] md:h-[100vh] overflow-hidden">
           {currentSrc && (
             <Image
                 src={currentSrc}
@@ -47,23 +39,18 @@ export default function HeroImage({ heroImageUrl, mobileHeroImageUrl }: HeroImag
                 key={currentSrc}
             />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
-      </div>
-      <section className="bg-secondary py-16 md:py-24">
-          <div className="container mx-auto px-4">
-              <Card className="max-w-4xl mx-auto">
-                  <CardHeader>
-                      <CardTitle className="text-2xl md:text-3xl">Hero Section Image</CardTitle>
-                      <CardDescription>
-                          Update the image for the hero section for the desktop view. Changes are saved instantly.
-                      </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                      <HeroImageUploader />
-                  </CardContent>
-              </Card>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+           <div className="absolute inset-0 flex items-center justify-center">
+            <div className="container mx-auto px-4 text-center">
+                <h1 className="font-headline text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl drop-shadow-2xl">
+                    Experience the Future of Internet & TV.
+                </h1>
+                <p className="mt-6 max-w-2xl mx-auto text-lg text-gray-200 md:text-xl drop-shadow-lg">
+                    Blazing-fast fiber optic internet and over 400+ IPTV channels. Get the most reliable connection for your home and business with SOON.
+                </p>
+            </div>
           </div>
-      </section>
+      </div>
     </section>
   );
 }

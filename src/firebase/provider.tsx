@@ -5,7 +5,7 @@ import React, { createContext, useContext, ReactNode, useMemo } from 'react';
 import { type FirebaseApp } from 'firebase/app';
 import { type Auth } from 'firebase/auth';
 import { type Firestore } from 'firebase/firestore';
-import { type Storage } from 'firebase/storage';
+import { type FirebaseStorage as Storage } from 'firebase/storage';
 import { initializeFirebase } from './index';
 import { FirebaseErrorListener } from '@/components/FirebaseErrorListener';
 

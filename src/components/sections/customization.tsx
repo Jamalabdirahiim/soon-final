@@ -28,7 +28,7 @@ export default function Customization() {
                                     <span>Admin Dashboard</span>
                                 </CardTitle>
                                 <CardDescription className="text-base">
-                                    You are logged in as an administrator. Manage your site's content, images, and settings from the dashboard.
+                                    You are logged in as an administrator. Manage your site&apos;s content, images, and settings from the dashboard.
                                 </CardDescription>
                             </div>
                         </CardHeader>

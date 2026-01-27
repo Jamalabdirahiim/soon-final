@@ -5,23 +5,23 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
-export function SoonLogo({ className, logoSrc, isInFooter }: { className?: string; logoSrc: string, isInFooter?: boolean }) {
+export function SoonLogo({ className, logoSrc, isInFooter }: { className?: string; logoSrc: string; isInFooter?: boolean }) {
 
   return (
     <Link href="/" aria-label="Back to homepage" className="flex items-center">
-      {logoSrc && 
-        <Image 
+      {logoSrc &&
+        <Image
           src={logoSrc}
-          alt="SOON Logo" 
+          alt="SOON Logo"
           width={200}
           height={56}
           priority
           className={cn(
-              "h-14 w-auto transition-all duration-300",
-              isInFooter && "brightness-0 invert",
-              className
+            "h-14 w-auto transition-all duration-300",
+            isInFooter && "brightness-0 invert",
+            className
           )}
-          key={logoSrc} 
+          key={logoSrc}
           data-ai-hint="minimalist logo"
         />
       }

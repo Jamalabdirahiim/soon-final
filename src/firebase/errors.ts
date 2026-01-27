@@ -29,7 +29,7 @@ export class FirestorePermissionError extends Error {
       operation: this.context.operation,
       path: this.context.path,
       ...(this.context.requestResourceData && {
-        requestData: this.context.requestData,
+        requestData: this.context.requestResourceData,
       }),
     };
   }

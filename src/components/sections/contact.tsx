@@ -70,7 +70,7 @@ export default function Contact() {
                 Get in Touch
               </h2>
               <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Have a question? We'd love to hear from you. Send us a message and we'll get back to you.
+                Have a question? We&apos;d love to hear from you. Send us a message and we&apos;ll get back to you.
               </p>
             </div>
           </div>
@@ -108,7 +108,7 @@ export default function Contact() {
                 <div>
                   <h3 className="text-xl font-bold">Office</h3>
                   <p className="text-muted-foreground">Visit our main office.</p>
-                  <p className="font-medium">{content.contact.address}</p>
+                  <p className="font-medium">{content.contact.addressLines[0]}</p>
                 </div>
               </div>
             </div>

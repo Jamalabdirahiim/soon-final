@@ -1,5 +1,4 @@
 
-import 'dotenv/config';
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
@@ -18,11 +17,6 @@ const nextConfig: NextConfig = {
         hostname: 'storage.googleapis.com',
       }
     ],
-  },
-  devIndicators: {
-    allowedDevOrigins: [
-      "https://*.cloudworkstations.dev",
-    ]
   },
 };
 

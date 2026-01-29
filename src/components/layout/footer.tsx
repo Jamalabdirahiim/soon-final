@@ -32,7 +32,7 @@ export default function Footer({ logoUrl: initialLogoUrl }: FooterProps) {
     <footer className="premium-blue-bg text-primary-foreground py-12">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-sm">
-          
+
           <div className="md:col-span-1 space-y-4">
             {/* The logo is now passed as a prop, no client-side fetching needed */}
             <SoonLogo logoSrc={logoUrl} className="!h-10" isInFooter={true} />
@@ -77,8 +77,8 @@ export default function Footer({ logoUrl: initialLogoUrl }: FooterProps) {
         <Separator className="my-8 bg-primary-foreground/20" />
 
         <div className="text-center text-xs text-primary-foreground/60 space-y-1">
-            <p>{content.footer.copyright}</p>
-            <p>Designed & Developed by {content.developer.name} | Contact: {content.developer.contact}</p>
+          <p>{content.footer.copyright}</p>
+          <p>Designed & Developed by {content.developer.name}</p>
         </div>
       </div>
     </footer>

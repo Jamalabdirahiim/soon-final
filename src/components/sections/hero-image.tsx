@@ -12,29 +12,21 @@ interface HeroImageProps {
   mobileHeroImageUrl?: string;
 }
 
-const FALLBACK_IMAGE = "/hero-fiber-blue.png";
+const FALLBACK_IMAGE = "/hero-v2.png";
 
 export default function HeroImage({ heroImageUrl, mobileHeroImageUrl }: HeroImageProps) {
   const isMobile = useIsMobile();
   const { headline, subheadline } = content.hero;
 
   const getSrc = () => {
-    if (isMobile === undefined) {
-      // Force new image for now
-      return FALLBACK_IMAGE;
-    }
-
-    // Force new image for now
-    const desktopSrc = FALLBACK_IMAGE;
-    const mobileSrc = mobileHeroImageUrl || desktopSrc;
-
-    return isMobile ? mobileSrc : desktopSrc;
+    // ALWAYS force local new image
+    return FALLBACK_IMAGE;
   };
 
   const currentSrc = getSrc();
 
   return (
-    <section id="home" className="relative w-full py-0 -mt-20">
+    <section id="home" className="relative w-full py-0 -mt-20 border-4 border-red-500">
       <div className="relative w-full h-[60vh] md:h-[100vh] overflow-hidden">
         {currentSrc && (
           <Image

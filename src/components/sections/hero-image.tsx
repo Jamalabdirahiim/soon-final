@@ -20,10 +20,12 @@ export default function HeroImage({ heroImageUrl, mobileHeroImageUrl }: HeroImag
 
   const getSrc = () => {
     if (isMobile === undefined) {
-      return heroImageUrl || FALLBACK_IMAGE;
+      // Force new image for now
+      return FALLBACK_IMAGE;
     }
 
-    const desktopSrc = heroImageUrl || FALLBACK_IMAGE;
+    // Force new image for now
+    const desktopSrc = FALLBACK_IMAGE;
     const mobileSrc = mobileHeroImageUrl || desktopSrc;
 
     return isMobile ? mobileSrc : desktopSrc;

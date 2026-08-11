@@ -2,7 +2,6 @@
 "use client";
 
 import Image from 'next/image';
-import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { Fade } from 'react-awesome-reveal';
 import { content } from '@/lib/content';
@@ -12,33 +11,22 @@ interface HeroImageProps {
   mobileHeroImageUrl?: string;
 }
 
-const FALLBACK_IMAGE = "/hero-v2.png";
+const MAIN_HERO_IMAGE = "/hero-main-futuristic.jpg";
 
-export default function HeroImage({ heroImageUrl, mobileHeroImageUrl }: HeroImageProps) {
-  const isMobile = useIsMobile();
+export default function HeroImage(_: HeroImageProps) {
   const { headline, subheadline } = content.hero;
 
-  const getSrc = () => {
-    // ALWAYS force local new image
-    return FALLBACK_IMAGE;
-  };
-
-  const currentSrc = getSrc();
-
   return (
-    <section id="home" className="relative w-full py-0 -mt-20 border-4 border-red-500">
+    <section id="home" className="relative w-full py-0 -mt-20">
       <div className="relative w-full h-[60vh] md:h-[100vh] overflow-hidden">
-        {currentSrc && (
-          <Image
-            src={currentSrc}
-            alt={"High-speed internet concept"}
-            fill
-            className="w-full h-full object-cover"
-            priority
-            data-ai-hint={"abstract technology"}
-            key={currentSrc}
-          />
-        )}
+        <Image
+          src={MAIN_HERO_IMAGE}
+          alt={"Fiber internet and IPTV service"}
+          fill
+          className="w-full h-full object-cover"
+          priority
+          data-ai-hint={"fiber internet iptv"}
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/80"></div>
         <div className={cn(
           "absolute inset-0 flex items-center justify-center pt-24 md:pt-0"

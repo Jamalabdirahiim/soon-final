@@ -116,3 +116,7 @@
     font-weight: bold;
   }
 }
+
+nextjs-portal {
+  display: none !important;
+}

@@ -10,12 +10,21 @@ const formSchema = z.object({
   message: z.string().min(10),
 });
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 const TO_EMAIL = 'axmedc.xakiim@gmail.com';
 
 export async function submitContactForm(values: z.infer<typeof formSchema>) {
   try {
     const validatedData = formSchema.parse(values);
+
+    if (!process.env.RESEND_API_KEY) {
+      console.error("Contact form error: RESEND_API_KEY is not configured.");
+      return {
+        success: false,
+        message: "Contact form is not configured yet. Please email us directly.",
+      };
+    }
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
     await resend.emails.send({
       from: 'onboarding@resend.dev',

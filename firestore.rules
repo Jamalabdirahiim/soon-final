@@ -73,5 +73,15 @@ service cloud.firestore {
       allow update: if isExistingOwner(userId);
       allow delete: if isExistingOwner(userId);
     }
+
+    /**
+     * Public site content (logo, hero images, etc.).
+     * Read is open so the homepage can load settings without auth.
+     * Writes require sign-in (admin UI uses Firebase Auth).
+     */
+    match /site-settings/{docId} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
   }
 }
